@@ -1,0 +1,106 @@
+.app__header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.app__header i {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.app__header_row:first-child > div {
+  padding: 0.5rem 0;
+  background-color: var(--azul-oscuro);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.app__header__user > span:hover,
+.app__header_row:first-child > div a:hover {
+  color: var(--azul-claro);
+  cursor: pointer;
+}
+
+.app__header_row:last-child {
+  background-color: var(--azul);
+}
+
+.app__header_row:last-child > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app__header__title {
+  font-size: 1.4rem;
+  color: white;
+}
+
+/* CARRITO */
+
+.app__header__cart {
+  position: relative;
+  cursor: pointer;
+}
+
+.app__header__cart span {
+  width: 20px;
+  height: 20px;
+  background-color: var(--rojo);
+  border-radius: 50%;
+  color: white;
+
+  position: absolute;
+  top: -7px;
+  right: -10px;
+}
+
+/* MEDIA QUERY - PC */
+
+@media screen and (min-width: 1000px) {
+  /* NAV */
+
+  .app__header__nav ul {
+    list-style: none;
+  }
+
+  .app__header__nav li {
+    margin: 0 0.5rem;
+    padding: 1.3rem 0.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 500ms ease;
+  }
+
+  .app__header__nav a::after {
+    width: 100%;
+    height: 4px;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    opacity: 0;
+    transition: opacity 500ms ease;
+  }
+
+  .app__header__nav li:hover {
+    background-color: var(--azul-oscuro-claro);
+  }
+
+  .app__header__nav li:hover a::after {
+    opacity: 1;
+  }
+
+  .app__header__user > * {
+    margin-left: 0.8rem;
+  }
+
+  .app__header__user p span {
+    margin: 0 0.3rem;
+  }
+}

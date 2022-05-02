@@ -1,0 +1,13 @@
+.crud__enlaces {
+  width: 800px;
+  padding: 2rem 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.crud__enlaces a {
+  padding: 0.8rem;
+  font-size: 1.2rem;
+}

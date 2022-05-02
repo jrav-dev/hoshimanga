@@ -1,0 +1,57 @@
+.listado__table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.listado__table thead tr {
+  background-color: var(--azul);
+}
+
+.listado__table__row:nth-child(even) {
+  background-color: var(--azul-oscuro-claro);
+}
+
+.listado__table__row > * {
+  padding: 0.5rem 0.3rem;
+  text-align: left;
+}
+
+/* IMAGENES */
+
+.listado__table__row img {
+  object-fit: contain;
+}
+
+/* BOTONES ACCIONES */
+
+.listado__table__row__actions {
+  margin: 0.3rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.listado__table__row__actions > * {
+  width: 100%;
+}
+
+.listado__table__row__actions > *:first-child {
+  background-color: var(--amarillo);
+}
+
+.listado__table__row__actions > *:last-child {
+  background-color: var(--rojo);
+}
+
+/* AVATAR USUARIO */
+
+.listado__table__row__avatar {
+  width: 40px;
+  height: 40px;
+  background-color: rgb(140, 194, 222);
+  border-radius: 50%;
+
+  font-weight: bold;
+  color: var(--azul-oscuro);
+}

@@ -1,0 +1,15 @@
+.message > p {
+  margin: 0.4rem 0;
+  padding: 0.5rem 1rem;
+
+  border-radius: 0.3rem;
+  color: white;
+}
+
+.error > p {
+  background-color: var(--rojo);
+}
+
+.success > p {
+  background-color: var(--verde);
+}

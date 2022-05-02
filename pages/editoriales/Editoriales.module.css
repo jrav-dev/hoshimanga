@@ -1,0 +1,23 @@
+.editoriales {
+  margin: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+}
+
+.editoriales a {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.editoriales a img {
+  object-fit: contain;
+}
+
+.editoriales a p {
+  color: var(--azul-claro);
+  font-size: 1.3rem;
+}

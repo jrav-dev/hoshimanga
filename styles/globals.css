@@ -1,16 +1,157 @@
-html,
-body {
-  padding: 0;
+/* --- Fuentes --- */
+
+/* Fuente General - Baloo 2 */
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
+/* font-family: "Baloo 2", cursive; */
+
+/* Fuente Titulos - Sansita Swashed */
+@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@300&display=swap");
+/* font-family: 'Sansita Swashed', cursive; */
+
+*,
+::after,
+::before {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --azul-claro: rgb(0, 166, 251);
+  --azul: rgb(0, 100, 148);
+  --azul-oscuro-claro: rgb(0, 53, 84);
+  --azul-oscuro: rgb(6, 33, 46);
+
+  --gris-claro: rgb(211, 211, 211);
+  --rojo: rgb(225, 67, 52);
+  --verde: rgb(26, 168, 22);
+  --amarillo: rgb(198, 164, 26);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--azul-oscuro-claro);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--azul);
+}
+
+body {
+  background-color: var(--azul-oscuro);
+}
+
+.app {
+  font-size: 16px;
+  font-family: "Baloo 2", sans-serif;
+  color: white;
+}
+
+.app__main,
+.app__header > div > div,
+.app__footer > div {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.app__main {
+  min-height: 700px;
 }
 
 a {
-  color: inherit;
   text-decoration: none;
+  color: white;
 }
 
-* {
-  box-sizing: border-box;
+h1,
+h2 {
+  font-family: "Sansita Swashed", sans-serif;
+}
+
+.contenedor {
+  padding: 1rem;
+  background-color: var(--azul-oscuro-claro);
+  border-radius: 0.5rem;
+}
+
+.flexible {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app__title {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app__message {
+  height: 100vh;
+  flex-direction: column;
+  color: white;
+}
+
+.app__message > * {
+  margin: 1rem 0;	
+}
+
+/* BUSCADOR */
+
+.app__form__search {
+  width: 100%;
+  margin-bottom: 1.5rem;
+
+  position: relative;
+}
+
+.app__form__search > input,
+.app__form__search button {
+  padding: 0.8rem 1rem;
+  color: white;
+  border: 1px solid var(--azul);
+}
+
+.app__form__search input {
+  width: calc(100% - 80px);
+  background-color: var(--azul-oscuro-claro);
+  border-right: 0;
+  outline: 0;
+}
+
+.app__form__search > input::placeholder {
+  color: white;
+}
+
+.app__form__search button {
+  background-color: var(--azul);
+  border-left: 0;
+  cursor: pointer;
+}
+
+.app__form__search i {
+  font-size: 1.3rem;
+  position: absolute;
+  top: 2px;
+  left: calc(100% - 105px);
+  cursor: pointer;
+  transition: all 500ms;
+}
+
+/* MEDIA QUERY */
+
+@media screen and (min-width: 1400px) {
+  .app__main,
+  .app__header > div > div,
+  .app__footer > div {
+    width: 1400px;
+  }
+
+  .app__main {
+    padding-top: 130px;
+  }
 }

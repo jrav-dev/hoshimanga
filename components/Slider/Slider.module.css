@@ -1,0 +1,46 @@
+.slider_container {
+  width: 900px;
+  height: 550px;
+  margin: 2rem auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.slider_covers {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  z-index: 5;
+  left: 0;
+}
+
+.slider_covers div img {
+  width: 900px;
+  height: 550px;
+  object-fit: cover;
+}
+
+/* BOTONES */
+
+.slider_container button {
+  padding: 0.5rem;
+  background-color: var(--azul-claro);
+  border-radius: 0.3rem;
+  border: 0;
+  color: white;
+  font-size: 1.2rem;
+
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.slider_container button:first-of-type {
+  left: 5px;
+}
+
+.slider_container button:last-of-type {
+  right: 5px;
+}

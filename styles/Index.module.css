@@ -1,0 +1,14 @@
+.titulo, .titulo a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo a {
+  text-transform: uppercase;
+}
+
+.titulo a i {
+  margin-left: 0.5rem;
+  font-size: 1.3rem;
+}

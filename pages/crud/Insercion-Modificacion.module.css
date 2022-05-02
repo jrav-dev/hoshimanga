@@ -1,0 +1,40 @@
+
+.container_image {
+  width: 80%;
+  margin: 0 auto;
+  padding: 1rem 0;
+
+  display: grid;
+  grid-template-columns: 0.7fr 1fr;
+  grid-template-rows: 250px;
+  gap: 2rem;
+}
+
+.container_image > div {
+  height: 100%;
+}
+
+.btn_image {
+  flex-direction: column;
+  border: 3px dashed white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.btn_image > i {
+  font-size: 3rem;
+}
+
+.btn_image p {
+  margin: 0.5rem 0;
+}
+
+.btn_image > span > i {
+  margin-right: 0.8rem;
+}
+
+.container_image > div > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

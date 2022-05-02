@@ -1,0 +1,28 @@
+.filtros, .filtros > div {
+  display: flex;
+  align-items: center;
+}
+
+.filtros {
+  margin: 0.5rem 0;
+  justify-content: space-between;
+}
+
+.checkbox {
+  margin-right: 0.5rem;
+  border: 1px solid var(--azul);
+  border-radius: 0.2rem;
+  color: white;
+
+  display: flex;
+  align-items: center;
+}
+
+.checkbox i {
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.active {
+  background-color: var(--azul);
+}

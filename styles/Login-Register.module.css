@@ -1,0 +1,70 @@
+.form_container,
+.errors {
+  width: 500px;
+  margin: 1rem auto;
+}
+
+.form_container {
+  padding: 1rem;
+}
+
+.form_container > h2 {
+  text-align: center;
+}
+
+.form_container > form > div:not(.form_container > form > div:last-child) {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.form_container label {
+  padding: 0 0.5rem;
+  font-size: 1rem;
+}
+
+.form_container input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+
+  background-color: var(--azul-oscuro);
+  border: 2px solid var(--azul-oscuro);
+  border-radius: 0.3rem;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: border 300ms ease;
+}
+
+.form_container input:focus {
+  border-color: var(--azul);
+}
+
+.form_container > form > div > span {
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+}
+
+.form_container > form > div > span:hover {
+  color: var(--azul-claro);
+  transition: color 500ms;
+}
+
+/* BOTONES */
+
+.botones {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.form_container form > div:last-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form_container form > div:last-child * {
+  width: 45%;
+  height: 100%;
+}

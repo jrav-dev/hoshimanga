@@ -1,0 +1,29 @@
+.card {
+  padding: 0.5rem;
+  margin-bottom: 0.8rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card > div {
+  text-align: center;
+}
+
+.card h3 {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Disponibilidad */
+
+.en_stock {
+  color: var(--verde);
+}
+
+.agotado {
+  color: var(--rojo);
+}

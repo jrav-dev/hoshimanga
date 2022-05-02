@@ -1,0 +1,89 @@
+.formulario__grid {
+  margin: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.formulario__grid.columna {
+  grid-template-columns: 1fr;
+}
+
+.formulario__fieldset {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario__fieldset label {
+  padding: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.formulario__fieldset input,
+.formulario__fieldset select,
+.formulario__fieldset textarea {
+  width: 100%;
+  padding: 1rem 1.5rem;
+
+  background-color: var(--azul-oscuro);
+  border: 2px solid var(--azul-oscuro);
+  border-radius: 0.3rem;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: border 300ms ease;
+}
+
+.formulario__fieldset input[type="file"] {
+  display: none;
+}
+
+.formulario__fieldset input:focus {
+  border-color: var(--azul-claro);
+}
+
+.formulario__fieldset textarea {
+  height: 200px;
+  resize: vertical;
+}
+
+.formulario__fieldset > p {
+  padding: 0.5rem;
+}
+
+.formulario__fieldset.error input,
+.formulario__fieldset.error select,
+.formulario__fieldset.error textarea {
+  border-color: var(--rojo);
+}
+
+.formulario__fieldset.error label,
+.formulario__fieldset > p {
+  color: var(--rojo);
+}
+
+/* CHECKBOX */
+
+.formulario__checkbox {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.formulario__checkbox span {
+  margin-left: 0.8rem;
+
+  background-color: white;
+  border-radius: 0.3rem;
+
+  font-size: 1.3rem;
+  color: var(--azul);
+
+  cursor: pointer;
+}
+
+.formulario__checkbox__active span {
+  background-color: var(--azul-claro);
+  color: white;
+}
