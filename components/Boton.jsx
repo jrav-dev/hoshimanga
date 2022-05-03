@@ -5,12 +5,12 @@ import style from "../styles/Boton.module.css";
 const Boton = ({ texto, icono, click, clase }) => {
   return (
     <button
-      className={`${style.boton} ${clase} flexible`}
+      className={`${clase} ${style.boton} ${texto ? style.margin : ''} flexible`}
       onClick={click ? click : null}
     >
       {icono ? <Icono icono={icono} /> : null}
       {texto ? (
-        <span className={icono ? style.margin : null}>{texto}</span>
+        <span>{texto}</span>
       ) : null}
     </button>
   );

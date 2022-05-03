@@ -5,7 +5,7 @@ import Ruta from '../../components/Ruta'
 
 export default function Editorial({ data, editorial }) {
   const items = [
-    { text: 'Manga', href: '/manga' },
+    { text: 'Editoriales', href: '/editoriales' },
     { text: editorial }
   ]
 
@@ -27,7 +27,7 @@ export default function Editorial({ data, editorial }) {
 Editorial.getInitialProps = async ({ query }) => {
   const editorial = query.editorial.replace(/-/g, " ")
 
-  const response = await fetch(`http://localhost:3000/api/mangas/editorial/${editorial}`)
+  const response = await fetch(`http://localhost:3001/api/mangas/editorial/${editorial}`)
   const data = await response.json()
 
   return { data, editorial }

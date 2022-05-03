@@ -83,6 +83,17 @@ h2 {
   align-items: center;
 }
 
+.borde__gris {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: var(--gris-claro);
+}
+
+.rojo,
+.rojo:hover {
+  background-color: var(--rojo);
+}
+
 .app__title {
   margin: 1rem 0;
   display: flex;
@@ -97,7 +108,7 @@ h2 {
 }
 
 .app__message > * {
-  margin: 1rem 0;	
+  margin: 1rem 0;
 }
 
 /* BUSCADOR */
@@ -140,6 +151,28 @@ h2 {
   left: calc(100% - 105px);
   cursor: pointer;
   transition: all 500ms;
+}
+
+/* Filtros Listado */
+
+.app__listado__filtros {
+  margin: 1rem 0;
+}
+
+.app__listado__filtros__grid {
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.app__listado__acciones {
+  display: flex;
+  align-items: center;
+}
+
+.app__listado__acciones > * {
+  margin-right: 0.5rem;
 }
 
 /* MEDIA QUERY */

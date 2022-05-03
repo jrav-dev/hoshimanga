@@ -23,7 +23,8 @@
 .formulario__fieldset select,
 .formulario__fieldset textarea {
   width: 100%;
-  padding: 1rem 1.5rem;
+  height: 50px;
+  padding: 0.8rem 1rem;
 
   background-color: var(--azul-oscuro);
   border: 2px solid var(--azul-oscuro);

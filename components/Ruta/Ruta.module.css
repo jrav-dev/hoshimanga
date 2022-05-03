@@ -11,7 +11,7 @@
 
 .ruta li:not(.ruta li:last-child)::after {
   content: "/\00a0";
-  margin: 0 2rem;
+  margin: 0 1rem;
 }
 
 .ruta a {

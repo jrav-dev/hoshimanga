@@ -21,6 +21,6 @@
   font-size: 1rem;
 }
 
-.margin {
-  margin-left: 0.8rem;
+.margin > i {
+  padding-right: 0.8rem;
 }
