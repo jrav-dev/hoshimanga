@@ -1,11 +1,11 @@
 import dbConnect from '../../../../config/db'
-import Editorial from '../../../../models/Editorial'
+import Manga from '../../../../models/Manga'
 
 dbConnect()
 
 export default async function handler(req, res) {
   try {
-    await Editorial.findByIdAndRemove({ _id: req.query.id })
+    await Manga.findByIdAndRemove({ _id: req.query.id })
 
     res.status(201).json({ status: 201, ok: true, message: "success" })
   } catch (error) {
