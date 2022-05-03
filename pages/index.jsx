@@ -17,7 +17,7 @@ const Home = () => {
       </Head>
 
       <div className={style.titulo}>
-        <h2>Novedades Manga {process.env.API_URL}</h2>
+        <h2>Novedades Manga</h2>
 
         <Link href="/novedades">
           <a>Ver más <Icono icono='bi bi-link' /></a>

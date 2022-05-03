@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/Globals.css'
 import '../styles/Header.css'
 import '../styles/Formulario.css'
+import '../styles/Paginacion.css'
 
 function MyApp({ Component, pageProps }) {
   return (

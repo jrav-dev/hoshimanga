@@ -1,4 +1,8 @@
 .loading {
+  height: 100%;
+}
+
+.loading > span {
   width: 80px;
   height: 80px;
 

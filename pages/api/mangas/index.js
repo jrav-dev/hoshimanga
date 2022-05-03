@@ -1,48 +1,72 @@
-import dbConnect from '../../../config/db'
-import Manga from '../../../models/Manga'
-import Editorial from '../../../models/Editorial'
+import dbConnect from "../../../config/db";
+import Manga from "../../../models/Manga";
+import Editorial from "../../../models/Editorial";
 
-dbConnect()
+dbConnect();
 
 export default async function handler(req, res) {
-  let mangas = await Manga.find().lean()
+  const params = req.query;
+  let mangas = []
 
-  if (req.query.q) mangas = mangas.filter(manga => manga.nombre.toLowerCase().includes(req.query.q.toLowerCase()))
+  const total = await Manga.find().lean().count();
 
-  const Editoriales = await Editorial.find().lean()
-  const series = []
-  const editoriales = Editoriales.map(item => {
-    return { nombre: item.nombre, total: 0, checked: false }
-  })
+  const filtros = {
+    nombre: params.nombre,
+    editorial: params.editorial,
+    stock: params.disponibilidad
+  };
+
+  const filtrosKeys = {};
+
+  for (const key in filtros) {
+    if (filtros[key] !== "" && filtros[key] !== undefined) {
+      if (key === "stock") {
+        if (filtros[key] === "En Stock") {
+          filtrosKeys[key] = { $gte: 1 };
+        } else {
+          filtrosKeys[key] = 0;
+        }
+      } else if (key === "nombre") {
+        filtrosKeys[key] = new RegExp(filtros[key], "i");
+      } else {
+        filtrosKeys[key] = filtros[key];
+      }
+    }
+  }
+
+  mangas = await Manga.find(filtrosKeys).lean();
+
+  if (params.q !== "undefined") mangas = mangas.filter(manga => manga.nombre.toLowerCase().includes(req.query.q.toLowerCase()))
+
+  const series = [];
+  const Editoriales = await Editorial.find().lean();
+  const editoriales = Editoriales.map((item) => {
+    return { nombre: item.nombre, checked: false };
+  });
+
   const disponibilidad = [
-    { nombre: 'En Stock', total: 0, checked: false },
-    { nombre: 'Agotado', total: 0, checked: false }
-  ]
+    { nombre: "En Stock", checked: false },
+    { nombre: "Agotado", checked: false },
+  ];
 
   let hash = {};
   mangas.filter((current) => {
     let exists = !hash[current.nombre];
-    hash[current.nombre] = true
-    if (exists) series.push({ nombre: current.nombre, total: 0, checked: false })
+    hash[current.nombre] = true;
+    if (exists)
+      series.push({ nombre: current.nombre, checked: false });
     return exists;
-  })
+  });
 
-  series.map(item => mangas.filter(manga => manga.nombre === item.nombre ? item.total += 1 : null))
+  const filtrosMenu = [
+    { titulo: "Editoriales", array: editoriales },
+    { titulo: "Colecciones", array: series },
+    { titulo: "Disponibilidad", array: disponibilidad },
+  ];
 
-  editoriales.map(item => mangas.filter(manga => {
-    if (manga.editorial === item.nombre) item.total += 1
-  }))
+  if (mangas.length > params.limit) {
+    mangas = mangas.slice(params.skip, params.skip + params.limit);
+  }
 
-  disponibilidad.map(item => mangas.filter(manga => {
-    if (item.nombre === "En Stock" && manga.stock > 0) item.total += 1
-    if (item.nombre === "Agotado" && manga.stock === 0) item.total += 1
-  }))
-
-  const filtros = [
-    { titulo: 'Editoriales', array: editoriales },
-    { titulo: 'Colecciones', array: series },
-    { titulo: 'Disponibilidad', array: disponibilidad },
-  ]
-
-  res.status(200).json({ mangas, filtros })
+  res.status(200).json({ mangas, filtrosMenu, total });
 }

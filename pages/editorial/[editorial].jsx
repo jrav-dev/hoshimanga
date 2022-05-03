@@ -5,7 +5,7 @@ import Ruta from '../../components/Ruta'
 
 export default function Editorial({ data, editorial }) {
   const items = [
-    { text: 'Manga', href: '/manga' },
+    { text: 'Editoriales', href: '/editoriales' },
     { text: editorial }
   ]
 
