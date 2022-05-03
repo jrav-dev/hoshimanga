@@ -6,7 +6,7 @@ import style from "../styles/Boton.module.css";
 const BotonLink = ({ texto, icono, url }) => {
   return (
     <Link href={url}>
-      <a className={`${style.boton} flexible`}>
+      <a className={`${style.boton} ${texto ? style.margin : ''} flexible`}>
         {icono ? (
           <>
             <Icono icono={icono} />

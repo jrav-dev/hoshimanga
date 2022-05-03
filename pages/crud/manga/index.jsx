@@ -12,7 +12,7 @@ import useModal from '../../../hooks/useModal'
 import { toast } from 'react-toastify'
 import style from '../Listado.module.css'
 
-export default function MangaCrud() {
+const CrudMangaListado = () => {
   const { data, setData } = useFetch(`/api/mangas/mangas`)
   const { isOpen, openModal, closeModal } = useModal()
   const [manga, setMangas] = useState({})
@@ -105,3 +105,5 @@ export default function MangaCrud() {
     </>
   )
 }
+
+export default CrudMangaListado

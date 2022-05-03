@@ -1,19 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Head from "next/head";
-import style from "../Insercion-Modificacion.module.css";
-import Ruta from "../../../components/Ruta";
-import useForm from "../../../hooks/useForm";
+
+import style from "../../Insercion-Modificacion.module.css";
+import Ruta from "../../../../components/Ruta";
+import useForm from "../../../../hooks/useForm";
 import {
   FieldsetInput,
   FieldsetSelectArray,
   FieldsetTextarea,
-} from "../../../components/Fieldset";
-import useFetch from "../../../hooks/useFetch";
-import Boton from "../../../components/Boton";
-import Icono from "../../../components/Icono";
+} from "../../../../components/Fieldset";
+import useFetch from "../../../../hooks/useFetch";
+import Boton from "../../../../components/Boton";
 
-const CrudMangaInsertar = () => {
+const CrudMangaEditar = ({ data }) => {
   const {
     params,
     errors,
@@ -24,21 +24,21 @@ const CrudMangaInsertar = () => {
     handleClickImagen,
   } = useForm(
     {
-      nombre: "",
-      descripcion: "",
-      editorial: "",
-      autor: "",
-      tomo: 0,
-      precio: 0,
-      imagen: "",
-      fecha_publicacion: "",
-      stock: 0,
-      isbn: "",
-      num_paginas: 0,
-      formato: "",
-      tamaño: "",
+      nombre: data.nombre,
+      descripcion: data.descripcion,
+      editorial: data.editorial,
+      autor: data.autor,
+      tomo: data.tomo,
+      precio: data.precio,
+      imagen: data.imagen,
+      fecha_publicacion: data.fecha_publicacion,
+      stock: data.stock,
+      isbn: data.isbn,
+      num_paginas: data.num_paginas,
+      formato: data.formato,
+      tamaño: data.tamaño,
     },
-    "/api/mangas/insertar",
+    `/api/mangas/${data._id}/editar`,
     "/crud/manga",
     "mangas"
   );
@@ -46,7 +46,7 @@ const CrudMangaInsertar = () => {
   const items = [
     { href: "/crud", text: "Crud" },
     { href: "/crud/manga", text: "Mangas" },
-    { text: "Insertar Manga" },
+    { text: `Editar Manga - ${data.nombre} ${data.tomo}` },
   ];
 
   const editoriales = useFetch("/api/editoriales");
@@ -54,7 +54,9 @@ const CrudMangaInsertar = () => {
   return (
     <>
       <Head>
-        <title>Insertar Manga | CRUD | Hoshi Manga</title>
+        <title>
+          {data.nombre} - {data.tomo} | CRUD | Hoshi Manga
+        </title>
       </Head>
 
       <Ruta items={items} />
@@ -65,8 +67,8 @@ const CrudMangaInsertar = () => {
         encType="multipart/form-data"
       >
         <div className="app__title">
-          <p>Insertar Manga</p>
-          <Boton texto="Enviar" click={handleSubmit} />
+          <p>* Rellene los campos obligatorios</p>
+          <Boton texto="Actualizar" />
         </div>
 
         <div className="formulario__grid contenedor">
@@ -144,7 +146,7 @@ const CrudMangaInsertar = () => {
           />
         </div>
 
-        <div className="contenedor formulario__grid columna">
+        <div className="formulario__grid columna contenedor">
           <FieldsetTextarea
             name="descripcion"
             text="Descripcion *"
@@ -158,7 +160,7 @@ const CrudMangaInsertar = () => {
         </div>
 
         <div className="contenedor">
-          <div className="formulario__fieldset">
+          <div className='formulario__fieldset'>
             <input
               ref={hiddenFileInput}
               onChange={readParam}
@@ -171,13 +173,17 @@ const CrudMangaInsertar = () => {
                 className={`${style.btn_image} flexible`}
                 onClick={handleClickImagen}
               >
-                <Icono icono="bi bi-cloud-upload" />
+                <i className="bi bi-cloud-upload flexible"></i>
                 <p>Portada del Manga</p>
                 <Boton icono="bi bi-upload" texto="Subir Imagen" />
               </div>
-              {params.imagen && (
+              {params.imagen !== data.imagen ? (
                 <div className={style.imagen}>
-                  <img src={createObjectURL} alt="" />
+                  <img src={createObjectURL} alt="Imagen" />
+                </div>
+              ) : (
+                <div className={style.imagen}>
+                  <img src={`/img/${params.imagen}`} alt="Imagen" />
                 </div>
               )}
             </div>
@@ -185,7 +191,7 @@ const CrudMangaInsertar = () => {
           </div>
         </div>
 
-        <div className="contenedor formulario__grid">
+        <div className='formulario__grid contenedor'>
           <FieldsetInput
             tipo="number"
             name="stock"
@@ -251,4 +257,13 @@ const CrudMangaInsertar = () => {
   );
 };
 
-export default CrudMangaInsertar;
+CrudMangaEditar.getInitialProps = async ({ query }) => {
+  const { id } = query;
+
+  const response = await fetch(`http://localhost:3001/api/mangas/${id}`);
+  const data = await response.json();
+
+  return { data };
+};
+
+export default CrudMangaEditar;

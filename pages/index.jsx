@@ -5,7 +5,6 @@ import Icono from '../components/Icono'
 import ListOfCards from '../components/ListOfCards'
 import Loading from '../components/Loading'
 import useFetch from '../hooks/useFetch'
-
 import style from '../styles/Index.module.css'
 
 const Home = () => {
@@ -18,7 +17,7 @@ const Home = () => {
       </Head>
 
       <div className={style.titulo}>
-        <h2>Novedades Manga</h2>
+        <h2>Novedades Manga {process.env.API_URL}</h2>
 
         <Link href="/novedades">
           <a>Ver más <Icono icono='bi bi-link' /></a>
