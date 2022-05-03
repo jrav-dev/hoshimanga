@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import ModalConfirmacion from "../../../components/Modal/ModalConfirmacion";
@@ -21,12 +22,12 @@ const CrudUsuarioListado = ({ usuarios }) => {
   const [dataPaginated, setDataPaginated] = useState(usuarios.data);
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
-  const [filtros, setFIltros] = useState({
+  const [filtros, setFiltros] = useState({
     id: "",
     nombre: "",
     apellidos: "",
     email: "",
-    is_admin: false,
+    is_admin: "",
   });
   const TOTAL = usuarios.total;
 
@@ -87,7 +88,7 @@ const CrudUsuarioListado = ({ usuarios }) => {
 
   const leerDato = (e) => {
     const { name, value } = e.target;
-    setFIltros({ ...filtros, [name]: value });
+    setFiltros({ ...filtros, [name]: value });
   };
 
   const handleClickFilter = async () => {
@@ -97,12 +98,12 @@ const CrudUsuarioListado = ({ usuarios }) => {
   // VACIAR FILTROS
 
   const handleClickClearFilter = async () => {
-    setFIltros({
+    setFiltros({
       id: "",
       nombre: "",
       apellidos: "",
       email: "",
-      is_admin: false,
+      is_admin: "",
     });
 
     await fetchData();
@@ -144,8 +145,8 @@ const CrudUsuarioListado = ({ usuarios }) => {
             tipo="text"
             text="Correo Electrónico"
             className="formulario__fieldset"
-            name="fecha"
-            value={filtros.fecha}
+            name="email"
+            value={filtros.email}
             onChange={leerDato}
           />
 
@@ -168,7 +169,7 @@ const CrudUsuarioListado = ({ usuarios }) => {
             <label htmlFor="is_admin">Administrador</label>
             <span
               onClick={() => {
-                setFIltros({
+                setFiltros({
                   ...filtros,
                   is_admin: !filtros.is_admin,
                 });
@@ -258,7 +259,7 @@ const CrudUsuarioListado = ({ usuarios }) => {
 
 CrudUsuarioListado.getInitialProps = async () => {
   const response = await fetch(
-    `http://localhost:3001/api/usuarios?limit=10&skip=0`
+    `http://localhost:3000/api/usuarios?limit=10&skip=0`
   );
   const usuarios = await response.json();
 

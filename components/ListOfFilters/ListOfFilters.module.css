@@ -3,8 +3,10 @@
 }
 
 .contenedor > div {
-  height: 300px;
   padding: 0 1rem;
+}
 
+.scroll {
+  height: 200px;
   overflow: auto;
 }

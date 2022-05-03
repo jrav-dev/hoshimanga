@@ -89,6 +89,13 @@ h2 {
   border-color: var(--gris-claro);
 }
 
+.tag__color {
+  padding: 0.3rem 1rem;
+  margin: 0.5rem 0;
+  background-color: var(--azul-oscuro-claro);
+  border-radius: 0.3rem;
+}
+
 .rojo,
 .rojo:hover {
   background-color: var(--rojo);
@@ -147,7 +154,7 @@ h2 {
 .app__form__search i {
   font-size: 1.3rem;
   position: absolute;
-  top: 2px;
+  top: 7px;
   left: calc(100% - 105px);
   cursor: pointer;
   transition: all 500ms;

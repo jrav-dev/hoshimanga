@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import Router from 'next/router'
 import { ToastContainer } from 'react-toastify';
 
 const Layout = ({ children }) => {

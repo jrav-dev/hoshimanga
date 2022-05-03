@@ -6,18 +6,21 @@ dbConnect();
 
 export default async function handler(req, res) {
   const params = req.query;
+  let mangas = []
+
+  const total = await Manga.find().lean().count();
 
   const filtros = {
     nombre: params.nombre,
     editorial: params.editorial,
-    disponibilidad: params.disponibilidad
+    stock: params.disponibilidad
   };
 
   const filtrosKeys = {};
 
   for (const key in filtros) {
-    if (filtros[key] !== "") {
-      if (key === "disponibilidad") {
+    if (filtros[key] !== "" && filtros[key] !== undefined) {
+      if (key === "stock") {
         if (filtros[key] === "En Stock") {
           filtrosKeys[key] = { $gte: 1 };
         } else {
@@ -31,25 +34,19 @@ export default async function handler(req, res) {
     }
   }
 
-  const total = await Manga.find().lean().count();
+  mangas = await Manga.find(filtrosKeys).lean();
 
-  console.log(filtrosKeys)
-  let mangas = await Manga.find(filtrosKeys).lean().limit(params.limit).skip(params.skip);
-  console.log(params)
+  if (params.q !== "undefined") mangas = mangas.filter(manga => manga.nombre.toLowerCase().includes(req.query.q.toLowerCase()))
 
-  if (params.q)
-    mangas = mangas.filter((manga) =>
-      manga.nombre.toLowerCase().includes(params.q.toLowerCase())
-    );
-
-  const Editoriales = await Editorial.find().lean();
   const series = [];
+  const Editoriales = await Editorial.find().lean();
   const editoriales = Editoriales.map((item) => {
-    return { nombre: item.nombre, total: 0, checked: false };
+    return { nombre: item.nombre, checked: false };
   });
+
   const disponibilidad = [
-    { nombre: "En Stock", total: 0, checked: false },
-    { nombre: "Agotado", total: 0, checked: false },
+    { nombre: "En Stock", checked: false },
+    { nombre: "Agotado", checked: false },
   ];
 
   let hash = {};
@@ -57,34 +54,19 @@ export default async function handler(req, res) {
     let exists = !hash[current.nombre];
     hash[current.nombre] = true;
     if (exists)
-      series.push({ nombre: current.nombre, total: 0, checked: false });
+      series.push({ nombre: current.nombre, checked: false });
     return exists;
   });
-
-  series.map((item) =>
-    mangas.filter((manga) =>
-      manga.nombre === item.nombre ? (item.total += 1) : null
-    )
-  );
-
-  editoriales.map((item) =>
-    mangas.filter((manga) => {
-      if (manga.editorial === item.nombre) item.total += 1;
-    })
-  );
-
-  disponibilidad.map((item) =>
-    mangas.filter((manga) => {
-      if (item.nombre === "En Stock" && manga.stock > 0) item.total += 1;
-      if (item.nombre === "Agotado" && manga.stock === 0) item.total += 1;
-    })
-  );
 
   const filtrosMenu = [
     { titulo: "Editoriales", array: editoriales },
     { titulo: "Colecciones", array: series },
     { titulo: "Disponibilidad", array: disponibilidad },
   ];
+
+  if (mangas.length > params.limit) {
+    mangas = mangas.slice(params.skip, params.skip + params.limit);
+  }
 
   res.status(200).json({ mangas, filtrosMenu, total });
 }

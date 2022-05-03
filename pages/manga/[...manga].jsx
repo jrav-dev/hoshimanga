@@ -117,7 +117,7 @@ export default function Manga({ manga }) {
 Manga.getInitialProps = async ({ query }) => {
   const { manga } = query
 
-  const response = await fetch(`http://localhost:3001/api/mangas/${manga[0]}/${manga[1]}`)
+  const response = await fetch(`http://localhost:3000/api/mangas/${manga[0]}/${manga[1]}`)
   const data = await response.json()
 
   return { manga: data }
