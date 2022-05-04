@@ -76,7 +76,7 @@ const CrudEditorialListado = ({ data }) => {
                 <td className={style.listado__table__row__actions}>
                   <BotonLink
                     url={`/crud/editorial/editar/${item._id}`}
-                    icono="bi bi-eye"
+                    icono="bi bi-pencil"
                   />
 
                   <Boton
@@ -105,7 +105,7 @@ const CrudEditorialListado = ({ data }) => {
 };
 
 CrudEditorialListado.getInitialProps = async () => {
-  const response = await fetch(`http://localhost:3000/api/editoriales`);
+  const response = await fetch(`http://localhost:3001/api/editoriales`);
   const data = await response.json();
 
   return { data };

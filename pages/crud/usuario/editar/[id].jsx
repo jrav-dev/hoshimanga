@@ -112,7 +112,7 @@ const CrudUsuarioEditar = ({ data }) => {
 CrudUsuarioEditar.getInitialProps = async ({ query }) => {
   const { id } = query
 
-  const res = await fetch(`http://localhost:3000/api/usuarios/${id}`)
+  const res = await fetch(`http://localhost:3001/api/usuarios/${id}`)
   const data = await res.json()
 
   return { data }

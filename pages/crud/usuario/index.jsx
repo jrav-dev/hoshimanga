@@ -230,7 +230,7 @@ const CrudUsuarioListado = ({ usuarios }) => {
               <td className={style.listado__table__row__actions}>
                 <BotonLink
                   url={`/crud/usuario/editar/${item._id}`}
-                  icono="bi bi-eye"
+                  icono="bi bi-pencil"
                 />
 
                 <Boton
