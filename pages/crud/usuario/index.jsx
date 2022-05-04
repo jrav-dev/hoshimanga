@@ -5,7 +5,7 @@ import ModalConfirmacion from "../../../components/Modal/ModalConfirmacion";
 import {
   FieldsetInput,
   FieldsetSelectArray,
-} from "../../../components/Fieldset/index";
+} from "../../../components/Fieldset";
 import Ruta from "../../../components/Ruta";
 import Boton from "../../../components/Boton";
 import BotonLink from "../../../components/BotonLink";
