@@ -5,7 +5,7 @@ import Router from "next/router";
 import Boton from "../../components/Boton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import style from "../../styles/Cart.module.css";
-import Productos from "./productos";
+import Productos from "./Productos";
 import DatosFacturacion from "./DatosFacturacion";
 import { toast } from 'react-toastify'
 import Pago from "./Pago";
