@@ -1,12 +1,20 @@
 /* --- Fuentes --- */
 
 /* Fuente General - Baloo 2 */
-@import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
-/* font-family: "Baloo 2", cursive; */
+/* @import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap"); */
+
+@font-face {
+  font-family: 'Baloo 2';
+  src: url('/fonts/Baloo2.ttf');
+}
 
 /* Fuente Titulos - Sansita Swashed */
-@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@300&display=swap");
-/* font-family: 'Sansita Swashed', cursive; */
+/* @import url('https://fonts.googleapis.com/css2?family=Sansita&display=swap'); */
+
+@font-face {
+  font-family: 'Sansita';
+  src: url('/fonts/Sansita-Regular.ttf');
+}
 
 *,
 ::after,
@@ -17,6 +25,9 @@
 }
 
 :root {
+  --fuente-general: 'Baloo 2';
+  --fuente-titulos: 'Sansita';
+
   --azul-claro: rgb(0, 166, 251);
   --azul: rgb(0, 100, 148);
   --azul-oscuro-claro: rgb(0, 53, 84);
@@ -46,7 +57,7 @@ body {
 
 .app {
   font-size: 16px;
-  font-family: "Baloo 2", sans-serif;
+  font-family: var(--fuente-general), sans-serif;
   color: white;
 }
 
@@ -68,7 +79,7 @@ a {
 
 h1,
 h2 {
-  font-family: "Sansita Swashed", sans-serif;
+  font-family: var(--fuente-titulos), sans-serif;
 }
 
 .contenedor {
