@@ -94,10 +94,18 @@ h2 {
   align-items: center;
 }
 
+.flex__between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .borde__gris {
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
   border-width: 0 0 1px 0;
   border-style: solid;
-  border-color: var(--gris-claro);
+  border-color: rgb(125, 125, 125);
 }
 
 .tag__color {

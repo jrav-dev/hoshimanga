@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useVisible } from "../hooks/useVisible";
 import useUser from "../hooks/useUser";
 import Icono from "./Icono";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const Header = () => {
   const { ref, isVisible, setIsVisible } = useVisible(false);
   const { user, removeUser } = useUser();
+  const [storedValue] = useLocalStorage("cart");
+  const totalCart = storedValue ? storedValue.length : 0;
 
   return (
     <header className="app__header">
@@ -15,7 +18,7 @@ const Header = () => {
         <div>
           {user ? (
             <div className="flexible app__header__user">
-              {user.is_admin ? <Link href='/crud'>CRUD</Link> : null}
+              {user.is_admin ? <Link href="/crud">CRUD</Link> : null}
 
               <Link href="/cuenta">
                 <a className="flexible">
@@ -64,10 +67,12 @@ const Header = () => {
           </nav>
 
           <div className="flexible">
-            <div className="app__header__cart">
-              <Icono icono="bi bi-cart2" />
-              <span className="flexible">0</span>
-            </div>
+            <Link href="/cart">
+              <a className="app__header__cart">
+                <Icono icono="bi bi-cart2" />
+                <span className="flexible">{totalCart}</span>
+              </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -104,7 +109,6 @@ const Header = () => {
             <span>0</span>
           </div>
         </nav>
-
         
       </div> */}
     </header>
