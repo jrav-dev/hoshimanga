@@ -1,12 +1,14 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import Router from "next/router";
 import Boton from "./Boton";
 import style from "../styles/Card.module.css";
 import useProducto from "../hooks/useProducto";
 import Precio from "./Precio";
+import { useCart } from "../hooks/useCart";
 
-const Card = ({ producto, addToCart }) => {
+const Card = ({ producto }) => {
+  const { addToCart } = useCart();
   const { nombre, tomo, imagen, _id } = producto;
 
   const { precio, disponibilidad } = useProducto(producto);

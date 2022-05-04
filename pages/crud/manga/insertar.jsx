@@ -65,7 +65,7 @@ const CrudMangaInsertar = () => {
         encType="multipart/form-data"
       >
         <div className="app__title">
-          <p>Insertar Manga</p>
+          <p></p>
           <Boton texto="Enviar" click={handleSubmit} />
         </div>
 
@@ -173,7 +173,11 @@ const CrudMangaInsertar = () => {
               >
                 <Icono icono="bi bi-cloud-upload" />
                 <p>Portada del Manga</p>
-                <Boton icono="bi bi-upload" texto="Subir Imagen" />
+                
+                <span className="boton flexible">
+                  <Icono icono="bi bi-upload" />
+                  Subir Imagen
+                </span>
               </div>
               {params.imagen && (
                 <div className={style.imagen}>

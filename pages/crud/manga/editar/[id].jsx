@@ -12,6 +12,7 @@ import {
 } from "../../../../components/Fieldset";
 import useFetch from "../../../../hooks/useFetch";
 import Boton from "../../../../components/Boton";
+import Icono from "../../../../components/Icono";
 
 const CrudMangaEditar = ({ data }) => {
   const {
@@ -160,7 +161,7 @@ const CrudMangaEditar = ({ data }) => {
         </div>
 
         <div className="contenedor">
-          <div className='formulario__fieldset'>
+          <div className="formulario__fieldset">
             <input
               ref={hiddenFileInput}
               onChange={readParam}
@@ -173,10 +174,15 @@ const CrudMangaEditar = ({ data }) => {
                 className={`${style.btn_image} flexible`}
                 onClick={handleClickImagen}
               >
-                <i className="bi bi-cloud-upload flexible"></i>
+                <Icono icono="bi bi-cloud-upload" />
                 <p>Portada del Manga</p>
-                <Boton icono="bi bi-upload" texto="Subir Imagen" />
+
+                <span className="boton flexible">
+                  <Icono icono="bi bi-upload" />
+                  Subir Imagen
+                </span>
               </div>
+
               {params.imagen !== data.imagen ? (
                 <div className={style.imagen}>
                   <img src={createObjectURL} alt="Imagen" />
@@ -191,7 +197,7 @@ const CrudMangaEditar = ({ data }) => {
           </div>
         </div>
 
-        <div className='formulario__grid contenedor'>
+        <div className="formulario__grid contenedor">
           <FieldsetInput
             tipo="number"
             name="stock"
@@ -260,7 +266,7 @@ const CrudMangaEditar = ({ data }) => {
 CrudMangaEditar.getInitialProps = async ({ query }) => {
   const { id } = query;
 
-  const response = await fetch(`http://localhost:3000/api/mangas/${id}`);
+  const response = await fetch(`http://localhost:3001/api/mangas/${id}`);
   const data = await response.json();
 
   return { data };

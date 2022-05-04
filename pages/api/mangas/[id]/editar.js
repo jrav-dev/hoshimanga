@@ -1,10 +1,10 @@
-import dbConnect from '../../../../config/db'
-import Manga from '../../../../models/Manga'
+import dbConnect from "../../../../config/db";
+import Manga from "../../../../models/Manga";
 
-dbConnect()
+dbConnect();
 
 export default async function handler(req, res) {
-  const { params, imagen } = req.body
+  const { params, imagen } = req.body;
 
   try {
     await Manga.findByIdAndUpdate({ _id: req.query.id }, {
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       autor: params.autor,
       tomo: params.tomo,
       precio: params.precio,
-      imagen: imagen,
+      imagen,
       fecha_publicacion: params.fecha_publicacion,
       stock: params.stock,
       isbn: params.isbn,
@@ -23,8 +23,8 @@ export default async function handler(req, res) {
       tamaño: params.tamaño
     })
 
-    res.status(201).json({ status: 201, ok: true, message: "success" })
+    res.status(201).json({ status: 201, ok: true, message: "success" });
   } catch (error) {
-    console.log("Error: " + error)
+    console.log("Error: " + error);
   }
 }

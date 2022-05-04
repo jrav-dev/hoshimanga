@@ -8,8 +8,10 @@ import Icono from '../../components/Icono'
 import Boton from '../../components/Boton'
 import useProducto from '../../hooks/useProducto'
 import Precio from '../../components/Precio'
+import { useCart } from '../../hooks/useCart'
 
 export default function Manga({ manga }) {
+  const { addToCart } = useCart();
   const { precio, disponibilidad, autores, descripcion } = useProducto(manga)
   const nombre = manga.nombre
   const items = [
@@ -72,7 +74,7 @@ export default function Manga({ manga }) {
 
           <Precio precio={manga.precio} precioDescuento={precio} />
 
-          <Boton texto='Añadir a la cesta' icono='bi bi-cart2' />
+          <Boton texto='Añadir a la cesta' icono='bi bi-cart2' click={() => addToCart(manga)} />
         </article>
       </section>
 
@@ -117,7 +119,7 @@ export default function Manga({ manga }) {
 Manga.getInitialProps = async ({ query }) => {
   const { manga } = query
 
-  const response = await fetch(`http://localhost:3000/api/mangas/${manga[0]}/${manga[1]}`)
+  const response = await fetch(`http://localhost:3001/api/mangas/${manga[0]}/${manga[1]}`)
   const data = await response.json()
 
   return { manga: data }
