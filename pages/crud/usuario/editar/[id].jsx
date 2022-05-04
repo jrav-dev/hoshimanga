@@ -1,12 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react'
 import Head from 'next/head'
-import style from '../../Insercion-Modificacion.module.css'
 import Ruta from '../../../../components/Ruta'
-import MessageValidation from '../../../../components/MessageValidation'
 import useForm from '../../../../hooks/useForm'
 import { FieldsetInput } from '../../../../components/Fieldset'
-import { toast } from 'react-toastify'
 import Boton from '../../../../components/Boton'
 import Icono from '../../../../components/Icono'
 
@@ -47,8 +44,6 @@ const CrudUsuarioEditar = ({ data }) => {
           <h2>{data.nombre} {data.apellidos}</h2>
           <Boton texto='Enviar' click={handleSubmit} />
         </div>
-
-        <MessageValidation errors={errors} ok="error" />
 
         <div className='formulario__grid contenedor'>
           <FieldsetInput className='formulario__fieldset'
@@ -112,7 +107,7 @@ const CrudUsuarioEditar = ({ data }) => {
 CrudUsuarioEditar.getInitialProps = async ({ query }) => {
   const { id } = query
 
-  const res = await fetch(`http://localhost:3001/api/usuarios/${id}`)
+  const res = await fetch(`http://localhost:3000/api/usuarios/${id}`)
   const data = await res.json()
 
   return { data }

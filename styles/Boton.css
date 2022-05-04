@@ -24,3 +24,7 @@
 .boton_margin > i {
   padding-right: 0.8rem;
 }
+
+.boton.rojo {
+  background-color: var(--rojo);
+}

@@ -36,6 +36,7 @@ const Login = () => {
         const json = await response.json();
 
         window.localStorage.setItem("user", JSON.stringify({
+          _id: json._id,
           nombre: json.nombre,
           apellidos: json.apellidos,
           email: json.email,

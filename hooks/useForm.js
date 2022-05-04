@@ -60,7 +60,6 @@ export default function useForm(initialValue, url, url2, carpeta) {
     let errors = validateParams();
     if (Object.keys(errors).length) return setErrors(errors);
 
-    console.log(params.imagen)
     if (typeof params.imagen !== "string") await uploadToServer();
 
     await createData();

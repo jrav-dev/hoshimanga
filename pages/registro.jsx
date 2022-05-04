@@ -35,6 +35,7 @@ function Login() {
           if (results) {
             toast.success('Registro realizado correctamente')
             window.localStorage.setItem("user", JSON.stringify({
+              _id: results._id,
               nombre: results.nombre,
               apellidos: results.apellidos,
               email: results.email,

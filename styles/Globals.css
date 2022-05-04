@@ -137,6 +137,27 @@ h2 {
   margin: 1rem 0;
 }
 
+.app__confirmacion {
+  height: 100vh;
+  flex-direction: column;
+}
+
+.app__confirmacion > i {
+  margin: 1rem 0;
+  padding: 0.8rem;
+  background-color: rgb(83, 162, 83);
+  border-radius: 50%;
+  font-size: 3rem;
+}
+
+.app__confirmacion > * {
+  margin: 1rem 0;
+}
+
+.app__confirmacion > div > * {
+  margin: 0 0.5rem;
+}
+
 /* BUSCADOR */
 
 .app__form__search {
