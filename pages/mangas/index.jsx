@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import Router from 'next/router'
 import Ruta from "../../components/Ruta";
@@ -130,18 +129,6 @@ export default function Mangas({ data, keyword }) {
     }
   }
 
-  const handleClickClearFilter = async () => {
-    setFiltros({
-      id: "",
-      nombre: "",
-      editorial: "",
-      fecha: "",
-      disponibilidad: "",
-    });
-
-    await fetchData();
-  };
-
   return (
     <>
       <Head>
@@ -152,7 +139,6 @@ export default function Mangas({ data, keyword }) {
 
       <div className={style.app__mangas__grid}>
         <div className={style.app__mangas__filtros}>
-
           <div>
             {keyword && <>
               <h4>Búsqueda</h4>
@@ -193,8 +179,8 @@ export default function Mangas({ data, keyword }) {
               array={item.array}
               titulo={item.titulo}
               clickCheck={handleClickFilter}
-              index={i}
               clase={item.array.length > 6 ? "scroll" : ""}
+              index={i}
             />
           ))}
         </div>
@@ -203,7 +189,10 @@ export default function Mangas({ data, keyword }) {
           {isLoading
             ? <Loading />
             : <>
-              <ListOfCards array={dataPaginated} />
+              {dataPaginated.length > 0 
+                ? <ListOfCards array={dataPaginated} /> 
+                : <h2 className="flexible">No hay mangas con los filtros seleccionados</h2>
+              }
 
               <Paginacion
                 limit={limit}
@@ -224,7 +213,7 @@ Mangas.getInitialProps = async ({ query }) => {
   let { q } = query;
 
   const response = await fetch(
-    `http://localhost:3000/api/mangas?limit=10&skip=0&q=${q}`
+    `http://localhost:3001/api/mangas?limit=10&skip=0&q=${q}`
   );
   const data = await response.json();
 

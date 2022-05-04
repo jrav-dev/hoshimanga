@@ -6,7 +6,7 @@
   border-radius: 0.3rem;
 
   color: white;
-  font-family: "Baloo 2", cursive;
+  font-family: var(--fuente-general), sans-serif;
   font-size: 0.9rem;
   
   cursor: pointer;

@@ -1,6 +1,7 @@
 .filtros, .filtros > div {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .filtros {

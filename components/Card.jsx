@@ -1,32 +1,23 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Boton from './Boton'
+import Boton from "./Boton";
 import style from "../styles/Card.module.css";
 import useProducto from "../hooks/useProducto";
 import Precio from "./Precio";
 
 const Card = ({ producto, addToCart }) => {
-  const { nombre, tomo, imagen, _id } = producto
+  const { nombre, tomo, imagen, _id } = producto;
 
   const { precio, disponibilidad } = useProducto(producto);
-  const Titulo = `${nombre} - Tomo ${tomo < 10 ? "0" + tomo : tomo
-    }`;
-  const TituloUrl = `/manga/${nombre.replace(/ /g, "-")}/${tomo
-    }`;
+  const Titulo = `${nombre} - Tomo ${tomo < 10 ? "0" + tomo : tomo}`;
+  const TituloUrl = `/manga/${nombre.replace(/ /g, "-")}/${tomo}`;
 
   return (
     <div className={style.card}>
       <Link href={TituloUrl}>
-        <a title={Titulo}>
-          {imagen ? (
-            <Image
-              src={`/img/${imagen}`}
-              alt={producto.name}
-              width={220}
-              height={300}
-            />
-          ) : null}
+        <a title={Titulo} className={style.card__imagen}>
+          {imagen ? <img src={`/img/${imagen}`} alt={producto.name} /> : null}
         </a>
       </Link>
 
@@ -44,7 +35,11 @@ const Card = ({ producto, addToCart }) => {
         <Precio precio={producto.precio} precioDescuento={precio} />
 
         {disponibilidad.estado !== "Agotado" && (
-          <Boton texto="Añadir a la cesta" icono="bi bi-cart2" click={() => addToCart(producto)} />
+          <Boton
+            texto="Añadir a la cesta"
+            icono="bi bi-cart2"
+            click={() => addToCart(producto)}
+          />
         )}
       </div>
     </div>

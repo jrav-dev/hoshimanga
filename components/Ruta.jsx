@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-import style from "./Ruta.module.css";
+import style from "../styles/Ruta.module.css";
 
 const Ruta = ({ items }) => {
   return (
