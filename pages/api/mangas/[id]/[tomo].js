@@ -5,7 +5,7 @@ dbConnect()
 export default async function handler(req, res) {
   let { id, tomo } = req.query
 
-  const manga = await Manga.findOne({ nombre: id.replace(/-/g, " "), tomo: tomo }).lean()
+  const manga = await Manga.findOne({ nombre: id.replace(/_/g, " "), tomo: tomo }).lean()
 
   if (manga === null) {
     res.status(200).json({ msg: "El tomo que busca no existe o no se encuentra disponible" })

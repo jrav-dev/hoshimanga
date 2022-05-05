@@ -13,7 +13,7 @@ const Card = ({ producto }) => {
 
   const { precio, disponibilidad } = useProducto(producto);
   const Titulo = `${nombre} - Tomo ${tomo < 10 ? "0" + tomo : tomo}`;
-  const TituloUrl = `/manga/${nombre.replace(/ /g, "-")}/${tomo}`;
+  const TituloUrl = `/manga/${nombre.replace(/ /g, "_")}/${tomo}`;
 
   return (
     <div className={style.card}>
@@ -26,7 +26,7 @@ const Card = ({ producto }) => {
       <div>
         <Link href={TituloUrl}>
           <a title={Titulo}>
-            <h3>{nombre}</h3>
+            <h3>{nombre} - {tomo}</h3>
           </a>
         </Link>
 

@@ -15,7 +15,7 @@ const CRUD = () => {
         <BotonLink url='/crud/manga' texto='Manga' />
         <BotonLink url='/crud/usuario' texto='Usuario' />
         <BotonLink url='/crud/editorial' texto='Editorial' />
-        <BotonLink url='/crud/merchandising' texto='Merchandising' />
+        <BotonLink url='/crud/pedidos' texto='Pedidos' />
       </section>
     </>
   )

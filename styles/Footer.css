@@ -1,0 +1,17 @@
+.app__footer {
+  padding: 2rem 0;
+  background-color: var(--azul);
+}
+
+.app__footer > div {
+  flex-direction: column;
+}
+
+.app__footer__redes {
+    margin: 1rem 0;
+}
+
+.app__footer__redes i {
+    margin: 0.8rem;
+    font-size: 1.5rem;
+}

@@ -7,14 +7,27 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 import style from "../../styles/Cart.module.css";
 import Productos from "./Productos";
 import DatosFacturacion from "./DatosFacturacion";
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 import Pago from "./Pago";
 
 const Cart = () => {
   const [step, setStep] = useState(1);
   const [cart, setValue, removeValue] = useLocalStorage("cart");
   const [username] = useLocalStorage("user");
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
+  const [errors, setErrors] = useState(null);
+  const [params, setParams] = useState({
+    _id: "",
+    nombre: "",
+    apellidos: "",
+    email: "",
+    direccion: "",
+    poblacion: "",
+    pais: "",
+    codigo_postal: "",
+    telefono: "",
+    dni: "",
+  });
   let totalCart = 0;
 
   const handleClickAddTotal = (item) => {
@@ -46,8 +59,13 @@ const Cart = () => {
   };
 
   const handleClickRemoveProduct = (i) => {
-    cart.splice(i, 1);
-    setValue(cart);
+    if (cart.length > 1) {
+      cart.splice(i, 1);
+      setValue(cart);
+    } else {
+      removeValue();
+    }
+
     Router.push("/cart");
   };
 
@@ -68,30 +86,74 @@ const Cart = () => {
         if (username) {
           const responseUser = await fetch(`/api/usuarios/${username._id}`);
           const dataUser = await responseUser.json();
-          setUser(dataUser)
-          setStep(2)
+          setUser(dataUser);
+          setParams({
+            _id: dataUser._id,
+            nombre: dataUser.nombre,
+            apellidos: dataUser.apellidos,
+            email: dataUser.email,
+            password: dataUser.password,
+            direccion: dataUser.direccion,
+            poblacion: dataUser.poblacion,
+            pais: dataUser.pais,
+            codigo_postal: dataUser.codigo_postal,
+            telefono: dataUser.telefono,
+            dni: dataUser.dni,
+          });
+          setStep(2);
         } else {
-          toast.error("Debes iniciar sesión para continuar")
+          toast.error("Debes iniciar sesión para continuar");
         }
         break;
 
       case 2:
-        setStep(3)
-        break;
+        const validateParams = () => {
+          let errors = {};
 
-      case 3:
-        // setStep(4)
-        break;
+          for (const key in params) {
+            let name =
+              key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
 
-      default:
+            if (params[key] === "" || params[key] === undefined) {
+              errors[key] = `El campo '${name}' está vacio.`;
+            } else {
+              if (
+                parseInt(params[key]) === "NaN" &&
+                !regexText.test(params[key])
+              ) {
+                errors[
+                  key
+                ] = `El campo '${name}' no es válido. Debe tener entre 3 y 255 carácteres.`;
+              }
+              if (key === "isbn" && parseInt(params[key].length) < 13) {
+                errors[key] = `El campo '${name}' debe tener 13 carácteres.`;
+              }
+            }
+          }
+          return errors;
+        };
+
+        let errors = validateParams();
+
+        if (Object.keys(errors).length > 1) {
+          setErrors(errors);
+        } else {
+          fetch("/api/usuarios/editar", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ params }),
+          });
+
+          setErrors(null);
+        }
+
+        setStep(3);
         break;
     }
-  }
-
-  const handleSubmitFacturation = () => {
-    let errors = validateParams();
-    if (Object.keys(errors).length) return setErrors(errors);
-  }
+  };
 
   return (
     <>
@@ -100,36 +162,52 @@ const Cart = () => {
       </Head>
 
       <div className={style.app__cart__steps}>
-        <div className={`flexible ${style.app__cart__steps__step} ${step === 1 ? style.app__cart__steps__step__active : ''}`}
-          onClick={() => setStep(1)}>
+        <div
+          className={`flexible ${style.app__cart__steps__step} ${
+            step === 1 ? style.app__cart__steps__step__active : ""
+          }`}
+        >
           <p className="flexible">1</p>
           <p>Productos</p>
         </div>
 
-        <div className={`flexible ${style.app__cart__steps__step} ${step === 2 ? style.app__cart__steps__step__active : ''}`}
-          onClick={() => setStep(2)}>
+        <div
+          className={`flexible ${style.app__cart__steps__step} ${
+            step === 2 ? style.app__cart__steps__step__active : ""
+          }`}
+        >
           <p className="flexible">2</p>
           <p>Datos</p>
         </div>
 
-        <div className={`flexible ${style.app__cart__steps__step} ${step === 3 ? style.app__cart__steps__step__active : ''}`}>
+        <div
+          className={`flexible ${style.app__cart__steps__step} ${
+            step === 3 ? style.app__cart__steps__step__active : ""
+          }`}
+        >
           <p className="flexible">3</p>
           <p>Pago</p>
         </div>
       </div>
 
       <div className={style.app__cart__grid}>
-        {step === 1 && <Productos
-          cart={cart}
-          handleClickAddTotal={handleClickAddTotal}
-          handleClickRemoveTotal={handleClickRemoveTotal}
-          handleClickRemoveProduct={handleClickRemoveProduct}
-          handleClickRemoveProducts={handleClickRemoveProducts}
-        />}
+        {step === 1 && (
+          <Productos
+            cart={cart}
+            handleClickAddTotal={handleClickAddTotal}
+            handleClickRemoveTotal={handleClickRemoveTotal}
+            handleClickRemoveProduct={handleClickRemoveProduct}
+            handleClickRemoveProducts={handleClickRemoveProducts}
+          />
+        )}
 
-        {step === 2 && <DatosFacturacion
-          data={user} setData={setUser}
-          handleSubmitFacturation={handleSubmitFacturation} />}
+        {step === 2 && (
+          <DatosFacturacion
+            params={params}
+            setParams={setParams}
+            errors={errors}
+          />
+        )}
 
         {step === 3 && <Pago total={totalCart} user={user} productos={cart} />}
 
@@ -140,13 +218,17 @@ const Cart = () => {
             <div className="flex__between">
               <h4>Total</h4>
 
-              <p>{totalCart.toFixed(2)} €</p>
+              <b>{totalCart.toFixed(2)} €</b>
             </div>
           </div>
 
-          <Boton texto={step === 3 ? "Realizar pedido" : "Continuar"}
-            click={handleClickNextStep}
-            clase={style.app__cart__boton__compra} />
+          {cart && step < 3 && (
+            <Boton
+              texto={step === 3 ? "Realizar pedido" : "Continuar"}
+              click={handleClickNextStep}
+              clase={style.app__cart__boton__compra}
+            />
+          )}
         </div>
       </div>
     </>

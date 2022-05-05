@@ -24,7 +24,7 @@ const Home = () => {
         </Link>
       </div>
 
-      {data ? <ListOfCards array={data.slice(0, 6)} /> : <div className="flexible"><Loading /></div>}
+      {data ? <ListOfCards array={data.slice(0, 12)} /> : <div className="flexible"><Loading /></div>}
     </>
   )
 }

@@ -60,7 +60,8 @@ export default function useForm(initialValue, url, url2, carpeta) {
     let errors = validateParams();
     if (Object.keys(errors).length) return setErrors(errors);
 
-    if (typeof params.imagen !== "string") await uploadToServer();
+    if (params.imagen && typeof params.imagen !== "string")
+      await uploadToServer();
 
     await createData();
   };
@@ -75,10 +76,11 @@ export default function useForm(initialValue, url, url2, carpeta) {
         },
         body: JSON.stringify({
           params,
-          imagen:
-            typeof params.imagen === "string"
+          imagen: params.imagen
+            ? typeof params.imagen === "string"
               ? params.imagen
-              : `${carpeta}/${params.imagen.name}`,
+              : `${carpeta}/${params.imagen.name}`
+            : "",
         }),
       })
         .then((res) => res.json())

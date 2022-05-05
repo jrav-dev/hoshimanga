@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Imporaciones CSS
 import '../styles/Globals.css'
 import '../styles/Header.css'
+import '../styles/Footer.css'
 import '../styles/Formulario.css'
 import '../styles/Paginacion.css'
 import '../styles/Boton.css'

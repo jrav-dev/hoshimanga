@@ -34,12 +34,13 @@ function Login() {
         }).then(res => res.json()).then(results => {
           if (results) {
             toast.success('Registro realizado correctamente')
+            console.log(results)
             window.localStorage.setItem("user", JSON.stringify({
               _id: results._id,
               nombre: results.nombre,
               apellidos: results.apellidos,
               email: results.email,
-              is_admin: results.is_admin
+              is_admin: results.is_admin,
             }))
             window.location.href = "/"
           }

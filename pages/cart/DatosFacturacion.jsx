@@ -2,43 +2,7 @@ import React, { useState } from 'react'
 import { FieldsetInput } from '../../components/Fieldset'
 import useForm from '../../hooks/useForm'
 
-const DatosFacturacion = ({ data, setData }) => {
-  const [errors, setErrors] = useState(null);
-  const [params, setParams] = useState({
-    _id: data._id,
-    nombre: data.nombre,
-    apellidos: data.apellidos,
-    email: data.email,
-    direccion: data.direccion,
-    poblacion: data.poblacion,
-    pais: data.pais,
-    codigo_postal: data.codigo_postal,
-    telefono: data.telefono,
-    dni: data.dni,
-  })
-
-  const validateParams = () => {
-    let errors = {};
-
-    for (const key in params) {
-      let name =
-        key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
-
-      if (params[key] === "") {
-        errors[key] = `El campo '${name}' está vacio.`;
-      } else {
-        if (parseInt(params[key]) === "NaN" && !regexText.test(params[key])) {
-          errors[
-            key
-          ] = `El campo '${name}' no es válido. Debe tener entre 3 y 255 carácteres.`;
-        }
-        if (key === "isbn" && parseInt(params[key].length) < 13) {
-          errors[key] = `El campo '${name}' debe tener 13 carácteres.`;
-        }
-      }
-    }
-    return errors;
-  };
+const DatosFacturacion = ({ params, setParams, errors }) => {
 
   const readParam = (e) => {
     const { name, value } = e.target;

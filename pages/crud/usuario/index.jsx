@@ -259,7 +259,7 @@ const CrudUsuarioListado = ({ usuarios }) => {
 
 CrudUsuarioListado.getInitialProps = async () => {
   const response = await fetch(
-    `http://localhost:3000/api/usuarios?limit=10&skip=0`
+    `http://localhost:3001/api/usuarios?limit=10&skip=0`
   );
   const usuarios = await response.json();
 

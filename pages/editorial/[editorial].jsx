@@ -25,9 +25,9 @@ export default function Editorial({ data, editorial }) {
 }
 
 Editorial.getInitialProps = async ({ query }) => {
-  const editorial = query.editorial.replace(/-/g, " ")
+  const editorial = query.editorial.replace(/_/g, " ")
 
-  const response = await fetch(`http://localhost:3000/api/mangas/editorial/${editorial}`)
+  const response = await fetch(`http://localhost:3001/api/mangas/editorial/${editorial}`)
   const data = await response.json()
 
   return { data, editorial }

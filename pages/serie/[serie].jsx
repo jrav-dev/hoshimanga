@@ -5,7 +5,7 @@ import Ruta from '../../components/Ruta'
 
 export default function Serie({ data, serie }) {
   const items = [
-    { text: 'Manga', href: '/manga' },
+    { text: 'Mangas', href: '/mangas' },
     { text: serie }
   ]
 
@@ -25,9 +25,9 @@ export default function Serie({ data, serie }) {
 }
 
 Serie.getInitialProps = async ({ query }) => {
-  const serie = query.serie.replace(/-/g, " ")
+  const serie = query.serie.replace(/_/g, " ")
 
-  const response = await fetch(`http://localhost:3000/api/mangas/serie/${serie}`)
+  const response = await fetch(`http://localhost:3001/api/mangas/serie/${serie}`)
   const data = await response.json()
 
   return { data, serie }

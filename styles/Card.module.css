@@ -1,4 +1,5 @@
 .card {
+  width: 100%;
   padding: 0.5rem;
   margin-bottom: 0.8rem;
 }
@@ -16,14 +17,14 @@
 }
 
 .card > div {
-  /* text-align: center; */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.card h3 {
-  width: 100%;
+.card > div > a h3 {
+  width: 220px;
+  text-align: center;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

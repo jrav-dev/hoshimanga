@@ -185,6 +185,15 @@ const CrudMangaListado = ({ mangas }) => {
         </div>
       </div>
 
+      <Paginacion
+        limit={limit}
+        skip={skip}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        setLimit={setLimit}
+        dataPaginated={dataPaginated}
+      />
+
       <table className={style.listado__table}>
         <thead>
           <tr className={style.listado__table__row}>
@@ -230,7 +239,7 @@ const CrudMangaListado = ({ mangas }) => {
                 />
 
                 <BotonLink
-                  url={`/manga/${item.nombre.replace(/ /g, "-")}/${item.tomo}`}
+                  url={`/manga/${item.nombre.replace(/ /g, "_")}/${item.tomo}`}
                   icono="bi bi-eye"
                 />
 
@@ -273,7 +282,7 @@ const CrudMangaListado = ({ mangas }) => {
 
 CrudMangaListado.getInitialProps = async () => {
   const response = await fetch(
-    `http://localhost:3000/api/mangas/mangas?limit=10&skip=0`
+    `http://localhost:3001/api/mangas/mangas?limit=10&skip=0`
   );
   const mangas = await response.json();
 

@@ -150,27 +150,6 @@ export default function Mangas({ data, keyword }) {
                 </span>
               </p>
             </>}
-
-            {/* {filtros.editorial && <p className={`tag__color ${style.tag__filtro}`}>
-              {filtros.editorial}
-              <span onClick={() => handleClickRemoveFilter('editorial')}>
-                <Icono icono='bi bi-x' />
-              </span>
-            </p>}
-
-            {filtros.nombre && <p className={`tag__color ${style.tag__filtro}`}>
-              {filtros.nombre}
-              <span onClick={() => handleClickRemoveFilter('nombre')}>
-                <Icono icono='bi bi-x' />
-              </span>
-            </p>}
-
-            {filtros.disponibilidad && <p className={`tag__color ${style.tag__filtro}`}>
-              {filtros.disponibilidad}
-              <span onClick={() => handleClickRemoveFilter('disponibilidad')}>
-                <Icono icono='bi bi-x' />
-              </span>
-            </p>} */}
           </div>
 
           {filtrosMenu.map((item, i) => (
@@ -213,7 +192,7 @@ Mangas.getInitialProps = async ({ query }) => {
   let { q } = query;
 
   const response = await fetch(
-    `http://localhost:3000/api/mangas?limit=10&skip=0&q=${q}`
+    `http://localhost:3001/api/mangas?limit=10&skip=0&q=${q}`
   );
   const data = await response.json();
 

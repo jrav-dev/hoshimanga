@@ -48,20 +48,20 @@ export default function Manga({ manga }) {
           <div>
             <p>
               <b>Editortial: </b>
-              <Link href={`/editorial/${manga.editorial.replace(/ /g, "-")}`}>{manga.editorial}</Link>
+              <Link href={`/editorial/${manga.editorial.replace(/ /g, "_")}`}>{manga.editorial}</Link>
             </p>
 
             <p>
               <b>Autores: </b>
               {autores.map((item, i) => (
-                <><Link href={`/autor/${item.trim().replace(/ /g, "-")}`} key={i}>{item.trim()}</Link>
+                <><Link href={`/autor/${item.trim().replace(/ /g, "_")}`} key={i}>{item.trim()}</Link>
                   {i + 1 < autores.length ? ', ' : null}</>
               ))}
             </p>
 
             <p>
               <b>Série: </b>
-              <Link href={`/serie/${nombre.replace(/ /g, "-")}`}>{nombre}</Link>
+              <Link href={`/serie/${nombre.replace(/ /g, "_")}`}>{nombre}</Link>
             </p>
           </div>
 
@@ -119,7 +119,7 @@ export default function Manga({ manga }) {
 Manga.getInitialProps = async ({ query }) => {
   const { manga } = query
 
-  const response = await fetch(`http://localhost:3000/api/mangas/${manga[0]}/${manga[1]}`)
+  const response = await fetch(`http://localhost:3001/api/mangas/${manga[0]}/${manga[1]}`)
   const data = await response.json()
 
   return { manga: data }

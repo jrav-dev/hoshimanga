@@ -31,17 +31,30 @@ const Login = () => {
     let validacionOK = validarLogin();
 
     if (validacionOK) {
-      const response = await fetch(`/api/usuarios/${email}`);
-      if (response.ok) {
-        const json = await response.json();
+      const response = await fetch(`/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
-        window.localStorage.setItem("user", JSON.stringify({
-          _id: json._id,
-          nombre: json.nombre,
-          apellidos: json.apellidos,
-          email: json.email,
-          is_admin: json.is_admin
-        }));
+      const data = await response.json();
+
+      if (data.ok) {
+        window.localStorage.setItem(
+          "user",
+          JSON.stringify({
+            _id: data.usuario._id,
+            nombre: data.usuario.nombre,
+            apellidos: data.usuario.apellidos,
+            email: data.usuario.email,
+            is_admin: data.usuario.is_admin,
+          })
+        );
         window.location.href = "/";
       } else {
         setErrors(["Ese correo electrónico no existe."]);

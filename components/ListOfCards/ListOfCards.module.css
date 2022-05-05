@@ -1,13 +1,24 @@
 .cards {
   margin-top: 1rem;
   display: grid;
-  /* grid-template-columns: repeat(2, 1fr); */
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 1rem;
 }
 
+@media screen and (min-width: 1000px) {
+  .cards {
+    grid-template-columns: repeat(5, 220px);
+  }
+}
+
 @media screen and (min-width: 1200px) {
   .cards {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .cards {
+    grid-template-columns: repeat(6, 220px);
   }
 }

@@ -69,7 +69,8 @@ body {
 }
 
 .app__main {
-  min-height: 700px;
+  min-height: 800px;
+  padding-bottom: 2rem;
 }
 
 a {
@@ -158,47 +159,6 @@ h2 {
   margin: 0 0.5rem;
 }
 
-/* BUSCADOR */
-
-.app__form__search {
-  width: 100%;
-  margin-bottom: 1.5rem;
-
-  position: relative;
-}
-
-.app__form__search > input,
-.app__form__search button {
-  padding: 0.8rem 1rem;
-  color: white;
-  border: 1px solid var(--azul);
-}
-
-.app__form__search input {
-  width: calc(100% - 80px);
-  background-color: var(--azul-oscuro-claro);
-  border-right: 0;
-  outline: 0;
-}
-
-.app__form__search > input::placeholder {
-  color: white;
-}
-
-.app__form__search button {
-  background-color: var(--azul);
-  border-left: 0;
-  cursor: pointer;
-}
-
-.app__form__search i {
-  font-size: 1.3rem;
-  position: absolute;
-  top: 7px;
-  left: calc(100% - 105px);
-  cursor: pointer;
-  transition: all 500ms;
-}
 
 /* Filtros Listado */
 
@@ -222,7 +182,46 @@ h2 {
   margin-right: 0.5rem;
 }
 
+/* PRODUCTOS */
+
+.app__table__header {
+  background-color: var(--azul);
+}
+
+.app__table__product {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.app__table__product:nth-child(odd) {
+  background-color: var(--azul-oscuro-claro);
+}
+
+.app__table__product > * {
+  padding: 0.5rem 0.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.app__table__product img {
+  width: 60px;
+  height: 80px;
+  border-radius: 0.3rem;
+}
+
 /* MEDIA QUERY */
+
+/* @media screen and (min-width: 1000px) {
+  .app__main,
+  .app__header > div > div,
+  .app__footer > div {
+    width: 1400px;
+  }
+
+  .app__main {
+    padding-top: 130px;
+  }
+} */
 
 @media screen and (min-width: 1400px) {
   .app__main,
