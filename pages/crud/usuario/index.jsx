@@ -259,7 +259,7 @@ const CrudUsuarioListado = ({ usuarios }) => {
 
 CrudUsuarioListado.getInitialProps = async () => {
   const response = await fetch(
-    `${process.env.API_URL}/usuarios?limit=10&skip=0`
+    `${process.env.NEXT_PUBLIC_API_URL}/usuarios?limit=10&skip=0`
   );
   const usuarios = await response.json();
 

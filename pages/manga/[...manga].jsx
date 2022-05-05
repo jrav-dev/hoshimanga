@@ -119,7 +119,7 @@ export default function Manga({ manga }) {
 Manga.getInitialProps = async ({ query }) => {
   const { manga } = query
 
-  const response = await fetch(`${process.env.API_URL}/mangas/${manga[0]}/${manga[1]}`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mangas/${manga[0]}/${manga[1]}`)
   const data = await response.json()
 
   return { manga: data }

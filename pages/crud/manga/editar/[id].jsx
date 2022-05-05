@@ -266,7 +266,7 @@ const CrudMangaEditar = ({ data }) => {
 CrudMangaEditar.getInitialProps = async ({ query }) => {
   const { id } = query;
 
-  const response = await fetch(`${process.env.API_URL}/mangas/${id}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mangas/${id}`);
   const data = await response.json();
 
   return { data };

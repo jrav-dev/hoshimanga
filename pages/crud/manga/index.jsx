@@ -290,7 +290,7 @@ const CrudMangaListado = ({ mangas }) => {
 
 CrudMangaListado.getInitialProps = async () => {
   const response = await fetch(
-    `${process.env.API_URL}/mangas/mangas?limit=10&skip=0`
+    `${process.env.NEXT_PUBLIC_API_URL}/mangas/mangas?limit=10&skip=0`
   );
   const mangas = await response.json();
 

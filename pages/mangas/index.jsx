@@ -192,7 +192,7 @@ Mangas.getInitialProps = async ({ query }) => {
   let { q } = query;
 
   const response = await fetch(
-    `${process.env.API_URL}/mangas?limit=10&skip=0&q=${q}`
+    `${process.env.NEXT_PUBLIC_API_URL}/mangas?limit=10&skip=0&q=${q}`
   );
   const data = await response.json();
 

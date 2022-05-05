@@ -113,7 +113,7 @@ const CrudEditorialEditar = ({ data }) => {
 CrudEditorialEditar.getInitialProps = async ({ query }) => {
   const { id } = query;
 
-  const response = await fetch(`${process.env.API_URL}/editoriales/${id}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/editoriales/${id}`);
   const data = await response.json();
 
   return { data };

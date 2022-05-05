@@ -26,7 +26,7 @@ const Novedades = ({ data }) => {
 };
 
 Novedades.getInitialProps = async () => {
-  const response = await fetch(`${process.env.API_URL}/mangas/novedades`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mangas/novedades`);
   const data = await response.json();
 
   return { data };
