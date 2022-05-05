@@ -15,10 +15,12 @@ import useFetch from "../../../hooks/useFetch";
 import { toast } from "react-toastify";
 import style from "../Listado.module.css";
 import Paginacion from "../../../components/Paginacion";
+import Loading from "../../../components/Loading";
 
 const CrudMangaListado = ({ mangas }) => {
   const { isOpen, openModal, closeModal } = useModal();
   const [manga, setMangas] = useState({});
+  const [isLoading, setLoading] = useState(false);
   const [dataPaginated, setDataPaginated] = useState(mangas.data);
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
@@ -36,12 +38,14 @@ const CrudMangaListado = ({ mangas }) => {
   const items = [{ href: "/crud", text: "Crud" }, { text: "Mangas" }];
 
   const fetchData = async () => {
+    setLoading(true)
     const response = await fetch(
       `/api/mangas/mangas?limit=${limit}&skip=${skip}&id=${filtros.id}` +
-        `&nombre=${filtros.nombre}&editorial=${filtros.editorial}` +
-        `&disponibilidad=${filtros.disponibilidad}&fecha=${filtros.fecha}`
+      `&nombre=${filtros.nombre}&editorial=${filtros.editorial}` +
+      `&disponibilidad=${filtros.disponibilidad}&fecha=${filtros.fecha}`
     );
     const data = await response.json();
+    setLoading(false)
     setDataPaginated(data.data);
   };
 
@@ -186,89 +190,92 @@ const CrudMangaListado = ({ mangas }) => {
         </div>
       </div>
 
-      <Paginacion
-        limit={limit}
-        skip={skip}
-        nextPage={nextPage}
-        prevPage={prevPage}
-        setLimit={setLimit}
-        dataPaginated={dataPaginated}
-      />
+      {isLoading ? <Loading />
+        : <>
+          <Paginacion
+            limit={limit}
+            skip={skip}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            setLimit={setLimit}
+            dataPaginated={dataPaginated}
+          />
 
-      <table className={style.listado__table}>
-        <thead>
-          <tr className={style.listado__table__row}>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Imagen</th>
-            <th>Editorial</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataPaginated.map((item, i) => (
-            <tr key={i} className={style.listado__table__row}>
-              <td>{item._id}</td>
+          <table className={style.listado__table}>
+            <thead>
+              <tr className={style.listado__table__row}>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Imagen</th>
+                <th>Editorial</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dataPaginated.map((item, i) => (
+                <tr key={i} className={style.listado__table__row}>
+                  <td>{item._id}</td>
 
-              <td>
-                {item.nombre} - {item.tomo < 10 ? "0" + item.tomo : item.tomo}
-              </td>
+                  <td>
+                    {item.nombre} - {item.tomo < 10 ? "0" + item.tomo : item.tomo}
+                  </td>
 
-              <td>
-                {item.imagen ? (
-                  <Image
-                    src={`/img/${item.imagen}`}
-                    alt={item.nombre}
-                    width={60}
-                    height={80}
-                  />
-                ) : null}
-              </td>
+                  <td>
+                    {item.imagen ? (
+                      <Image
+                        src={`/img/${item.imagen}`}
+                        alt={item.nombre}
+                        width={60}
+                        height={80}
+                      />
+                    ) : null}
+                  </td>
 
-              <td>{item.editorial}</td>
+                  <td>{item.editorial}</td>
 
-              <td>{parseFloat(item.precio).toFixed(2)} €</td>
+                  <td>{parseFloat(item.precio).toFixed(2)} €</td>
 
-              <td>{item.stock} uds.</td>
+                  <td>{item.stock} uds.</td>
 
-              <td className={style.listado__table__row__actions}>
-                <BotonLink
-                  url={`/crud/manga/editar/${item._id}`}
-                  icono="bi bi-pencil"
-                />
+                  <td className={style.listado__table__row__actions}>
+                    <BotonLink
+                      url={`/crud/manga/editar/${item._id}`}
+                      icono="bi bi-pencil"
+                    />
 
-                <BotonLink
-                  url={`/manga/${item.nombre.replace(/ /g, "_")}/${item.tomo}`}
-                  icono="bi bi-eye"
-                />
+                    <BotonLink
+                      url={`/manga/${item.nombre.replace(/ /g, "_")}/${item.tomo}`}
+                      icono="bi bi-eye"
+                    />
 
-                <Boton
-                  icono="bi bi-trash"
-                  click={() => {
-                    openModal();
-                    setMangas({
-                      nombre: item.nombre,
-                      _id: item._id,
-                      tomo: item.tomo,
-                    });
-                  }}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                    <Boton
+                      icono="bi bi-trash"
+                      click={() => {
+                        openModal();
+                        setMangas({
+                          nombre: item.nombre,
+                          _id: item._id,
+                          tomo: item.tomo,
+                        });
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-      <Paginacion
-        limit={limit}
-        skip={skip}
-        nextPage={nextPage}
-        prevPage={prevPage}
-        setLimit={setLimit}
-        dataPaginated={dataPaginated}
-      />
+          <Paginacion
+            limit={limit}
+            skip={skip}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            setLimit={setLimit}
+            dataPaginated={dataPaginated}
+          />
+        </>}
 
       {isOpen && (
         <ModalConfirmacion
@@ -283,7 +290,7 @@ const CrudMangaListado = ({ mangas }) => {
 
 CrudMangaListado.getInitialProps = async () => {
   const response = await fetch(
-    `http://localhost:3000/api/mangas/mangas?limit=10&skip=0`
+    `${process.env.API_URL}/mangas/mangas?limit=10&skip=0`
   );
   const mangas = await response.json();
 

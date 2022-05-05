@@ -105,7 +105,7 @@ const CrudEditorialListado = ({ data }) => {
 };
 
 CrudEditorialListado.getInitialProps = async () => {
-  const response = await fetch(`http://localhost:3000/api/editoriales`);
+  const response = await fetch(`${process.env.API_URL}/editoriales`);
   const data = await response.json();
 
   return { data };

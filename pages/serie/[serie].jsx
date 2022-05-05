@@ -27,7 +27,7 @@ export default function Serie({ data, serie }) {
 Serie.getInitialProps = async ({ query }) => {
   const serie = query.serie.replace(/_/g, " ")
 
-  const response = await fetch(`http://localhost:3000/api/mangas/serie/${serie}`)
+  const response = await fetch(`${process.env.API_URL}/mangas/serie/${serie}`)
   const data = await response.json()
 
   return { data, serie }

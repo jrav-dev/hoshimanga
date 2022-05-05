@@ -1,7 +1,8 @@
 module.exports = {
   reactStrictMode: true,
   env: {
-    MongoDB_URL: "mongodb+srv://joseramon:mhwLnsfNawOrZcjF@cluster0.zmjgo.mongodb.net/tienda_manga?retryWrites=true&w=majority",
+    NEXT_PUBLIC_MongoDB_URL: process.env.MongoDB_URL,
+    NEXT_PUBLIC_API_URL: process.env.API_URL_HOST,
   },
   images: {
     domains: ['i.imgur.com'],

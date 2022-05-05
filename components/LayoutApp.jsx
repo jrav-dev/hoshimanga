@@ -5,7 +5,6 @@ import Router from "next/router";
 import Layout from "./Layout";
 import Boton from "./Boton";
 import useUserValidation from "../hooks/useUserValidation";
-import Script from 'next/script'
 
 const LayoutApp = ({ children }) => {
   const { userOK, isLoading } = useUserValidation();
@@ -43,13 +42,10 @@ const LayoutApp = ({ children }) => {
         </Head>
 
         <div className="app">
-          <Script src="https://www.paypal.com/sdk/js?client-id=AUmF9Nq83tgEWiOAPVTKUA2b2qgzH0AgR_lQBK_-8YAT9_QOOAE6qfxEdMrHXxBCx5vXrdrH3CbNXSqH"></Script>
-
           {URL.includes("confirmacion")
             ? children
             : <Layout>{children}</Layout>
           }
-
         </div>
       </>
     );

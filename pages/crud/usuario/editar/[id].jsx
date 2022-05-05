@@ -186,7 +186,7 @@ const CrudUsuarioEditar = ({ data }) => {
 CrudUsuarioEditar.getInitialProps = async ({ query }) => {
   const { id } = query;
 
-  const response = await fetch(`http://localhost:3000/api/usuarios/${id}`);
+  const response = await fetch(`${process.env.API_URL}/usuarios/${id}`);
   const data = await response.json();
 
   return { data };
