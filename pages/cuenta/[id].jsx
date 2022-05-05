@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import style from "./Cuenta.module.css";
