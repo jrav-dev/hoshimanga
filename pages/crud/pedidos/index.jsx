@@ -7,10 +7,10 @@ import Paginacion from "../../../components/Paginacion";
 import Ruta from "../../../components/Ruta";
 import style from "../Listado.module.css";
 
-const CrudPedidosListado = ({ pedidos }) => {
-  const [dataPaginated, setDataPaginated] = useState(pedidos.data);
+const CrudPedidosListado = ({ data }) => {
+  const [dataPaginated, setDataPaginated] = useState(data);
   const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(20);
   const [filtros, setFiltros] = useState({
     id: "",
     num_pedido: "",
@@ -21,10 +21,10 @@ const CrudPedidosListado = ({ pedidos }) => {
   const fetchData = async () => {
     const response = await fetch(
       `/api/pedidos?limit=${limit}&skip=${skip}&id=${filtros.id}` +
-        `&num_pedido=${filtros.num_pedido}`
+      `&num_pedido=${filtros.num_pedido}`
     );
     const data = await response.json();
-    setDataPaginated(data.data);
+    setDataPaginated(data);
   };
 
   // Se ejecuta cuando cambia el skip
@@ -75,6 +75,11 @@ const CrudPedidosListado = ({ pedidos }) => {
     await fetchData();
   };
 
+  const formatDate = (date) => {
+    let fecha = new Date(date);
+    return `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+  }
+
   return (
     <>
       <Head>
@@ -97,7 +102,7 @@ const CrudPedidosListado = ({ pedidos }) => {
             value={filtros.num_pedido}
             onChange={leerDato}
           />
-          
+
           <FieldsetInput
             tipo="text"
             text="ID"
@@ -123,14 +128,25 @@ const CrudPedidosListado = ({ pedidos }) => {
         </div>
       </div>
 
+      <Paginacion
+        limit={limit}
+        skip={skip}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        setLimit={setLimit}
+        setSkip={setSkip}
+        dataPaginated={dataPaginated}
+        total={dataPaginated.length}
+      />
+
       <table className={style.listado__table}>
         <thead>
           <tr className={style.listado__table__row}>
             <th>ID</th>
+            <th>Usuario</th>
             <th>Nº Pedido</th>
             <th>Creado</th>
-            <th>Total Productos</th>
-            <th>Precio</th>
+            <th>Total</th>
           </tr>
         </thead>
         <tbody>
@@ -138,11 +154,11 @@ const CrudPedidosListado = ({ pedidos }) => {
             <tr key={i} className={style.listado__table__row}>
               <td>{item._id}</td>
 
+              <td>{item.usuario}</td>
+
               <td># {item.num_pedido}</td>
 
-              <td></td>
-
-              <td>{item.productos.length} productos</td>
+              <td>{formatDate(item.createdAt)}</td>
 
               <td>{parseFloat(item.precio).toFixed(2)} €</td>
             </tr>
@@ -156,7 +172,9 @@ const CrudPedidosListado = ({ pedidos }) => {
         nextPage={nextPage}
         prevPage={prevPage}
         setLimit={setLimit}
+        setSkip={setSkip}
         dataPaginated={dataPaginated}
+        total={dataPaginated.length}
       />
     </>
   );
@@ -164,11 +182,11 @@ const CrudPedidosListado = ({ pedidos }) => {
 
 CrudPedidosListado.getInitialProps = async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/pedidos?limit=10&skip=0`
+    `${process.env.NEXT_PUBLIC_API_URL}/pedidos?limit=20&skip=0`
   );
-  const pedidos = await response.json();
+  const data = await response.json();
 
-  return { pedidos };
+  return { data };
 };
 
 export default CrudPedidosListado;

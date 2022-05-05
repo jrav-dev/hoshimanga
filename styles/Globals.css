@@ -70,6 +70,7 @@ body {
 
 .app__main {
   min-height: 800px;
+  padding-top: 130px;
   padding-bottom: 2rem;
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Link from "next/link";
 import Router from "next/router";
@@ -17,11 +18,13 @@ const Card = ({ producto }) => {
 
   return (
     <div className={style.card}>
-      <Link href={TituloUrl}>
-        <a title={Titulo} className={style.card__imagen}>
-          {imagen ? <img src={`/img/${imagen}`} alt={producto.name} /> : null}
-        </a>
-      </Link>
+      <div className='flexible'>
+        <Link href={TituloUrl}>
+          <a title={Titulo} className={style.card__imagen}>
+            {imagen ? <img src={`/img/${imagen}`} alt={producto.name} /> : null}
+          </a>
+        </Link>
+      </div>
 
       <div>
         <Link href={TituloUrl}>

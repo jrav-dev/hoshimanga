@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -38,8 +39,8 @@ export default function Manga({ manga }) {
       <Ruta items={items} />
 
       <section className={style.producto}>
-        <div className='flexible'>
-          <Image src={`/img/${manga.imagen}`} alt={nombre} width={300} height={400} />
+        <div className={`flexible ${style.producto__imagen}`}>
+          <img src={`/img/${manga.imagen}`} alt={manga.nombre} />
         </div>
 
         <article>

@@ -17,11 +17,11 @@ import style from "../Listado.module.css";
 import Paginacion from "../../../components/Paginacion";
 import Loading from "../../../components/Loading";
 
-const CrudMangaListado = ({ mangas }) => {
+const CrudMangaListado = ({ data }) => {
   const { isOpen, openModal, closeModal } = useModal();
   const [manga, setMangas] = useState({});
   const [isLoading, setLoading] = useState(false);
-  const [dataPaginated, setDataPaginated] = useState(mangas.data);
+  const [dataPaginated, setDataPaginated] = useState(data);
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
   const [filtros, setFiltros] = useState({
@@ -31,7 +31,6 @@ const CrudMangaListado = ({ mangas }) => {
     fecha: "",
     disponibilidad: "",
   });
-  const TOTAL = mangas.total;
 
   const editoriales = useFetch("/api/editoriales");
 
@@ -46,7 +45,7 @@ const CrudMangaListado = ({ mangas }) => {
     );
     const data = await response.json();
     setLoading(false)
-    setDataPaginated(data.data);
+    setDataPaginated(data);
   };
 
   const borrarMangas = async () => {
@@ -198,7 +197,9 @@ const CrudMangaListado = ({ mangas }) => {
             nextPage={nextPage}
             prevPage={prevPage}
             setLimit={setLimit}
+            setSkip={setSkip}
             dataPaginated={dataPaginated}
+            total={dataPaginated.length}
           />
 
           <table className={style.listado__table}>
@@ -273,7 +274,9 @@ const CrudMangaListado = ({ mangas }) => {
             nextPage={nextPage}
             prevPage={prevPage}
             setLimit={setLimit}
+            setSkip={setSkip}
             dataPaginated={dataPaginated}
+            total={dataPaginated.length}
           />
         </>}
 
@@ -292,9 +295,9 @@ CrudMangaListado.getInitialProps = async () => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/mangas/mangas?limit=10&skip=0`
   );
-  const mangas = await response.json();
+  const data = await response.json();
 
-  return { mangas };
+  return { data };
 };
 
 export default CrudMangaListado;

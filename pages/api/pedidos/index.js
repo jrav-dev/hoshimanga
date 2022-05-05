@@ -25,13 +25,11 @@ export default async function handler(req, res) {
     }
   }
 
-  const total = await Cart.find().lean().count();
-
   let data = await Cart.find(filtrosKeys).lean();
 
   if (data.length > limit) {
     data = data.slice(skip, skip + limit);
   }
 
-  res.status(200).json({ data, total });
+  res.status(200).json(data);
 }

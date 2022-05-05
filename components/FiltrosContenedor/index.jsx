@@ -6,7 +6,7 @@ import style from './Filtros.module.css'
 export default function FiltrosContenedor({ item, clickCheck, checked }) {
   return (
     <div className={style.filtros} onClick={clickCheck}>
-      <span onClick={clickCheck}
+      <span
         className={`${style.checkbox} ${checked ? style.active : ''}`}>
         <Icono icono='bi bi-check' />
       </span>

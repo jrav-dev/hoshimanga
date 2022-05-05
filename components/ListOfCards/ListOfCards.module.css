@@ -7,7 +7,7 @@
 
 @media screen and (min-width: 1000px) {
   .cards {
-    grid-template-columns: repeat(5, 220px);
+    grid-template-columns: repeat(4, 220px);
   }
 }
 

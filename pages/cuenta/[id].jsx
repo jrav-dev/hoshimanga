@@ -54,6 +54,11 @@ const Cuenta = ({ data }) => {
     }
   };
 
+  const formatDate = (date) => {
+    let fecha = new Date(date);
+    return `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+  }
+
   return (
     <>
       <Head>
@@ -104,9 +109,8 @@ const Cuenta = ({ data }) => {
                 className={`${style.app__cart__product} app__table__product app__table__header`}
               >
                 <b>Nº Pedido</b>
-                <b>Creado</b>
-                <b>Total Productos</b>
-                <b>Precio</b>
+                <b>Fecha</b>
+                <b>Total</b>
                 <b></b>
               </div>
 
@@ -117,9 +121,7 @@ const Cuenta = ({ data }) => {
                 >
                   <p># {item.num_pedido}</p>
 
-                  <p></p>
-
-                  <p>{item.productos.length} productos</p>
+                  <p>{formatDate(item.createdAt)}</p>
 
                   <p>{parseFloat(item.precio).toFixed(2)} €</p>
 
@@ -135,6 +137,7 @@ const Cuenta = ({ data }) => {
                 nextPage={nextPage}
                 prevPage={prevPage}
                 setLimit={setLimit}
+                setSkip={setSkip}
                 dataPaginated={dataPaginated}
               />
             </>

@@ -4,15 +4,16 @@ import Manga from "../../../models/Manga";
 dbConnect();
 
 export default async function handler(req, res) {
-  const { skip, limit, id, nombre, editorial, disponibilidad, fecha } =
-    req.query;
+  const params = req.query;
+  const limit = parseInt(params.limit)
+  const skip = parseInt(params.skip)
 
   const filtros = {
-    _id: id,
-    nombre: nombre,
-    editorial: editorial,
-    fecha_publicacion: fecha,
-    stock: disponibilidad,
+    _id: params.id ? params.id : '',
+    nombre: params.nombre ? params.nombre : "",
+    editorial: params.editorial ? params.editorial : "",
+    fecha_publicacion: params.fecha ? params.fecha : "",
+    stock: params.disponibilidad ? params.disponibilidad : "",
   };
 
   const filtrosKeys = {};
@@ -35,13 +36,11 @@ export default async function handler(req, res) {
     }
   }
 
-  const total = await Manga.find().lean().count();
+  let mangas = await Manga.find(filtrosKeys).lean()
 
-  let data = await Manga.find(filtrosKeys).lean()
-
-  if (data.length > limit) {
-    data = data.slice(skip, skip + limit);
+  if (mangas.length > limit) {
+    mangas = mangas.slice(parseInt(skip), parseInt(skip) + parseInt(limit));
   }
 
-  res.status(200).json({ data, total });
+  res.status(200).json(mangas);
 }

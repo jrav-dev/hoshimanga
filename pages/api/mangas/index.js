@@ -6,28 +6,26 @@ dbConnect();
 
 export default async function handler(req, res) {
   const params = req.query;
+  const limit = parseInt(params.limit)
+  const skip = parseInt(params.skip)
   let mangas = []
 
-  const total = await Manga.find().lean().count();
-
   const filtros = {
-    nombre: params.nombre,
-    editorial: params.editorial,
-    stock: params.disponibilidad
+    nombre: params.nombre ? params.nombre : '',
+    editorial: params.editorial ? params.editorial : '',
+    stock: params.disponibilidad ? params.disponibilidad : '',
   };
 
   const filtrosKeys = {};
 
   for (const key in filtros) {
-    if (filtros[key] !== "" && filtros[key] !== undefined) {
+    if (filtros[key] !== "") {
       if (key === "stock") {
         if (filtros[key] === "En Stock") {
           filtrosKeys[key] = { $gte: 1 };
         } else {
           filtrosKeys[key] = 0;
         }
-      } else if (key === "nombre") {
-        filtrosKeys[key] = new RegExp(filtros[key], "i");
       } else {
         filtrosKeys[key] = filtros[key];
       }
@@ -36,7 +34,7 @@ export default async function handler(req, res) {
 
   mangas = await Manga.find(filtrosKeys).lean();
 
-  if (params.q !== "undefined") mangas = mangas.filter(manga => manga.nombre.toLowerCase().includes(req.query.q.toLowerCase()))
+  if (params.q && params.q !== "undefined") mangas = mangas.filter(manga => manga.nombre.toLowerCase().includes(req.query.q.toLowerCase()))
 
   const series = [];
   const Editoriales = await Editorial.find().lean();
@@ -64,9 +62,9 @@ export default async function handler(req, res) {
     { titulo: "Disponibilidad", array: disponibilidad },
   ];
 
-  if (mangas.length > params.limit) {
-    mangas = mangas.slice(params.skip, params.skip + params.limit);
+  if (mangas.length > limit) {
+    mangas = mangas.slice(skip, skip + limit);
   }
 
-  res.status(200).json({ mangas, filtrosMenu, total });
+  res.status(200).json({ mangas, filtrosMenu });
 }

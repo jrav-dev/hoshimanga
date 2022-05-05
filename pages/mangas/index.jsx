@@ -10,20 +10,20 @@ import ListOfCards from "../../components/ListOfCards";
 import ListOfFilters from "../../components/ListOfFilters";
 import Paginacion from "../../components/Paginacion";
 import Icono from "../../components/Icono";
+import Boton from "../../components/Boton";
 
 export default function Mangas({ data, keyword }) {
+  const [showFiltros, setShowFiltros] = useState(false);
   const [filtrosMenu, setFiltrosMenu] = useState(data.filtrosMenu);
-  const [isLoading, setLoading] = useState(false);
   const [dataPaginated, setDataPaginated] = useState(data.mangas);
+  const [isLoading, setLoading] = useState(false);
   const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(20);
   const [filtros, setFiltros] = useState({
     nombre: "",
     editorial: "",
     disponibilidad: "",
   });
-
-  const TOTAL = data.total;
 
   const items = [{ text: "Mangas" }];
 
@@ -35,8 +35,8 @@ export default function Mangas({ data, keyword }) {
       `&disponibilidad=${filtros.disponibilidad}`
     );
     const data = await response.json();
-    setLoading(false)
     setDataPaginated(data.mangas);
+    setLoading(false)
   };
 
   // Se ejecuta cuando cambia el skip
@@ -94,7 +94,6 @@ export default function Mangas({ data, keyword }) {
           await fetchData({ ...filtros, disponibilidad: copy[index].array[i].nombre });
           break;
       }
-
     } else {
       copy = [...filtrosMenu];
       copy[index].array[i].checked = false;
@@ -137,8 +136,13 @@ export default function Mangas({ data, keyword }) {
 
       <Ruta items={items} />
 
+      <div className={style.app__mangas__btn__filtrar}>
+        <Boton icono='bi bi-filter' texto='Filtrar'
+          click={() => setShowFiltros(!showFiltros)} />
+      </div>
+
       <div className={style.app__mangas__grid}>
-        <div className={style.app__mangas__filtros}>
+        <div className={`${style.app__mangas__filtros} ${showFiltros ? style.app__mangas__filtros__show : style.app__mangas__filtros__hide}`}>
           <div>
             {keyword && <>
               <h4>Búsqueda</h4>
@@ -158,7 +162,7 @@ export default function Mangas({ data, keyword }) {
               array={item.array}
               titulo={item.titulo}
               clickCheck={handleClickFilter}
-              clase={item.array.length > 6 ? "scroll" : ""}
+              clase={item.array.length > 12 ? "scroll" : ""}
               index={i}
             />
           ))}
@@ -168,19 +172,37 @@ export default function Mangas({ data, keyword }) {
           {isLoading
             ? <Loading />
             : <>
-              {dataPaginated.length > 0 
-                ? <ListOfCards array={dataPaginated} /> 
+              {dataPaginated.length > 0
+                ? <>
+                  <Paginacion
+                    limit={limit}
+                    skip={skip}
+                    nextPage={nextPage}
+                    prevPage={prevPage}
+                    setLimit={setLimit}
+                    setSkip={setSkip}
+                    dataPaginated={dataPaginated}
+                    total={dataPaginated.length}
+                  />
+
+                  <div className={style.app__products}>
+                    <ListOfCards array={dataPaginated} />
+                  </div>
+
+                  <Paginacion
+                    limit={limit}
+                    skip={skip}
+                    nextPage={nextPage}
+                    prevPage={prevPage}
+                    setLimit={setLimit}
+                    setSkip={setSkip}
+                    dataPaginated={dataPaginated}
+                    total={dataPaginated.length}
+                  />
+                </>
                 : <h2 className="flexible">No hay mangas con los filtros seleccionados</h2>
               }
 
-              <Paginacion
-                limit={limit}
-                skip={skip}
-                nextPage={nextPage}
-                prevPage={prevPage}
-                setLimit={setLimit}
-                dataPaginated={dataPaginated}
-              />
             </>}
         </div>
       </div>
@@ -192,7 +214,7 @@ Mangas.getInitialProps = async ({ query }) => {
   let { q } = query;
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/mangas?limit=10&skip=0&q=${q}`
+    `${process.env.NEXT_PUBLIC_API_URL}/mangas?limit=20&skip=0&q=${q}`
   );
   const data = await response.json();
 

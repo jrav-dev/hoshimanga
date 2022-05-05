@@ -1,10 +1,12 @@
 import React from "react";
 import Boton from "./Boton";
 
-const Paginacion = ({ prevPage, nextPage, skip, limit, dataPaginated, setLimit }) => {
+const Paginacion = ({ prevPage, nextPage, skip, limit, dataPaginated, setLimit, setSkip, total }) => {
   return (
     <div className="app__paginacion">
-      <div></div>
+      <div>
+        {total && <p><b>{total}</b> - <b>{limit}</b> productos</p>}
+      </div>
 
       <div className="app__paginacion__botones">
         <Boton
@@ -27,7 +29,10 @@ const Paginacion = ({ prevPage, nextPage, skip, limit, dataPaginated, setLimit }
           className="app__paginacion__select"
           name="limit"
           value={limit}
-          onChange={(e) => setLimit(e.target.value)}
+          onChange={(e) => {
+            setLimit(parseInt(e.target.value))
+            setSkip(0)
+          }}
         >
           <option value="10">10</option>
           <option value="20">20</option>

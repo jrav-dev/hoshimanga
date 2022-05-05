@@ -15,6 +15,12 @@
   align-items: flex-start;
 }
 
+/* IMAGEN */
+
+.producto__imagen > * {
+  height: 400px;
+}
+
 /* TITULO PRODUCTO */
 
 .producto > article h2 {

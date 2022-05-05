@@ -7,8 +7,7 @@ import Loading from '../components/Loading'
 import useFetch from '../hooks/useFetch'
 import style from '../styles/Index.module.css'
 
-const Home = () => {
-  const { data } = useFetch('/api/mangas/novedades')
+const Home = ({ data }) => {
 
   return (
     <>
@@ -17,16 +16,23 @@ const Home = () => {
       </Head>
 
       <div className={style.titulo}>
-        <h2>Novedades Manga</h2>
+        <h2>Últimas Novedades Manga</h2>
 
         <Link href="/novedades">
           <a>Ver más <Icono icono='bi bi-link' /></a>
         </Link>
       </div>
 
-      {data ? <ListOfCards array={data.slice(0, 12)} /> : <div className="flexible"><Loading /></div>}
+      <ListOfCards array={data} />
     </>
   )
 }
+
+Home.getInitialProps = async () => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mangas/novedades?limit=12&skip=0`);
+  const data = await response.json();
+
+  return { data };
+};
 
 export default Home

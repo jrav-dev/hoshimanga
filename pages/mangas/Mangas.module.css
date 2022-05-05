@@ -1,12 +1,39 @@
 .app__mangas__grid {
   display: grid;
-  grid-template-columns: 250px auto;
+  grid-template-columns: auto;
   gap: 2rem;
 }
 
-.app__mangas__filtros,
-.app__mangas__grid > div:last-child {
-  padding: 1rem 0;
+.app__mangas__btn__filtrar {
+  margin: 1rem 0;
+}
+
+.app__mangas__filtros__show {
+  width: 230px;
+  padding: 0.5rem;
+
+  background-color: var(--azul-oscuro);
+  border-width: 0 0 0 2px;
+  border-style: solid;
+  border-color: var(--azul-oscuro-claro);
+
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 250;
+
+  overflow-x: auto;
+}
+
+.app__mangas__filtros__show > div > div {
+  height: auto;
+  overflow: visible;
+}
+
+.app__mangas__filtros__hide {
+  display: none;
 }
 
 .tag__filtro {
@@ -22,6 +49,31 @@
 
 /* --- */
 
-.app__mangas__grid > div:last-child > div:first-child {
-  grid-template-columns: repeat(5, 1fr);
+.app__products > div {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+@media screen and (min-width: 1000px) {
+  .app__mangas__grid {
+    grid-template-columns: 250px auto;
+  }
+
+  .app__mangas__filtros__hide {
+    display: block;
+  }
+
+  .app__mangas__btn__filtrar {
+    display: none;
+  }
+
+  .app__mangas__filtros,
+  .app__mangas__grid > div:last-child {
+    padding: 1rem 0;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .app__products > div {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
