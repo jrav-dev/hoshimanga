@@ -147,7 +147,7 @@ const Cuenta = ({ data }) => {
 Cuenta.getInitialProps = async ({ query }) => {
   const { id } = query;
 
-  const response = await fetch(`http://localhost:3001/api/usuarios/${id}`);
+  const response = await fetch(`http://localhost:3000/api/usuarios/${id}`);
   const data = await response.json();
 
   return { data };

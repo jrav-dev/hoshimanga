@@ -163,7 +163,7 @@ const CrudPedidosListado = ({ pedidos }) => {
 
 CrudPedidosListado.getInitialProps = async () => {
   const response = await fetch(
-    `http://localhost:3001/api/pedidos?limit=10&skip=0`
+    `http://localhost:3000/api/pedidos?limit=10&skip=0`
   );
   const pedidos = await response.json();
 

@@ -27,7 +27,7 @@ export default function Autor({ data, autor }) {
 Autor.getInitialProps = async ({ query }) => {
   const autor = query.autor.replace(/_/g, " ")
 
-  const response = await fetch(`http://localhost:3001/api/mangas/autor/${autor}`)
+  const response = await fetch(`http://localhost:3000/api/mangas/autor/${autor}`)
   const data = await response.json()
 
   return { data, autor }
