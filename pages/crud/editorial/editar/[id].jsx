@@ -62,9 +62,6 @@ const CrudEditorialEditar = ({ data }) => {
             tipo="text"
             name="nombre"
             text="Nombre *"
-            className={`formulario__fieldset ${
-              errors && errors.nombre ? style.error : ""
-            }`}
             value={params.nombre}
             onChange={readParam}
             error={errors && errors.nombre}

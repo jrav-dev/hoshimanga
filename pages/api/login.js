@@ -6,13 +6,15 @@ connectDB();
 
 export default async function handler(req, res) {
 
+  console.log(req.body)
+
   const usuario = await Usuario.findOne({ email: req.body.email }).lean();
 
-  // console.log(usuario.password)
-  // console.log(req.body.password)
-  
-  const password = await bcryptjs.compare(req.body.password, usuario.password)
-  // console.log(password)
+  if (usuario) {
+    var password = await bcryptjs.compare(req.body.password, usuario.password)
+    res.status(200).json({ ok: true, usuario });
+  } else {
+    res.status(200).json({ ok: false });
+  }
 
-  res.status(200).json({ ok: true, usuario });
 }

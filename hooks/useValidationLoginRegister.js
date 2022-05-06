@@ -1,82 +1,92 @@
-import { useState } from "react"
-import useFetch from "./useFetch"
+import { useState } from "react";
 
-export default function useValidationLoginRegister({ email, password, nombre, apellidos }) {
-  const [errors, setErrors] = useState(null)
+export default function useValidationLoginRegister(params) {
+  const [errors, setErrors] = useState(null);
 
-  let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/
-  let regexPassword = /[a-zA-Z0-9]{6,}$/
-  let regexNombre = /[a-zA-Z]{3,20}$/
-  let regexApellidos = /[a-zA-Z]{3,50}$/
+  let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+  let regexPassword = /[a-zA-Z0-9]{6,}$/;
+  let regexString = /[a-zA-Z]{3,40}$/;
+
+  let msgErrors = {
+    string: "Debe tener entre 3 y 40 carácteres.",
+    password: "Debe tener más de 6 carácteres.",
+    email: "El correo electrónico no es válido.",
+  };
 
   const validarLogin = () => {
-    let errors = []
+    let error = {};
 
-    if (email === "") {
-      errors.push("El campo 'correo electrónico' está vacio.")
-    } else if (!regexEmail.test(email)) {
-      errors.push("El 'correo electrónico' no es válido.")
+    for (const key in params) {
+      let name =
+        key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
+
+      if (params[key] === "") {
+        error[key] = `El campo '${name}' está vacio.`;
+      } else {
+        if (regexEmail.test(params.email) === false) {
+          error.email = msgErrors.email;
+        }
+
+        if (regexPassword.test(params.password) === false) {
+          error.password = msgErrors.password;
+        }
+      }
     }
 
-    if (password === "") {
-      errors.push("El campo 'contraseña' está vacio.")
-    } else if (!regexPassword.test(password)) {
-      errors.push("La 'contraseña' no es válida. Debe tener más de 6 carácteres.")
+    if (regexEmail.test(params.email) && regexPassword.test(params.password)) {
+      setErrors(null);
+      return true;
+    } else {
+      setErrors(error);
+      return false;
     }
-
-    if (regexEmail.test(email) && regexPassword.test(password)) {
-      setErrors(null)
-
-      return true
-    }
-
-    setErrors(errors)
-  }
+  };
 
   const validarRegistro = () => {
-    let errors = []
+    setErrors(null);
+    let error = {};
 
-    if (nombre === "") {
-      errors.push("El campo 'nombre' está vacio.")
-    } else if (!regexNombre.test(nombre)) {
-      errors.push("El 'nombre' debe tener entre 3 y 20 carácteres.")
+    for (const key in params) {
+      let name =
+        key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
+
+      if (params[key] === "") {
+        error[key] = `El campo '${name}' está vacio.`;
+      } else {
+        if (
+          regexString.test(params.nombre) === false ||
+          regexString.test(params.apellidos) === false
+        ) {
+          error.string = msgErrors.string;
+        }
+        if (regexEmail.test(params.email) === false) {
+          error.email = msgErrors.email;
+        }
+        if (regexPassword.test(params.password) === false) {
+          error.password = msgErrors.password;
+        }
+      }
     }
 
-    if (apellidos === "") {
-      errors.push("El campo 'apellidos' está vacio.")
-    } else if (!regexApellidos.test(apellidos)) {
-      errors.push("El 'apellidos' debe tener entre 3 y 50 carácteres.")
+    if (
+      regexString.test(params.nombre) &&
+      regexString.test(params.apellidos) &&
+      regexEmail.test(params.email) &&
+      regexPassword.test(params.password)
+    ) {
+      setErrors(null);
+      return true;
+    } else {
+      setErrors(error);
+      return false;
     }
-
-    if (email === "") {
-      errors.push("El campo 'correo electrónico' está vacio.")
-    } else if (!regexEmail.test(email)) {
-      errors.push("El 'correo electrónico' no es válido.")
-    }
-
-    if (password === "") {
-      errors.push("El campo 'contraseña' está vacio.")
-    } else if (!regexPassword.test(password)) {
-      errors.push("La 'contraseña' no es válida. Debe tener más de 6 carácteres.")
-    }
-
-    if (regexNombre.test(nombre) &&
-      regexApellidos.test(apellidos) &&
-      regexEmail.test(email) &&
-      regexPassword.test(password)) {
-      setErrors(null)
-
-      return true
-    }
-
-    setErrors(errors)
-  }
+  };
 
   const emailExists = async (email) => {
     const response = await fetch(`/api/usuarios/emailExist/${email}`);
     const data = await response.json();
     return data ? true : false;
-  }
+  };
 
-  return { errors, setErrors, validarLogin, validarRegistro, emailExists }
+  return { errors, setErrors, validarLogin, validarRegistro, emailExists };
 }

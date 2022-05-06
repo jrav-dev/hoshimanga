@@ -77,9 +77,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="text"
             name="nombre"
             text="Nombre *"
-            className={`formulario__fieldset ${
-              errors && errors.nombre ? style.error : ""
-            }`}
             value={params.nombre}
             onChange={readParam}
             error={errors && errors.nombre}
@@ -88,9 +85,6 @@ const CrudMangaEditar = ({ data }) => {
           <FieldsetSelectArray
             name="editorial"
             text="Editorial *"
-            className={`formulario__fieldset ${
-              errors && errors.editorial ? style.error : ""
-            }`}
             array={editoriales.data}
             value={params.editorial}
             onChange={readParam}
@@ -101,9 +95,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="text"
             name="autor"
             text="Autor * (Si hay más de uno, separado por comas)"
-            className={`formulario__fieldset ${
-              errors && errors.autor ? style.error : ""
-            }`}
             value={params.autor}
             onChange={readParam}
             error={errors && errors.autor}
@@ -113,9 +104,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="date"
             name="fecha_publicacion"
             text="Fecha Publicación *"
-            className={`formulario__fieldset ${
-              errors && errors.fecha_publicacion ? style.error : ""
-            }`}
             value={params.fecha_publicacion}
             onChange={readParam}
             error={errors && errors.fecha_publicacion}
@@ -125,9 +113,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="number"
             name="tomo"
             text="Tomo *"
-            className={`formulario__fieldset ${
-              errors && errors.tomo ? style.error : ""
-            }`}
             value={params.tomo}
             onChange={readParam}
             error={errors && errors.tomo}
@@ -138,9 +123,6 @@ const CrudMangaEditar = ({ data }) => {
             name="precio"
             text="Precio *"
             step="0.01"
-            className={`formulario__fieldset ${
-              errors && errors.precio ? style.error : ""
-            }`}
             value={params.precio}
             onChange={readParam}
             error={errors && errors.precio}
@@ -151,9 +133,6 @@ const CrudMangaEditar = ({ data }) => {
           <FieldsetTextarea
             name="descripcion"
             text="Descripcion *"
-            className={`formulario__fieldset ${
-              errors && errors.descripcion ? style.error : ""
-            }`}
             value={params.descripcion}
             onChange={readParam}
             error={errors && errors.descripcion}
@@ -202,9 +181,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="number"
             name="stock"
             text="Unidades *"
-            className={`formulario__fieldset ${
-              errors && errors.stock ? style.error : ""
-            }`}
             value={params.stock}
             onChange={readParam}
             error={errors && errors.stock}
@@ -214,9 +190,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="text"
             name="isbn"
             text="ISBN *"
-            className={`formulario__fieldset ${
-              errors && errors.isbn ? style.error : ""
-            }`}
             value={params.isbn}
             onChange={readParam}
             error={errors && errors.isbn}
@@ -226,9 +199,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="number"
             name="num_paginas"
             text="Número de Páginas *"
-            className={`formulario__fieldset ${
-              errors && errors.num_paginas ? style.error : ""
-            }`}
             value={params.num_paginas}
             onChange={readParam}
             error={errors && errors.num_paginas}
@@ -238,9 +208,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="text"
             name="formato"
             text="Formato *"
-            className={`formulario__fieldset ${
-              errors && errors.formato ? style.error : ""
-            }`}
             value={params.formato}
             onChange={readParam}
             error={errors && errors.formato}
@@ -250,9 +217,6 @@ const CrudMangaEditar = ({ data }) => {
             tipo="text"
             name="tamaño"
             text="Tamaño *"
-            className={`formulario__fieldset ${
-              errors && errors.tamaño ? style.error : ""
-            }`}
             value={params.tamaño}
             onChange={readParam}
             error={errors && errors.tamaño}
@@ -266,7 +230,9 @@ const CrudMangaEditar = ({ data }) => {
 CrudMangaEditar.getInitialProps = async ({ query }) => {
   const { id } = query;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mangas/${id}`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/mangas/${id}`
+  );
   const data = await response.json();
 
   return { data };

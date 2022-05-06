@@ -19,7 +19,7 @@ export default function Editoriales() {
 
       <section className={style.editoriales}>
         {data && data.map((item, i) => (
-          <Link href={`/editorial/${item.nombre.split(" ").join("-")}`} key={i}>
+          <Link href={`/editorial/${item.nombre.split(" ").join("_")}`} key={i}>
             <a className="contenedor" title={item.nombre}>
               <Image src={`/img/editoriales/${item.imagen}`} alt={item.nombre} width={150} height={150} />
               <p>{item.nombre}</p>

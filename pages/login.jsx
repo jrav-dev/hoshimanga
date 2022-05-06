@@ -7,27 +7,33 @@ import BotonLink from "../components/BotonLink";
 import Modal from "../components/Modal";
 import useModal from "../hooks/useModal";
 import useValidationLoginRegister from "../hooks/useValidationLoginRegister";
+import { toast } from "react-toastify";
 
 import style from "../styles/Login-Register.module.css";
+import { FieldsetInput } from "../components/Fieldset";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const { validarLogin, errors, setErrors } = useValidationLoginRegister({
-    email,
-    password,
+  const [params, setParams] = useState({
+    email: "",
+    password: "",
   });
+  const [newPassword, setNewPassword] = useState("");
+  const { validarLogin, errors, setErrors } =
+    useValidationLoginRegister(params);
   const { isOpen, openModal, closeModal } = useModal();
 
   const handleClickResetPassword = () => {
     openModal();
   };
 
+  const leerDato = (e) => {
+    const { name, value } = e.target;
+    setParams({ ...params, [name]: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validamos el login
     let validacionOK = validarLogin();
 
     if (validacionOK) {
@@ -36,10 +42,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify(params),
       });
 
       const data = await response.json();
@@ -57,7 +60,7 @@ const Login = () => {
         );
         window.location.href = "/";
       } else {
-        setErrors(["Ese correo electrónico no existe."]);
+        toast.error("El correo electrónico introducido no existe");
       }
     }
   };
@@ -71,24 +74,23 @@ const Login = () => {
         <h2>Inicio de Sesión</h2>
 
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Correo Electrónico</label>
-            <input
-              type="text"
-              autoComplete="off"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+          <FieldsetInput
+            tipo="text"
+            text="Correo Electrónico"
+            name="email"
+            value={params.email}
+            onChange={leerDato}
+            error={errors && errors.email}
+          />
 
           <div>
-            <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
+            <FieldsetInput
+              tipo="text"
+              text="Contraseña"
               name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={params.password}
+              onChange={leerDato}
+              error={errors && errors.password}
             />
 
             <span onClick={handleClickResetPassword}>
@@ -108,40 +110,28 @@ const Login = () => {
           <h2>Recuperar Contraseña</h2>
 
           <div className={style.form_container}>
-            <div>
-              <label htmlFor="email">Correo Electrónico</label>
-              <input
-                type="text"
-                autoComplete="off"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
+            <FieldsetInput
+              tipo="text"
+              text="Correo Electrónico"
+              name="email"
+              value={params.email}
+              onChange={leerDato}
+              error={errors && errors.email}
+            />
 
-            <div>
-              <label htmlFor="newPassword">Nueva Contraseña</label>
-              <input
-                type="password"
-                name="newPassword"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-            </div>
+            <FieldsetInput
+              tipo="text"
+              text="Contraseña Nueva"
+              name="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
           </div>
 
           <div className={style.botones}>
             <Boton texto="Cambiar" />
           </div>
         </Modal>
-      )}
-
-      {errors && (
-        <div className={`msg error ${style.errors}`}>
-          {errors.map((error, index) => (
-            <p key={index}>{error}</p>
-          ))}
-        </div>
       )}
     </>
   );

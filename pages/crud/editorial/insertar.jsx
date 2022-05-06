@@ -61,9 +61,6 @@ const CrudEditorialInsertar = () => {
             tipo="text"
             name="nombre"
             text="Nombre *"
-            className={`formulario__fieldset ${
-              errors && errors.nombre ? style.error : ""
-            }`}
             value={params.nombre}
             onChange={readParam}
             error={errors && errors.nombre}
@@ -90,7 +87,7 @@ const CrudEditorialInsertar = () => {
                   Subir Imagen
                 </span>
               </div>
-              
+
               {params.imagen && (
                 <div className={style.imagen}>
                   <img src={createObjectURL} alt="" />
