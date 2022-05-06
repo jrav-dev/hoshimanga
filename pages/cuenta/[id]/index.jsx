@@ -3,16 +3,15 @@ import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import style from "./Cuenta.module.css";
 import Link from "next/link";
-import BotonLink from "../../components/BotonLink";
-import useFetch from "../../hooks/useFetch";
-import Loading from "../../components/Loading";
-import Paginacion from "../../components/Paginacion";
+import BotonLink from "../../../components/BotonLink";
+import Loading from "../../../components/Loading";
+import Paginacion from "../../../components/Paginacion";
 
 const Cuenta = ({ data }) => {
   const [dataPaginated, setDataPaginated] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
 
   const fetchData = async () => {
     setLoading(true);

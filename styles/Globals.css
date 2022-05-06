@@ -140,7 +140,7 @@ h2 {
 }
 
 .app__confirmacion {
-  height: 100vh;
+  width: 700px;
   flex-direction: column;
 }
 

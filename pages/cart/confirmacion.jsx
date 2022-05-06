@@ -1,26 +1,31 @@
-import React, { useEffect } from 'react'
-import BotonLink from '../../components/BotonLink'
-import Icono from '../../components/Icono'
+import React, { useEffect } from "react";
+import BotonLink from "../../components/BotonLink";
+import Icono from "../../components/Icono";
+import Modal from '../../components/Modal'
 
-const Confirmacion = () => {
+const Confirmacion = ({ num_pedido, id }) => {
   return (
-    <div className='flexible app__confirmacion'>
-      <Icono icono='bi bi-check' />
+    <Modal >
+      <div className="flexible app__confirmacion">
+        <Icono icono="bi bi-check" />
 
-      {/* {ref && <h2>Nº Pedido: {ref}</h2>} */}
+        {num_pedido && <h2>Nº Pedido: {num_pedido}</h2>}
 
-      <h1>¡Gracias por tu compra!</h1>
+        <h1>¡Gracias por tu compra!</h1>
 
-      <p>
-        Tu compra ha sido realizada con éxito.
-      </p>
+        <p>Tu compra ha sido realizada con éxito.</p>
 
-      <div className='flexible'>
-        <BotonLink url={`/cart`} texto='Ver Pedido' icono='bi bi-box-arrow-up-right' />
-        <BotonLink url={`/`} texto='Inicio' icono='bi bi-house' />
+        <div className="flexible">
+          <BotonLink
+            url={`/pedido/${id}`}
+            texto="Ver Pedido"
+            icono="bi bi-box-arrow-up-right"
+          />
+          <BotonLink url={`/`} texto="Inicio" icono="bi bi-house" />
+        </div>
       </div>
-    </div>
-  )
-}
+    </Modal>
+  );
+};
 
-export default Confirmacion
+export default Confirmacion;

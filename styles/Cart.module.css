@@ -1,6 +1,6 @@
 .app__cart__grid {
   display: grid;
-  grid-template-columns: auto 400px;
+  grid-template-columns: auto;
   gap: 2rem;
 }
 
@@ -86,4 +86,10 @@
 .app__cart__methods__pay > div {
   display: flex;
   justify-content: center;
+}
+
+@media screen and (min-width: 1200px) {
+  .app__cart__grid {
+    grid-template-columns: auto 400px;
+  }
 }

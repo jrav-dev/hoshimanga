@@ -62,7 +62,7 @@ const Cuenta = ({ data }) => {
           <p></p>
           <p></p>
           <b>{parseFloat(data.precio).toFixed(2)} €</b>
-          <p>{data.cantidad} productos</p>
+          <p>{data.cantidad} producto/s</p>
         </div>
       </div>
     </>

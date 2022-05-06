@@ -5,22 +5,36 @@
 }
 
 .app__paginacion {
-    margin: 1rem 0;
-    justify-content: space-between;
+  margin: 1rem 0;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.app__paginacion__botones {
+  margin: 1rem 0;
 }
 
 .app__paginacion__botones > * {
-    margin: 0 0.5rem;
+  margin: 0 0.5rem;
 }
 
 .app__paginacion__disabled,
 .app__paginacion__disabled:hover {
-    background-color: var(--gris-claro);
+  background-color: var(--gris-claro);
 }
 
 .app__paginacion__select {
-    padding: 0.3rem 0.5rem;
-    border-radius: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.3rem;
+  outline: 0;
+}
 
-    outline: 0;
+@media screen and (min-width: 500px) {
+  .app__paginacion {
+    flex-direction: row;
+  }
+  
+  .app__paginacion__botones {
+    margin: 0;
+  }
 }

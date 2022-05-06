@@ -11,6 +11,10 @@
   cursor: pointer;
 }
 
+.app__header__row {
+  position: relative;
+}
+
 .app__header__row:first-child {
   background-color: var(--azul-oscuro);
 }
@@ -22,13 +26,8 @@
   align-items: center;
 }
 
-.app__header__user > span:hover,
-.app__header__row:first-child > div a:hover {
-  color: var(--azul-claro);
-  cursor: pointer;
-}
-
 .app__header__row:last-child {
+  height: 59px;
   background-color: var(--azul);
 }
 
@@ -38,9 +37,48 @@
   align-items: center;
 }
 
+.app__header__row > div {
+  padding: 0 0.5rem;
+}
+
 .app__header__title {
   font-size: 1.4rem;
   color: white;
+}
+
+.app__header__row__flex {
+  display: flex;
+  align-items: center;
+}
+
+/* NAV */
+
+.app__header__btn__nav i {
+  font-size: 1.6rem;
+}
+
+.app__header__nav ul {
+  list-style: none;
+  flex-direction: column;
+}
+
+.app__header__nav li {
+  margin: 0.3rem 0;
+}
+
+.app__header__nav__hide {
+  display: none;
+}
+
+.app__header__nav__show {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--azul);
+  display: block;
+  position: fixed;
+  top: 93px;
+  left: 0;
+  right: 0;
 }
 
 /* CARRITO */
@@ -62,64 +100,112 @@
   right: -10px;
 }
 
+/* BUSCADOR */
+
+.app__header__btn__search {
+  margin: 0 0.5rem;
+}
+
+.app__header__btn__search i {
+  font-size: 1.2rem;
+}
+
+.app__form__search__hide {
+  display: none;
+}
+
+.app__form__search__show {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--azul);
+  display: block;
+  position: fixed;
+  top: 93px;
+  left: 0;
+  right: 0;
+}
+
+.app__form__search input,
+.app__form__search button {
+  padding: 0.8rem 1rem;
+  color: white;
+  border: 1px solid var(--azul-oscuro-claro);
+}
+
+.app__form__search input {
+  width: calc(100% - 80px);
+  background-color: var(--azul-oscuro-claro);
+  border-right: 0;
+  outline: 0;
+}
+
+.app__form__search input::placeholder {
+  color: white;
+}
+
+.app__form__search button {
+  width: 80px;
+  background-color: var(--azul-oscuro-claro);
+  border-left: 0;
+  cursor: pointer;
+}
+
+.app__form__search__show i {
+  font-size: 1.3rem;
+  position: absolute;
+  top: 7px;
+  left: calc(100% - 105px);
+  cursor: pointer;
+  transition: all 500ms;
+}
+
+/* --- */
+
+.app__header__user > * {
+  margin-left: 0.8rem;
+}
+
+.app__header__user p span {
+  margin: 0 0.3rem;
+}
+
 /* MEDIA QUERY - PC */
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1200px) {
+  .app__header__user > span:hover,
+  .app__header__row:first-child > div a:hover {
+    color: var(--azul-claro);
+    cursor: pointer;
+  }
+
   .app__header__row__flex,
   .app__form__search {
     display: flex;
     align-items: center;
   }
 
-  /* BUSCADOR */
-
-  .app__form__search {
-    width: 400px;
-    margin-right: 2rem;
-    position: relative;
+  .app__header__row > div {
+    padding: 0;
   }
 
-  .app__form__search > input,
-  .app__form__search button {
-    padding: 0.8rem 1rem;
-    color: white;
-    border: 1px solid var(--azul-oscuro-claro);
-  }
-
-  .app__form__search input {
-    width: calc(100% - 80px);
-    background-color: var(--azul-oscuro-claro);
-    border-right: 0;
-    outline: 0;
-  }
-
-  .app__form__search > input::placeholder {
-    color: white;
-  }
-
-  .app__form__search button {
-    background-color: var(--azul-oscuro-claro);
-    border-left: 0;
-    cursor: pointer;
-  }
-
-  .app__form__search i {
-    font-size: 1.3rem;
-    position: absolute;
-    top: 7px;
-    left: calc(100% - 105px);
-    cursor: pointer;
-    transition: all 500ms;
+  .app__header__row:last-child {
+    height: auto;
   }
 
   /* NAV */
 
   .app__header__nav {
+    width: auto;
     margin-left: 1rem;
+    padding: 0;
+    background-color: transparent;
+    display: block;
+    position: relative;
+    top: initial;
   }
 
   .app__header__nav ul {
-    list-style: none;
+    flex-direction: row;
   }
 
   .app__header__nav li {
@@ -146,15 +232,23 @@
     background-color: var(--azul-oscuro-claro);
   }
 
-  .app__header__nav li:hover a::after {
+  .app__header__nav {
     opacity: 1;
   }
 
-  .app__header__user > * {
-    margin-left: 0.8rem;
+  .app__form__search {
+    width: 400px;
+    margin-right: 2rem;
+    display: block;
+    position: relative;
+    top: initial;
   }
 
-  .app__header__user p span {
-    margin: 0 0.3rem;
+  .app__header__btn__search {
+    display: none;
+  }
+
+  .app__header__btn__nav {
+    display: none;
   }
 }

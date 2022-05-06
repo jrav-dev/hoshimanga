@@ -16,7 +16,7 @@ const Home = ({ data }) => {
       </Head>
 
       <div className={style.titulo}>
-        <h2>Últimas Novedades Manga</h2>
+        <h2>Últimas Novedades</h2>
 
         <Link href="/novedades">
           <a>Ver más <Icono icono='bi bi-link' /></a>

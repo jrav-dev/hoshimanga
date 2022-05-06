@@ -34,6 +34,7 @@ const Paginacion = ({ prevPage, nextPage, skip, limit, dataPaginated, setLimit, 
             setSkip(0)
           }}
         >
+          <option value="5">5</option>
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>

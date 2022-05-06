@@ -43,5 +43,21 @@
 }
 
 .app__cart__product {
-  grid-template-columns: 80px 3fr 1fr 1fr 1fr 0.5fr;
+  grid-template-columns: 3fr 1fr 1fr 0.5fr;
+}
+
+.app__cart__product > *:first-child,
+.app__cart__product > *:nth-child(3) {
+  display: none;
+}
+
+@media screen and (min-width: 500px) {
+  .app__cart__product {
+    grid-template-columns: 80px 3fr 1fr 1fr 1fr 0.5fr;
+  }
+
+  .app__cart__product > *:first-child,
+  .app__cart__product > *:nth-child(3) {
+    display: flex;
+  }
 }

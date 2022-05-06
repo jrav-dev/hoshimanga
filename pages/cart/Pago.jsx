@@ -5,8 +5,10 @@ import Script from 'next/script'
 import Head from 'next/head'
 import style from "../../styles/Cart.module.css";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import Confirmacion from "./confirmacion";
 
 const Pago = ({ total, productos, user }) => {
+  const [pedido, setPedido] = useState(null)
 
   const addPayCart = () => {
     fetch(`/api/carrito/insertar`, {
@@ -27,7 +29,10 @@ const Pago = ({ total, productos, user }) => {
       .then((res) => res.json())
       .then((data) => {
         window.localStorage.removeItem("cart");
-        window.location.href = `/pedido/${data._id}`;
+        setPedido({
+          num_pedido: data.num_pedido,
+          id: data._id
+        })
       });
   };
 
@@ -61,6 +66,8 @@ const Pago = ({ total, productos, user }) => {
           </PayPalScriptProvider>
         </div>
       </div>
+
+      {pedido && <Confirmacion num_pedido={pedido.num_pedido} id={pedido.id} />}
     </>
   );
 };

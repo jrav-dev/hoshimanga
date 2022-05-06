@@ -1,6 +1,6 @@
 .app__cuenta__grid {
   display: grid;
-  grid-template-columns: 350px auto;
+  grid-template-columns: auto;
   gap: 3rem;
 }
 
@@ -33,11 +33,17 @@
 }
 
 .app__cuenta__user > a {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 /* PRODUCTOS */
 
 .app__cart__product {
   grid-template-columns: 1fr 1.2fr 0.5fr 0.6fr;
+}
+
+@media screen and (min-width: 800px) {
+  .app__cuenta__grid {
+    grid-template-columns: 300px auto;
+  }
 }

@@ -1,6 +1,6 @@
 .form_container,
 .errors {
-  width: 500px;
+  width: 100%;
   margin: 1rem auto;
 }
 
@@ -67,4 +67,11 @@
 .form_container form > div:last-child * {
   width: 45%;
   height: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  .form_container,
+  .errors {
+    width: 500px;
+  }
 }

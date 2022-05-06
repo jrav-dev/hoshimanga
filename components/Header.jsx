@@ -7,7 +7,8 @@ import Icono from "./Icono";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const Header = () => {
-  const { ref, isVisible, setIsVisible } = useVisible(false);
+  const visibleNav = useVisible(false);
+  const visibleSearch = useVisible(false);
   const { user, removeUser } = useUser();
   const [storedValue] = useLocalStorage("cart");
   const totalCart = storedValue ? storedValue.length : 0;
@@ -46,7 +47,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="app__header__row">
+      <div className="app__header__row app__header__row__flex">
         <div>
           <div className="app__header__row__flex">
             <Link href="/">
@@ -55,7 +56,14 @@ const Header = () => {
               </a>
             </Link>
 
-            <nav className="app__header__nav">
+            <nav
+              className={`app__header__nav ${
+                visibleNav.isVisible
+                  ? "app__header__nav__show"
+                  : "app__header__nav__hide"
+              }`}
+              ref={visibleNav.ref}
+            >
               <ul className="flexible">
                 <li>
                   <Link href={"/"}>Inicio</Link>
@@ -74,7 +82,15 @@ const Header = () => {
           </div>
 
           <div className="app__header__row__flex">
-            <form className="app__form__search" onSubmit={handleSubmit}>
+            <form
+              className={`app__form__search ${
+                visibleSearch.isVisible
+                  ? "app__form__search__show"
+                  : "app__form__search__hide"
+              }`}
+              onSubmit={handleSubmit}
+              ref={visibleSearch.ref}
+            >
               <input
                 type="text"
                 name="q"
@@ -82,15 +98,33 @@ const Header = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-
               {search && (
                 <i className="bi bi-x" onClick={() => setSearch("")}></i>
               )}
-
               <button>Buscar</button>
             </form>
 
             <div className="flexible">
+              <span
+                className="app__header__btn__nav"
+                onClick={() => {
+                  visibleNav.setIsVisible(!visibleNav.isVisible);
+                  visibleSearch.setIsVisible(false);
+                }}
+              >
+                <Icono icono="bi bi-list" />
+              </span>
+
+              <span
+                className="app__header__btn__search"
+                onClick={() => {
+                  visibleNav.setIsVisible(false);
+                  visibleSearch.setIsVisible(!visibleSearch.isVisible);
+                }}
+              >
+                <Icono icono="bi bi-search" />
+              </span>
+
               <Link href="/cart">
                 <a className="app__header__cart">
                   <Icono icono="bi bi-cart2" />
@@ -101,41 +135,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-
-      {/* <div>
-        <nav
-          ref={ref}
-          className={`${isVisible ? 'mostrar' : 'ocultar'}`}
-          onClick={() => setIsVisible(false)}
-        >
-          <ul onClick={(e) => e.stopPropagation()}>
-            <i className="bi bi-x" onClick={() => setIsVisible(false)}></i>
-            <Link href={"/"}>Inicio</Link>
-            <Link href={"/novedades"}>Novedades</Link>
-            <Link href={"/mangas"}>Mangas</Link>
-            <Link href={"/editoriales"}>Editoriales</Link>
-            <Link href={"/merchandising"}>Merchandising</Link>
-
-            <hr />
-
-            {user && user.is_admin && (
-              <>
-                <Link href="/crud">CRUD</Link>
-
-                <span className="active" onClick={removeUser}>
-                  Cerrar Sessión
-                </span>
-              </>
-            )}
-          </ul>
-
-          <div>
-            <i className="bi bi-cart2"></i>
-            <span>0</span>
-          </div>
-        </nav>
-        
-      </div> */}
     </header>
   );
 };

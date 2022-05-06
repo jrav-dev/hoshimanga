@@ -1,16 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Head from "next/head";
-import { useLocalStorage } from "../../../../hooks/useLocalStorage";
-import Ruta from "../../../../components/Ruta";
-import useForm from "../../../../hooks/useForm";
-import { FieldsetInput } from "../../../../components/Fieldset";
-import Boton from "../../../../components/Boton";
-import Icono from "../../../../components/Icono";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import Ruta from "../../../components/Ruta";
+import useForm from "../../../hooks/useForm";
+import { FieldsetInput } from "../../../components/Fieldset";
+import Boton from "../../../components/Boton";
 
 const CrudUsuarioEditar = ({ data }) => {
   const [user, setValue] = useLocalStorage("user");
-  const { params, setParams, errors, readParam, handleSubmit } = useForm(
+  const { params, errors, readParam, handleSubmit } = useForm(
     {
       _id: data._id,
       nombre: data.nombre,
@@ -26,13 +25,12 @@ const CrudUsuarioEditar = ({ data }) => {
       is_admin: data.is_admin,
     },
     "/api/usuarios/editar",
-    "/crud/usuario"
+    `/cuenta/${data._id}`
   );
 
   const items = [
-    { href: "/crud", text: "Crud" },
-    { href: "/crud/usuario", text: "Usuarios" },
-    { text: `Editar Usuario - ${data.nombre}` },
+    { href: `/cuenta/${data._id}`, text: "Cuenta" },
+    { text: `Editar Datos - ${data.nombre}` },
   ];
 
   const handleSubmitUsuario = (e) => {
@@ -44,7 +42,7 @@ const CrudUsuarioEditar = ({ data }) => {
         nombre: params.nombre,
         apellidos: params.apellidos,
         email: params.email,
-        is_admin: params.is_admin,
+        is_admin: user.is_admin,
       });
     }
 
@@ -75,6 +73,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Nombre"
             value={params.nombre}
             onChange={readParam}
+            error={errors && errors.nombre}
           />
 
           <FieldsetInput
@@ -84,6 +83,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Apellidos"
             value={params.apellidos}
             onChange={readParam}
+            error={errors && errors.apellidos}
           />
 
           <FieldsetInput
@@ -93,6 +93,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Correo Electrónico"
             value={params.email}
             onChange={readParam}
+            error={errors && errors.email}
           />
 
           <FieldsetInput
@@ -102,6 +103,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Contraseña"
             value={params.password}
             onChange={readParam}
+            error={errors && errors.password}
           />
         </div>
 
@@ -113,6 +115,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Dirección"
             value={params.direccion}
             onChange={readParam}
+            error={errors && errors.direccion}
           />
 
           <FieldsetInput
@@ -122,6 +125,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Población"
             value={params.poblacion}
             onChange={readParam}
+            error={errors && errors.poblacion}
           />
 
           <FieldsetInput
@@ -131,6 +135,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Pais"
             value={params.pais}
             onChange={readParam}
+            error={errors && errors.pais}
           />
 
           <FieldsetInput
@@ -140,6 +145,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Código Postal"
             value={params.codigo_postal}
             onChange={readParam}
+            error={errors && errors.codigo_postal}
           />
 
           <FieldsetInput
@@ -149,6 +155,7 @@ const CrudUsuarioEditar = ({ data }) => {
             text="Teléfono"
             value={params.telefono}
             onChange={readParam}
+            error={errors && errors.telefono}
           />
 
           <FieldsetInput
@@ -158,25 +165,8 @@ const CrudUsuarioEditar = ({ data }) => {
             text="DNI"
             value={params.dni}
             onChange={readParam}
+            error={errors && errors.dni}
           />
-
-          <div
-            className={`formulario__checkbox ${
-              params.is_admin ? "formulario__checkbox__active" : ""
-            }`}
-          >
-            <label htmlFor="is_admin">Administrador</label>
-            <span
-              onClick={() => {
-                setParams({
-                  ...params,
-                  is_admin: !params.is_admin,
-                });
-              }}
-            >
-              <Icono icono="bi bi-check" />
-            </span>
-          </div>
         </div>
       </form>
     </>

@@ -1,7 +1,7 @@
 .editoriales {
   margin: 2rem 0;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 }
 
@@ -20,4 +20,23 @@
 .editoriales a p {
   color: var(--azul-claro);
   font-size: 1.3rem;
+  text-align: center;
+}
+
+@media screen and (min-width: 700px) {
+  .editoriales {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .editoriales {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .editoriales {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }

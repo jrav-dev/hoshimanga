@@ -3,12 +3,17 @@ import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import Boton from "../../../components/Boton";
 import { FieldsetInput } from "../../../components/Fieldset";
+import ModalConfirmacion from "../../../components/Modal/ModalConfirmacion";
 import Paginacion from "../../../components/Paginacion";
 import Ruta from "../../../components/Ruta";
+import useModal from "../../../hooks/useModal";
 import style from "../Listado.module.css";
+import { toast } from "react-toastify";
 
 const CrudPedidosListado = ({ data }) => {
+  const { isOpen, openModal, closeModal } = useModal();
   const [dataPaginated, setDataPaginated] = useState(data);
+  const [pedido, setPedido] = useState({});
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(20);
   const [filtros, setFiltros] = useState({
@@ -21,10 +26,24 @@ const CrudPedidosListado = ({ data }) => {
   const fetchData = async () => {
     const response = await fetch(
       `/api/pedidos?limit=${limit}&skip=${skip}&id=${filtros.id}` +
-      `&num_pedido=${filtros.num_pedido}`
+        `&num_pedido=${filtros.num_pedido}`
     );
     const data = await response.json();
     setDataPaginated(data);
+  };
+
+  const borrarPedidos = async () => {
+    window.location.href = window.location.pathname;
+    closeModal();
+    toast.success("Pedido borrado correctamente");
+
+    await fetch(`/api/pedidos/${pedido._id}/borrar`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
   };
 
   // Se ejecuta cuando cambia el skip
@@ -78,7 +97,7 @@ const CrudPedidosListado = ({ data }) => {
   const formatDate = (date) => {
     let fecha = new Date(date);
     return `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
-  }
+  };
 
   return (
     <>
@@ -147,6 +166,7 @@ const CrudPedidosListado = ({ data }) => {
             <th>Nº Pedido</th>
             <th>Creado</th>
             <th>Total</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -161,6 +181,20 @@ const CrudPedidosListado = ({ data }) => {
               <td>{formatDate(item.createdAt)}</td>
 
               <td>{parseFloat(item.precio).toFixed(2)} €</td>
+
+              <td>
+                <Boton
+                  icono="bi bi-trash"
+                  clase="rojo"
+                  click={() => {
+                    openModal();
+                    setPedido({
+                      _id: item._id,
+                      num_pedido: item.num_pedido,
+                    });
+                  }}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
@@ -176,6 +210,14 @@ const CrudPedidosListado = ({ data }) => {
         dataPaginated={dataPaginated}
         total={dataPaginated.length}
       />
+
+      {isOpen && (
+        <ModalConfirmacion
+          closeModal={closeModal}
+          onClick={borrarPedidos}
+          text={`¿Estás seguro de que quieres borrar el pedido '${pedido.num_pedido}'?`}
+        />
+      )}
     </>
   );
 };
