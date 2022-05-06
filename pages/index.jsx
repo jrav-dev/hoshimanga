@@ -23,7 +23,7 @@ const Home = ({ data }) => {
         </Link>
       </div>
 
-      <ListOfCards array={data} />
+      <ListOfCards array={data.mangas} />
     </>
   )
 }

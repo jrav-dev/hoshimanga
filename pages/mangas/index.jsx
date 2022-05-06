@@ -11,12 +11,14 @@ import ListOfFilters from "../../components/ListOfFilters";
 import Paginacion from "../../components/Paginacion";
 import Icono from "../../components/Icono";
 import Boton from "../../components/Boton";
+import ListPaginated from "../../components/ListPaginated";
 
 export default function Mangas({ data, keyword }) {
   const [showFiltros, setShowFiltros] = useState(false);
   const [filtrosMenu, setFiltrosMenu] = useState(data.filtrosMenu);
   const [dataPaginated, setDataPaginated] = useState(data.mangas);
   const [isLoading, setLoading] = useState(false);
+  const [pagina, setPagina] = useState(1)
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(20);
   const [filtros, setFiltros] = useState({
@@ -24,6 +26,8 @@ export default function Mangas({ data, keyword }) {
     editorial: "",
     disponibilidad: "",
   });
+
+  const pages = Math.ceil(data.total / limit);
 
   const items = [{ text: "Mangas" }];
 
@@ -56,12 +60,14 @@ export default function Mangas({ data, keyword }) {
   const prevPage = () => {
     if (skip > 0) {
       setSkip(skip - limit);
+      setPagina(parseInt(pagina) - 1)
     }
   };
 
   const nextPage = () => {
     if (dataPaginated.length === limit) {
       setSkip(skip + limit);
+      setPagina(parseInt(pagina) + 1)
     }
   };
 
@@ -169,41 +175,12 @@ export default function Mangas({ data, keyword }) {
         </div>
 
         <div>
-          {isLoading
-            ? <Loading />
-            : <>
-              {dataPaginated.length > 0
-                ? <>
-                  <Paginacion
-                    limit={limit}
-                    skip={skip}
-                    nextPage={nextPage}
-                    prevPage={prevPage}
-                    setLimit={setLimit}
-                    setSkip={setSkip}
-                    dataPaginated={dataPaginated}
-                    total={dataPaginated.length}
-                  />
-
-                  <div className={style.app__products}>
-                    <ListOfCards array={dataPaginated} />
-                  </div>
-
-                  <Paginacion
-                    limit={limit}
-                    skip={skip}
-                    nextPage={nextPage}
-                    prevPage={prevPage}
-                    setLimit={setLimit}
-                    setSkip={setSkip}
-                    dataPaginated={dataPaginated}
-                    total={dataPaginated.length}
-                  />
-                </>
-                : <h2 className="flexible">No hay mangas con los filtros seleccionados</h2>
-              }
-
-            </>}
+          <ListPaginated
+            data={data.mangas}
+            total={data.total}
+            clase={style.app__products}
+            url='/api/mangas'
+          />
         </div>
       </div>
     </>

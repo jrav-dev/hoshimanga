@@ -4,22 +4,23 @@ import Head from "next/head";
 import ModalConfirmacion from "../../../components/Modal/ModalConfirmacion";
 import {
   FieldsetInput,
-  FieldsetSelectArray,
 } from "../../../components/Fieldset";
 import Ruta from "../../../components/Ruta";
 import Boton from "../../../components/Boton";
 import BotonLink from "../../../components/BotonLink";
-import useFetch from "../../../hooks/useFetch";
 import useModal from "../../../hooks/useModal";
 import { toast } from "react-toastify";
 import style from "../Listado.module.css";
-import Paginacion from "../../../components/Paginacion";
 import Icono from "../../../components/Icono";
+import Paginacion from "../../../components/Paginacion";
+import Loading from "../../../components/Loading";
 
 const CrudUsuarioListado = ({ usuarios }) => {
   const { isOpen, openModal, closeModal } = useModal();
   const [usuario, setUsuario] = useState({});
+  const [isLoading, setLoading] = useState(false);
   const [dataPaginated, setDataPaginated] = useState(usuarios.data);
+  const [pagina, setPagina] = useState(1)
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
   const [filtros, setFiltros] = useState({
@@ -29,17 +30,21 @@ const CrudUsuarioListado = ({ usuarios }) => {
     email: "",
     is_admin: "",
   });
-  const TOTAL = usuarios.total;
+
+  const pages = Math.ceil(usuarios.total / limit);
 
   const items = [{ href: "/crud", text: "Crud" }, { text: "Usuarios" }];
 
   const fetchData = async () => {
+    setLoading(true)
     const response = await fetch(
       `/api/usuarios?limit=${limit}&skip=${skip}&id=${filtros.id}` +
-        `&nombre=${filtros.nombre}&apellidos=${filtros.apellidos}` +
-        `&email=${filtros.email}&is_admin=${filtros.is_admin}`
+      `&nombre=${filtros.nombre}&apellidos=${filtros.apellidos}` +
+      `&email=${filtros.email}&is_admin=${filtros.is_admin}`
     );
     const data = await response.json();
+
+    setLoading(false)
     setDataPaginated(data.data);
   };
 
@@ -75,12 +80,14 @@ const CrudUsuarioListado = ({ usuarios }) => {
   const prevPage = () => {
     if (skip > 0) {
       setSkip(skip - limit);
+      setPagina(parseInt(pagina) - 1)
     }
   };
 
   const nextPage = () => {
     if (dataPaginated.length === limit) {
       setSkip(skip + limit);
+      setPagina(parseInt(pagina) + 1)
     }
   };
 
@@ -93,6 +100,8 @@ const CrudUsuarioListado = ({ usuarios }) => {
 
   const handleClickFilter = async () => {
     await fetchData();
+    setPagina(1)
+    setSkip(0)
   };
 
   // VACIAR FILTROS
@@ -162,9 +171,8 @@ const CrudUsuarioListado = ({ usuarios }) => {
 
         <div className="app__listado__acciones">
           <div
-            className={`formulario__checkbox ${
-              filtros.is_admin ? "formulario__checkbox__active" : ""
-            }`}
+            className={`formulario__checkbox ${filtros.is_admin ? "formulario__checkbox__active" : ""
+              }`}
           >
             <label htmlFor="is_admin">Administrador</label>
             <span
@@ -193,58 +201,89 @@ const CrudUsuarioListado = ({ usuarios }) => {
         </div>
       </div>
 
-      <table className={style.listado__table}>
-        <thead>
-          <tr className={style.listado__table__row}>
-            <th>ID</th>
-            <th>Avatar</th>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Email</th>
-            <th>Admin</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataPaginated.map((item, i) => (
-            <tr key={i} className={style.listado__table__row}>
-              <td>{item._id}</td>
+      {isLoading ? <Loading />
+        : <>
+          <Paginacion
+            limit={limit}
+            skip={skip}
+            pages={pages}
+            page={pagina}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            setLimit={setLimit}
+            setSkip={setSkip}
+            setPagina={setPagina}
+            dataPaginated={dataPaginated}
+            total={dataPaginated.length}
+          />
+          <table className={style.listado__table}>
+            <thead>
+              <tr className={style.listado__table__row}>
+                <th>ID</th>
+                <th>Avatar</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dataPaginated.map((item, i) => (
+                <tr key={i} className={style.listado__table__row}>
+                  <td>{item._id}</td>
 
-              <td>
-                <p className={`flexible ${style.listado__table__row__avatar}`}>
-                  {item.nombre.charAt(0).toUpperCase()}
-                  {item.apellidos.charAt(0).toUpperCase()}
-                </p>
-              </td>
+                  <td>
+                    <p className={`flexible ${style.listado__table__row__avatar}`}>
+                      {item.nombre.charAt(0).toUpperCase()}
+                      {item.apellidos.charAt(0).toUpperCase()}
+                    </p>
+                  </td>
 
-              <td>{item.nombre}</td>
+                  <td>{item.nombre}</td>
 
-              <td>{item.apellidos}</td>
+                  <td>{item.apellidos}</td>
 
-              <td>{item.email}</td>
+                  <td>{item.email}</td>
 
-              <td className={`${style.tag} ${style.verde}`}>
-                {item.is_admin ? "Admin" : null}
-              </td>
+                  <td className={`${style.tag} ${style.verde}`}>
+                    {item.is_admin ? "Admin" : null}
+                  </td>
 
-              <td className={style.listado__table__row__actions}>
-                <BotonLink
-                  url={`/crud/usuario/editar/${item._id}`}
-                  icono="bi bi-pencil"
-                />
+                  <td className={style.listado__table__row__actions}>
+                    <BotonLink
+                      url={`/crud/usuario/editar/${item._id}`}
+                      icono="bi bi-pencil"
+                    />
 
-                <Boton
-                  icono="bi bi-trash"
-                  click={() => {
-                    openModal();
-                    setUsuario({ nombre: item.nombre, _id: item._id });
-                  }}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                    <Boton
+                      icono="bi bi-trash"
+                      click={() => {
+                        openModal();
+                        setUsuario({ nombre: item.nombre, _id: item._id });
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+
+          <Paginacion
+            limit={limit}
+            skip={skip}
+            pages={pages}
+            page={pagina}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            setLimit={setLimit}
+            setSkip={setSkip}
+            setPagina={setPagina}
+            dataPaginated={dataPaginated}
+            total={dataPaginated.length}
+          />
+        </>}
 
       {isOpen && (
         <ModalConfirmacion

@@ -10,6 +10,8 @@ import Paginacion from "../../../components/Paginacion";
 const Cuenta = ({ data }) => {
   const [dataPaginated, setDataPaginated] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [pagina, setPagina] = useState(1)
+  const [paginas, setPaginas] = useState(1)
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(5);
 
@@ -19,8 +21,11 @@ const Cuenta = ({ data }) => {
       `/api/usuarios/${data._id}/pedidos?limit=${limit}&skip=${skip}`
     );
     const pedidos = await response.json();
+    const pages = Math.ceil(pedidos.total / limit);
+
+    setPaginas(pages);
     setLoading(false);
-    setDataPaginated(pedidos);
+    setDataPaginated(pedidos.pedidos);
   };
 
   useEffect(async () => {
@@ -44,12 +49,14 @@ const Cuenta = ({ data }) => {
   const prevPage = () => {
     if (skip > 0) {
       setSkip(skip - limit);
+      setPagina(parseInt(pagina) - 1)
     }
   };
 
   const nextPage = () => {
     if (dataPaginated.length === limit) {
       setSkip(skip + limit);
+      setPagina(parseInt(pagina) + 1)
     }
   };
 
@@ -104,41 +111,48 @@ const Cuenta = ({ data }) => {
             <>
               <h2 className="borde__gris">Historial de Pedidos</h2>
 
-              <div
-                className={`${style.app__cart__product} app__table__product app__table__header`}
-              >
-                <b>Nº Pedido</b>
-                <b>Fecha</b>
-                <b>Total</b>
-                <b></b>
-              </div>
-
-              {dataPaginated?.map((item, i) => (
+              {dataPaginated.length > 0 ? <>
                 <div
-                  key={i}
-                  className={`${style.app__cart__product} app__table__product`}
+                  className={`${style.app__cart__product} app__table__product app__table__header`}
                 >
-                  <p># {item.num_pedido}</p>
-
-                  <p>{formatDate(item.createdAt)}</p>
-
-                  <p>{parseFloat(item.precio).toFixed(2)} €</p>
-
-                  <div>
-                    <BotonLink url={`/pedido/${item._id}`} texto="Ver Pedido" />
-                  </div>
+                  <b>Nº Pedido</b>
+                  <b>Fecha</b>
+                  <b>Total</b>
+                  <b></b>
                 </div>
-              ))}
 
-              <Paginacion
-                limit={limit}
-                skip={skip}
-                nextPage={nextPage}
-                prevPage={prevPage}
-                setLimit={setLimit}
-                setSkip={setSkip}
-                dataPaginated={dataPaginated}
-              />
+                {dataPaginated?.map((item, i) => (
+                  <div
+                    key={i}
+                    className={`${style.app__cart__product} app__table__product`}
+                  >
+                    <p># {item.num_pedido}</p>
+
+                    <p>{formatDate(item.createdAt)}</p>
+
+                    <p>{parseFloat(item.precio).toFixed(2)} €</p>
+
+                    <div>
+                      <BotonLink url={`/pedido/${item._id}`} texto="Ver Pedido" />
+                    </div>
+                  </div>
+                ))}
+
+                <Paginacion
+                  limit={limit}
+                  skip={skip}
+                  pages={paginas}
+                  page={pagina}
+                  nextPage={nextPage}
+                  prevPage={prevPage}
+                  setLimit={setLimit}
+                  setSkip={setSkip}
+                  dataPaginated={dataPaginated}
+                  total={dataPaginated.length}
+                />
+              </> : <div className="flexible">
+                <h2>Aún no tienes pedidos</h2>
+              </div>}
             </>
           )}
         </div>

@@ -48,7 +48,7 @@ export default function Manga({ manga }) {
 
           <div>
             <p>
-              <b>Editortial: </b>
+              <b>Editorial: </b>
               <Link href={`/editorial/${manga.editorial.replace(/ /g, "_")}`}>{manga.editorial}</Link>
             </p>
 
@@ -61,7 +61,7 @@ export default function Manga({ manga }) {
             </p>
 
             <p>
-              <b>Série: </b>
+              <b>Serie: </b>
               <Link href={`/serie/${nombre.replace(/ /g, "_")}`}>{nombre}</Link>
             </p>
           </div>
@@ -75,7 +75,7 @@ export default function Manga({ manga }) {
 
           <Precio precio={manga.precio} precioDescuento={precio} />
 
-          <Boton texto='Añadir a la cesta' icono='bi bi-cart2' click={() => addToCart(manga)} />
+          {manga.stock > 0 && <Boton texto='Añadir a la cesta' icono='bi bi-cart2' click={() => addToCart(manga)} />}
         </article>
       </section>
 

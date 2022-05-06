@@ -7,6 +7,8 @@ export default async function handler(req, res) {
 
   let mangas = await Manga.find().lean();
 
+  const total = await Manga.find().lean().count();
+
   function convertirFecha(fechaString) {
     var fechaSp = fechaString.split("-");
     var anio = new Date().getFullYear();
@@ -21,5 +23,5 @@ export default async function handler(req, res) {
 
   mangas = mangas.slice(parseInt(skip), parseInt(skip) + parseInt(limit))
 
-  res.status(200).json(mangas)
+  res.status(200).json({ mangas, total })
 }

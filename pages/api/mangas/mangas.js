@@ -36,11 +36,13 @@ export default async function handler(req, res) {
     }
   }
 
+  const total = await Manga.find().lean().count();
+
   let mangas = await Manga.find(filtrosKeys).lean()
 
   if (mangas.length > limit) {
     mangas = mangas.slice(parseInt(skip), parseInt(skip) + parseInt(limit));
   }
 
-  res.status(200).json(mangas);
+  res.status(200).json({ mangas, total });
 }

@@ -23,13 +23,9 @@ export default function useValidationLoginRegister(params) {
       if (params[key] === "") {
         error[key] = `El campo '${name}' está vacio.`;
       } else {
-        if (regexEmail.test(params.email) === false) {
-          error.email = msgErrors.email;
-        }
+        if (regexEmail.test(params.email) === false) error.email = msgErrors.email;
 
-        if (regexPassword.test(params.password) === false) {
-          error.password = msgErrors.password;
-        }
+        if (regexPassword.test(params.password) === false) error.password = msgErrors.password;
       }
     }
 
@@ -53,18 +49,10 @@ export default function useValidationLoginRegister(params) {
       if (params[key] === "") {
         error[key] = `El campo '${name}' está vacio.`;
       } else {
-        if (
-          regexString.test(params.nombre) === false ||
-          regexString.test(params.apellidos) === false
-        ) {
-          error.string = msgErrors.string;
-        }
-        if (regexEmail.test(params.email) === false) {
-          error.email = msgErrors.email;
-        }
-        if (regexPassword.test(params.password) === false) {
-          error.password = msgErrors.password;
-        }
+        if (regexString.test(params.nombre) === false) error.nombre = msgErrors.string;
+        if (regexString.test(params.apellidos) === false) error.apellidos = msgErrors.string;
+        if (regexEmail.test(params.email) === false) error.email = msgErrors.email;
+        if (regexPassword.test(params.password) === false) error.password = msgErrors.password;
       }
     }
 

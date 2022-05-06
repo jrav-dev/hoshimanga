@@ -1,13 +1,14 @@
 import connectDB from "../../../../config/db";
-import Usuario from "../../../../models/Usuario";
 import Cart from "../../../../models/Cart";
 
 connectDB();
 
 export default async function handler(req, res) {
-  const { skip, limit } = req.query;
+  const { skip, limit, id } = req.query;
 
-  let pedidos = await Cart.find().lean().limit(limit).skip(skip);
+  let pedidos = await Cart.find({ usuario: id }).lean().limit(limit).skip(skip);
 
-  res.status(200).json(pedidos);
+  const total = await Cart.find().lean().count();
+
+  res.status(200).json({ pedidos, total });
 }

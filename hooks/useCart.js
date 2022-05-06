@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useLocalStorage } from "./useLocalStorage";
+import Router from 'next/router'
 
 export const useCart = () => {
   const [storedValue, setValue] = useLocalStorage("cart");
@@ -41,9 +42,12 @@ export const useCart = () => {
         cart.push(productCart);
         toast.success("Articulo añadido a la cesta");
       }
-
       setValue(cart);
     }
+
+    setInterval(() => {
+      window.location.href = window.location.pathname
+    }, 3000)
   };
 
   return { addToCart };

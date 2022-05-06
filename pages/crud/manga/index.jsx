@@ -21,7 +21,8 @@ const CrudMangaListado = ({ data }) => {
   const { isOpen, openModal, closeModal } = useModal();
   const [manga, setMangas] = useState({});
   const [isLoading, setLoading] = useState(false);
-  const [dataPaginated, setDataPaginated] = useState(data);
+  const [dataPaginated, setDataPaginated] = useState(data.mangas);
+  const [pagina, setPagina] = useState(1)
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
   const [filtros, setFiltros] = useState({
@@ -31,6 +32,8 @@ const CrudMangaListado = ({ data }) => {
     fecha: "",
     disponibilidad: "",
   });
+
+  const pages = Math.ceil(data.total / limit);
 
   const editoriales = useFetch("/api/editoriales");
 
@@ -44,8 +47,9 @@ const CrudMangaListado = ({ data }) => {
       `&disponibilidad=${filtros.disponibilidad}&fecha=${filtros.fecha}`
     );
     const data = await response.json();
+
     setLoading(false)
-    setDataPaginated(data);
+    setDataPaginated(data.mangas);
   };
 
   const borrarMangas = async () => {
@@ -73,18 +77,20 @@ const CrudMangaListado = ({ data }) => {
   useEffect(async () => {
     await fetchData();
   }, [limit]);
-
+  
   // METODOS PAGINACION
-
+  
   const prevPage = () => {
     if (skip > 0) {
       setSkip(skip - limit);
+      setPagina(parseInt(pagina) - 1)
     }
   };
-
+  
   const nextPage = () => {
     if (dataPaginated.length === limit) {
       setSkip(skip + limit);
+      setPagina(parseInt(pagina) + 1)
     }
   };
 
@@ -97,6 +103,8 @@ const CrudMangaListado = ({ data }) => {
 
   const handleClickFilter = async () => {
     await fetchData();
+    setPagina(1)
+    setSkip(0)
   };
 
   // VACIAR FILTROS
@@ -194,10 +202,13 @@ const CrudMangaListado = ({ data }) => {
           <Paginacion
             limit={limit}
             skip={skip}
+            pages={pages}
+            page={pagina}
             nextPage={nextPage}
             prevPage={prevPage}
             setLimit={setLimit}
             setSkip={setSkip}
+            setPagina={setPagina}
             dataPaginated={dataPaginated}
             total={dataPaginated.length}
           />
@@ -271,10 +282,13 @@ const CrudMangaListado = ({ data }) => {
           <Paginacion
             limit={limit}
             skip={skip}
+            pages={pages}
+            page={pagina}
             nextPage={nextPage}
             prevPage={prevPage}
             setLimit={setLimit}
             setSkip={setSkip}
+            setPagina={setPagina}
             dataPaginated={dataPaginated}
             total={dataPaginated.length}
           />

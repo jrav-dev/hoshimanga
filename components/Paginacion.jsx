@@ -1,7 +1,11 @@
 import React from "react";
 import Boton from "./Boton";
 
-const Paginacion = ({ prevPage, nextPage, skip, limit, dataPaginated, setLimit, setSkip, total }) => {
+const Paginacion = ({
+  prevPage, nextPage, skip, limit,
+  pages, page, dataPaginated, setLimit,
+  setSkip, total, setPagina
+}) => {
   return (
     <div className="app__paginacion">
       <div>
@@ -14,6 +18,8 @@ const Paginacion = ({ prevPage, nextPage, skip, limit, dataPaginated, setLimit, 
           click={prevPage}
           clase={skip === 0 ? "app__paginacion__disabled" : ""}
         />
+
+        {page && pages && <p><b>{page}</b>de<b>{pages}</b></p>}
 
         <Boton
           texto="Siguiente"
@@ -32,6 +38,7 @@ const Paginacion = ({ prevPage, nextPage, skip, limit, dataPaginated, setLimit, 
           onChange={(e) => {
             setLimit(parseInt(e.target.value))
             setSkip(0)
+            setPagina(1)
           }}
         >
           <option value="5">5</option>

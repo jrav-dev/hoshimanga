@@ -209,8 +209,10 @@
   }
 
   .app__header__nav li {
-    margin: 0 0.5rem;
+    width: 95px;
+    margin: 0;
     padding: 1.3rem 0.5rem;
+    text-align: center;
     position: relative;
     overflow: hidden;
     transition: background 500ms ease;

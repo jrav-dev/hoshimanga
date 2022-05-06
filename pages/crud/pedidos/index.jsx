@@ -9,11 +9,14 @@ import Ruta from "../../../components/Ruta";
 import useModal from "../../../hooks/useModal";
 import style from "../Listado.module.css";
 import { toast } from "react-toastify";
+import Loading from "../../../components/Loading";
 
 const CrudPedidosListado = ({ data }) => {
   const { isOpen, openModal, closeModal } = useModal();
-  const [dataPaginated, setDataPaginated] = useState(data);
   const [pedido, setPedido] = useState({});
+  const [isLoading, setLoading] = useState(false);
+  const [dataPaginated, setDataPaginated] = useState(data.pedidos);
+  const [pagina, setPagina] = useState(1)
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(20);
   const [filtros, setFiltros] = useState({
@@ -21,15 +24,20 @@ const CrudPedidosListado = ({ data }) => {
     num_pedido: "",
   });
 
+  const pages = Math.ceil(data.total / limit);
+
   const items = [{ href: "/crud", text: "Crud" }, { text: "Pedidos" }];
 
   const fetchData = async () => {
+    setLoading(true)
     const response = await fetch(
       `/api/pedidos?limit=${limit}&skip=${skip}&id=${filtros.id}` +
-        `&num_pedido=${filtros.num_pedido}`
+      `&num_pedido=${filtros.num_pedido}`
     );
     const data = await response.json();
-    setDataPaginated(data);
+
+    setLoading(false)
+    setDataPaginated(data.pedidos);
   };
 
   const borrarPedidos = async () => {
@@ -63,12 +71,14 @@ const CrudPedidosListado = ({ data }) => {
   const prevPage = () => {
     if (skip > 0) {
       setSkip(skip - limit);
+      setPagina(parseInt(pagina) - 1)
     }
   };
 
   const nextPage = () => {
     if (dataPaginated.length === limit) {
       setSkip(skip + limit);
+      setPagina(parseInt(pagina) + 1)
     }
   };
 
@@ -81,6 +91,8 @@ const CrudPedidosListado = ({ data }) => {
 
   const handleClickFilter = async () => {
     await fetchData();
+    setPagina(1)
+    setSkip(0)
   };
 
   // VACIAR FILTROS
@@ -147,69 +159,79 @@ const CrudPedidosListado = ({ data }) => {
         </div>
       </div>
 
-      <Paginacion
-        limit={limit}
-        skip={skip}
-        nextPage={nextPage}
-        prevPage={prevPage}
-        setLimit={setLimit}
-        setSkip={setSkip}
-        dataPaginated={dataPaginated}
-        total={dataPaginated.length}
-      />
+      {isLoading ? <Loading />
+        : <>
+          <Paginacion
+            limit={limit}
+            skip={skip}
+            pages={pages}
+            page={pagina}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            setLimit={setLimit}
+            setSkip={setSkip}
+            setPagina={setPagina}
+            dataPaginated={dataPaginated}
+            total={dataPaginated.length}
+          />
 
-      <table className={style.listado__table}>
-        <thead>
-          <tr className={style.listado__table__row}>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Nº Pedido</th>
-            <th>Creado</th>
-            <th>Total</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataPaginated.map((item, i) => (
-            <tr key={i} className={style.listado__table__row}>
-              <td>{item._id}</td>
+          <table className={style.listado__table}>
+            <thead>
+              <tr className={style.listado__table__row}>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Nº Pedido</th>
+                <th>Creado</th>
+                <th>Total</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dataPaginated.map((item, i) => (
+                <tr key={i} className={style.listado__table__row}>
+                  <td>{item._id}</td>
 
-              <td>{item.usuario}</td>
+                  <td>{item.usuario}</td>
 
-              <td># {item.num_pedido}</td>
+                  <td># {item.num_pedido}</td>
 
-              <td>{formatDate(item.createdAt)}</td>
+                  <td>{formatDate(item.createdAt)}</td>
 
-              <td>{parseFloat(item.precio).toFixed(2)} €</td>
+                  <td>{parseFloat(item.precio).toFixed(2)} €</td>
 
-              <td>
-                <Boton
-                  icono="bi bi-trash"
-                  clase="rojo"
-                  click={() => {
-                    openModal();
-                    setPedido({
-                      _id: item._id,
-                      num_pedido: item.num_pedido,
-                    });
-                  }}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  <td>
+                    <Boton
+                      icono="bi bi-trash"
+                      clase="rojo"
+                      click={() => {
+                        openModal();
+                        setPedido({
+                          _id: item._id,
+                          num_pedido: item.num_pedido,
+                        });
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-      <Paginacion
-        limit={limit}
-        skip={skip}
-        nextPage={nextPage}
-        prevPage={prevPage}
-        setLimit={setLimit}
-        setSkip={setSkip}
-        dataPaginated={dataPaginated}
-        total={dataPaginated.length}
-      />
+          <Paginacion
+            limit={limit}
+            skip={skip}
+            pages={pages}
+            page={pagina}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            setLimit={setLimit}
+            setSkip={setSkip}
+            setPagina={setPagina}
+            dataPaginated={dataPaginated}
+            total={dataPaginated.length}
+          />
+        </>}
+
 
       {isOpen && (
         <ModalConfirmacion

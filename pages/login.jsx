@@ -85,7 +85,7 @@ const Login = () => {
 
           <div>
             <FieldsetInput
-              tipo="text"
+              tipo="password"
               text="Contraseña"
               name="password"
               value={params.password}

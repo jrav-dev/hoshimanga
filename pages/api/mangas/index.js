@@ -32,6 +32,8 @@ export default async function handler(req, res) {
     }
   }
 
+  const total = await Manga.find().lean().count();
+
   mangas = await Manga.find(filtrosKeys).lean();
 
   if (params.q && params.q !== "undefined") mangas = mangas.filter(manga => manga.nombre.toLowerCase().includes(req.query.q.toLowerCase()))
@@ -66,5 +68,5 @@ export default async function handler(req, res) {
     mangas = mangas.slice(skip, skip + limit);
   }
 
-  res.status(200).json({ mangas, filtrosMenu });
+  res.status(200).json({ mangas, filtrosMenu, total });
 }

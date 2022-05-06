@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
-import ListOfCards from '../../components/ListOfCards'
 import Ruta from '../../components/Ruta'
+import ListPaginated from '../../components/ListPaginated'
 
 export default function Editorial({ data, editorial }) {
   const items = [
@@ -12,14 +12,21 @@ export default function Editorial({ data, editorial }) {
   return (
     <>
       <Head>
-        <title>{editorial} - Hoshi Manga</title>
+        <title>{editorial} | Hoshi Manga</title>
       </Head>
 
       <Ruta items={items} />
 
-      <h2>{editorial}</h2>
+      <h2 className='borde__gris'>{editorial}</h2>
 
-      {data && <ListOfCards array={data} />}
+      {data && <div className='flexible'><h2>{data.msg}</h2></div> }
+
+
+      <ListPaginated
+        data={data.mangas}
+        total={data.total}
+        url={`/api/mangas/editorial/${editorial}`}
+      />
     </>
   )
 }
@@ -27,7 +34,7 @@ export default function Editorial({ data, editorial }) {
 Editorial.getInitialProps = async ({ query }) => {
   const editorial = query.editorial.replace(/_/g, " ")
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mangas/editorial/${editorial}`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mangas/editorial/${editorial}?limit=20&skip=0`)
   const data = await response.json()
 
   return { data, editorial }

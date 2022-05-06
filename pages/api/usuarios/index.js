@@ -9,14 +9,16 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "GET":
-      const { skip, limit, id, nombre, apellidos, email, is_admin } = req.query;
+      const params = req.query;
+      const limit = parseInt(params.limit)
+      const skip = parseInt(params.skip)
 
       const filtros = {
-        _id: id,
-        nombre,
-        apellidos,
-        email,
-        is_admin,
+        _id: params.id ? params.id : '',
+        nombre: params.nombre ? params.nombre : "",
+        apellidos: params.apellidos ? params.apellidos : "",
+        email: params.email ? params.email : "",
+        is_admin: params.is_admin ? params.is_admin : "",
       };
 
       const filtrosKeys = {};
@@ -35,10 +37,11 @@ export default async function handler(req, res) {
 
       const total = await Usuario.find().lean().count();
 
-      const data = await Usuario.find(filtrosKeys)
-        .lean()
-        .limit(limit)
-        .skip(skip);
+      let data = await Usuario.find(filtrosKeys).lean()
+
+      if (data.length > limit) {
+        data = data.slice(parseInt(skip), parseInt(skip) + parseInt(limit));
+      }
 
       res.status(200).json({ data, total });
       break;

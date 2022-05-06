@@ -12,7 +12,7 @@ export default function Serie({ data, serie }) {
   return (
     <>
       <Head>
-        <title>{serie} - Hoshi Manga</title>
+        <title>{serie} | Hoshi Manga</title>
       </Head>
 
       <Ruta items={items} />

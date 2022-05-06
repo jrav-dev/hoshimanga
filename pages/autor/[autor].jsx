@@ -12,7 +12,7 @@ export default function Autor({ data, autor }) {
   return (
     <>
       <Head>
-        <title>{autor} - Hoshi Manga</title>
+        <title>{autor} | Hoshi Manga</title>
       </Head>
 
       <Ruta items={items} />

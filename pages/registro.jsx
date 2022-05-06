@@ -81,7 +81,7 @@ function Login() {
             name="nombre"
             value={params.nombre}
             onChange={leerDato}
-            error={errors && errors.string}
+            error={errors && errors.nombre}
           />
 
           <FieldsetInput
@@ -90,7 +90,7 @@ function Login() {
             name="apellidos"
             value={params.apellidos}
             onChange={leerDato}
-            error={errors && errors.string}
+            error={errors && errors.apellidos}
           />
 
           <FieldsetInput
@@ -103,7 +103,7 @@ function Login() {
           />
 
           <FieldsetInput
-            tipo="text"
+            tipo="password"
             text="Contraseña"
             name="password"
             value={params.password}
