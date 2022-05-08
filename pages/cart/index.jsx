@@ -135,8 +135,9 @@ const Cart = () => {
 
         let errors = validateParams();
 
-        if (Object.keys(errors).length > 1) {
+        if (Object.keys(errors).length > 0) {
           setErrors(errors);
+          toast.warning("Rellene los campos vacíos")
         } else {
           fetch("/api/usuarios/editar", {
             method: "POST",
@@ -148,9 +149,9 @@ const Cart = () => {
           });
 
           setErrors(null);
+          setStep(3);
         }
 
-        setStep(3);
         break;
     }
   };
@@ -163,27 +164,24 @@ const Cart = () => {
 
       <div className={style.app__cart__steps}>
         <div
-          className={`flexible ${style.app__cart__steps__step} ${
-            step === 1 ? style.app__cart__steps__step__active : ""
-          }`}
+          className={`flexible ${style.app__cart__steps__step} ${step === 1 ? style.app__cart__steps__step__active : ""
+            }`}
         >
-          <p className="flexible">1</p>
+          <p onClick={() => cart && setStep(1)} className="flexible">1</p>
           <p>Productos</p>
         </div>
 
         <div
-          className={`flexible ${style.app__cart__steps__step} ${
-            step === 2 ? style.app__cart__steps__step__active : ""
-          }`}
+          className={`flexible ${style.app__cart__steps__step} ${step === 2 ? style.app__cart__steps__step__active : ""
+            }`}
         >
-          <p className="flexible">2</p>
+          <p onClick={() => cart && setStep(2)} className="flexible">2</p>
           <p>Datos</p>
         </div>
 
         <div
-          className={`flexible ${style.app__cart__steps__step} ${
-            step === 3 ? style.app__cart__steps__step__active : ""
-          }`}
+          className={`flexible ${style.app__cart__steps__step} ${step === 3 ? style.app__cart__steps__step__active : ""
+            }`}
         >
           <p className="flexible">3</p>
           <p>Pago</p>
@@ -222,13 +220,25 @@ const Cart = () => {
             </div>
           </div>
 
-          {cart && step < 3 && (
-            <Boton
-              texto={step === 3 ? "Realizar pedido" : "Continuar"}
-              click={handleClickNextStep}
-              clase={style.app__cart__boton__compra}
-            />
-          )}
+          {cart && <>
+            {step < 3 && (
+              <Boton
+                texto={step === 3 ? "Realizar pedido" : "Continuar"}
+                click={handleClickNextStep}
+                clase={style.app__cart__boton__compra}
+              />
+            )}
+            {step === 3 && (
+              <Boton
+                texto='Volver a los datos de facturación'
+                click={() => {
+                  setStep(2);
+                  handleClickNextStep()
+                }}
+                clase={style.app__cart__boton__compra}
+              />
+            )}
+          </>}
         </div>
       </div>
     </>

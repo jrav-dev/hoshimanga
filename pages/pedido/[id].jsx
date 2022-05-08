@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Head from "next/head";
 import React from "react";
 import style from "./Pedido.module.css";
@@ -47,7 +48,7 @@ const Cuenta = ({ data }) => {
               {item.nombre} - {item.tomo}
             </p>
 
-            <p>{item.precio} €</p>
+            <p>{item.precio.toFixed(2)} €</p>
 
             <p>{parseFloat(item.total).toFixed(2)} €</p>
 

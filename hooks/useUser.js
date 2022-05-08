@@ -13,6 +13,7 @@ export default function useUser() {
 
   const removeUser = () => {
     window.localStorage.removeItem("user")
+    window.localStorage.removeItem("cart")
     window.location.href = "/"
   }
 
