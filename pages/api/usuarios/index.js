@@ -5,8 +5,9 @@ import bcryptjs from "bcryptjs";
 connectDB();
 
 export default async function handler(req, res) {
-  const { method, body: params } = req;
+  const { method, body } = req;
 
+  console.log(body)
   switch (method) {
     case "GET":
       const params = req.query;
@@ -47,9 +48,10 @@ export default async function handler(req, res) {
       break;
 
     case "POST":
-      const usuario = new Usuario(params);
+      const usuario = new Usuario(body);
       usuario.password = await bcryptjs.hash(usuario.password, 10);
       usuario.save();
+      
       res.json(usuario);
       break;
 

@@ -161,6 +161,11 @@
 
 /* --- */
 
+.app__header__user {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .app__header__user > * {
   margin-left: 0.8rem;
 }

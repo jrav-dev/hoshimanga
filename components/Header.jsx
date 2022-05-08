@@ -39,7 +39,7 @@ const Header = () => {
                 </a>
               </Link>
 
-              <span onClick={removeUser}>Cerrar Sessión</span>
+              <span onClick={removeUser}>Cerrar Sesión</span>
             </div>
           ) : (
             <Link href="/login">Iniciar Sesión</Link>

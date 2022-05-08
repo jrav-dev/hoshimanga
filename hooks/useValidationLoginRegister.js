@@ -5,7 +5,7 @@ export default function useValidationLoginRegister(params) {
 
   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
   let regexPassword = /[a-zA-Z0-9]{6,}$/;
-  let regexString = /[a-zA-Z]{3,40}$/;
+  let regexString = /^[a-zA-Z\u00C0-\u017F\s]+$/;
 
   let msgErrors = {
     string: "Debe tener entre 3 y 40 carácteres.",

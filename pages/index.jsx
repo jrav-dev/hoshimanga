@@ -15,13 +15,7 @@ const Home = ({ data }) => {
         <title>Hoshi Manga</title>
       </Head>
 
-      <div className={style.titulo}>
-        <h2>Últimas Novedades</h2>
-
-        <Link href="/novedades">
-          <a>Ver más <Icono icono='bi bi-link' /></a>
-        </Link>
-      </div>
+      <h2>Últimas Novedades</h2>
 
       <ListOfCards array={data.mangas} />
     </>
