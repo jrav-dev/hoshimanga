@@ -40,7 +40,11 @@
 /* --- */
 
 .app__cart__product {
-  grid-template-columns: 80px 2fr 0.8fr 0.8fr 1fr 0.5fr;
+  grid-template-columns: 1.5fr 0.8fr 0.8fr 1fr 0.5fr;
+}
+
+.app__cart__product > *:first-child {
+  display: none;
 }
 
 .app__cart__product_cantidad {
@@ -86,6 +90,16 @@
 .app__cart__methods__pay > div {
   display: flex;
   justify-content: center;
+}
+
+@media screen and (min-width: 500px) {
+  .app__cart__product {
+    grid-template-columns: 80px 2fr 0.8fr 0.8fr 1fr 0.5fr;
+  }
+
+  .app__cart__product > *:first-child {
+    display: flex;
+  }
 }
 
 @media screen and (min-width: 1200px) {
