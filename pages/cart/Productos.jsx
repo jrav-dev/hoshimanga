@@ -39,7 +39,7 @@ const Productos = ({
                 {item.nombre} - {item.tomo}
               </p>
 
-              <p>{item.precio} €</p>
+              <p>{item.precio.toFixed(2)} €</p>
 
               <p>{item.total.toFixed(2)} €</p>
 
