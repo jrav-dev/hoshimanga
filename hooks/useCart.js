@@ -1,53 +1,62 @@
-import { useState } from "react";
 import { toast } from "react-toastify";
-import { useLocalStorage } from "./useLocalStorage";
 import Router from 'next/router'
+import useUser from '../hooks/useUser'
+import { aplicarDescuento, fetchPost } from "../services/funciones";
 
 export const useCart = () => {
-  const [storedValue, setValue] = useLocalStorage("cart");
+  const { user } = useUser()
 
-  const addToCart = (producto) => {
-    const cart = JSON.parse(window.localStorage.getItem("cart"));
+  const addToCart = async (producto) => {
+    if (user) {
+      const carritoExists = await fetchPost('/api/carrito', {
+        id_producto: producto._id,
+        usuario: user._id
+      })
 
-    let productCart = {
-      _id: producto._id,
-      nombre: producto.nombre,
-      precio: parseFloat(
-        (producto.precio - Math.floor(producto.precio * 5) / 100).toFixed(2)
-      ),
-      imagen: producto.imagen,
-      tomo: producto.tomo,
-      cantidad: 1,
-      total: parseFloat(
-        (producto.precio - Math.floor(producto.precio * 5) / 100).toFixed(2)
-      ),
-    };
+      const precioDescuento = aplicarDescuento(producto.precio)
 
-    if (cart === undefined || cart === null) {
-      setValue([productCart]);
-      toast.success("Articulo añadido a la cesta");
-    } else {
-      const productExists = cart.filter((item) => item._id === productCart._id);
+      if (carritoExists.msg) {
+        let carrito = {
+          usuario: user._id,
+          importe: precioDescuento,
+          productos: [{
+            producto: producto._id,
+            cantidad: 1,
+            precio: precioDescuento,
+            total: precioDescuento,
+          }],
+        }
 
-      if (productExists.length === 1) {
-        cart.map((item) => {
-          if (item._id === productCart._id) {
-            item.cantidad += 1;
-            console.log(item.cantidad)
-            item.total += item.precio;
-          }
-        });
-        toast.success(`Ha añadido otra unidad a '${productCart.nombre}'`);
+        await fetchPost('/api/carrito/insertar', carrito)
       } else {
-        cart.push(productCart);
-        toast.success("Articulo añadido a la cesta");
-      }
-      setValue(cart);
-    }
+        const productExists = carritoExists.productos.find(product => product.producto._id === producto._id)
 
-    setInterval(() => {
+        if (productExists === undefined) {
+          carritoExists.importe = parseFloat((carritoExists.importe + precioDescuento).toFixed(2))
+          carritoExists.productos.push({
+            producto: producto._id,
+            cantidad: 1,
+            precio: precioDescuento,
+            total: precioDescuento,
+          })
+
+        } else {
+          const index = carritoExists.productos.findIndex(product => product.producto._id === producto._id)
+
+          productExists.cantidad = productExists.cantidad + 1
+          productExists.total = productExists.precio + precioDescuento
+
+          carritoExists.productos[index] = productExists
+          carritoExists.importe = parseFloat((carritoExists.importe + precioDescuento).toFixed(2))
+        }
+
+        await fetchPost('/api/carrito/add-product', carritoExists)
+      }
+      toast.success("Producto agregado al carrito")
       window.location.href = window.location.pathname
-    }, 3000)
+    } else {
+      toast.error("Debes iniciar sesión para poder agregar productos al carrito");
+    }
   };
 
   return { addToCart };

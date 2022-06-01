@@ -1,11 +1,15 @@
-.form_container,
-.errors {
+.form_container {
   width: 100%;
   margin: 1rem auto;
+  /* background-color: white; */
+  border-radius: 1rem;
+  box-shadow: var(--sombra);
 }
 
 .form_container > h2 {
+  margin-bottom: 3rem;
   text-align: center;
+  /* color: black; */
 }
 
 /* BOTONES */
@@ -27,9 +31,15 @@
   height: 100%;
 }
 
+/* --- */
+
+.form_container form > div > span {
+  cursor: pointer;
+}
+
 @media screen and (min-width: 600px) {
-  .form_container,
-  .errors {
-    width: 500px;
+  .form_container {
+    width: 450px;
+    padding: 3rem 2rem;
   }
 }

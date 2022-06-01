@@ -1,0 +1,8 @@
+body.dark {
+  --blanco: white;
+  
+  --azul-claro: rgb(0, 166, 251);
+  --azul: rgb(0, 100, 148);
+  --azul-oscuro-claro: rgb(0, 53, 84);
+  --azul-oscuro: rgb(6, 33, 46);
+}

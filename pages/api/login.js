@@ -6,8 +6,6 @@ connectDB();
 
 export default async function handler(req, res) {
 
-  console.log(req.body)
-
   const usuario = await Usuario.findOne({ email: req.body.email }).lean();
 
   if (usuario) {

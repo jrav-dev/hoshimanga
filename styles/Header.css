@@ -15,6 +15,10 @@
   position: relative;
 }
 
+.app__header__row > div > i:last-child {
+  margin-left: 1rem;
+}
+
 .app__header__row:first-child {
   background-color: var(--azul-oscuro);
 }
@@ -29,6 +33,11 @@
 .app__header__row:last-child {
   height: 59px;
   background-color: var(--azul);
+  color: white;
+}
+
+.app__header__row:last-child a {
+  color: white;
 }
 
 .app__header__row:last-child > div {
@@ -84,20 +93,38 @@
 /* CARRITO */
 
 .app__header__cart {
-  position: relative;
   cursor: pointer;
 }
 
-.app__header__cart span {
-  width: 20px;
-  height: 20px;
-  background-color: var(--rojo);
-  border-radius: 50%;
-  color: white;
+.app__carrito__container {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--azul-oscuro);
+  color: var(--blanco);
+  box-shadow: var(--sombra);
+  position: fixed;
+  top: 100px;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+}
 
-  position: absolute;
-  top: -7px;
-  right: -10px;
+.app__carrito__productos {
+  height: calc(100% - 150px);
+  overflow-y: auto;
+}
+
+.app__carrito__total {
+  padding: 0.5rem 0;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app__carrito__boton {
+  width: 100%;
+  background-color: var(--azul-oscuro);
 }
 
 /* BUSCADOR */
@@ -127,14 +154,14 @@
 
 .app__form__search input,
 .app__form__search button {
-  padding: 0.8rem 1rem;
+  padding: 0.5rem 1rem;
   color: white;
   border: 1px solid var(--azul-oscuro-claro);
 }
 
 .app__form__search input {
   width: calc(100% - 80px);
-  background-color: var(--azul-oscuro-claro);
+  background-color: var(--azul);
   border-right: 0;
   outline: 0;
 }
@@ -145,18 +172,9 @@
 
 .app__form__search button {
   width: 80px;
-  background-color: var(--azul-oscuro-claro);
+  background-color: var(--azul);
   border-left: 0;
   cursor: pointer;
-}
-
-.app__form__search__show i {
-  font-size: 1.3rem;
-  position: absolute;
-  top: 7px;
-  left: calc(100% - 105px);
-  cursor: pointer;
-  transition: all 500ms;
 }
 
 /* --- */
@@ -172,6 +190,12 @@
 
 .app__header__user p span {
   margin: 0 0.3rem;
+}
+
+@media screen and (min-width: 500px) {
+  .app__carrito__container {
+    width: 350px;
+  }
 }
 
 /* MEDIA QUERY - PC */
@@ -193,10 +217,6 @@
     padding: 0;
   }
 
-  .app__header__row:last-child {
-    height: auto;
-  }
-
   /* NAV */
 
   .app__header__nav {
@@ -214,32 +234,26 @@
   }
 
   .app__header__nav li {
-    width: 95px;
-    margin: 0;
-    padding: 1.3rem 0.5rem;
+    padding: 0 1rem;
     text-align: center;
     position: relative;
     overflow: hidden;
-    transition: background 500ms ease;
+    transition: all 500ms ease;
   }
 
-  .app__header__nav a::after {
-    width: 100%;
-    height: 4px;
+  .app__header__nav li::after {
+    width: 50%;
+    height: 2px;
     background-color: white;
+    border-radius: 1rem;
     position: absolute;
-    top: 0;
-    left: 0;
+    bottom: 0;
+    left: calc((100% - 50%) / 2);
     content: "";
     opacity: 0;
-    transition: opacity 500ms ease;
   }
 
-  .app__header__nav li:hover {
-    background-color: var(--azul-oscuro-claro);
-  }
-
-  .app__header__nav {
+  .app__header__nav li:hover::after {
     opacity: 1;
   }
 

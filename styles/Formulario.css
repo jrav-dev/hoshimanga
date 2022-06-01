@@ -26,10 +26,11 @@
   height: 50px;
   padding: 0.8rem 1rem;
 
-  background-color: var(--azul-oscuro);
-  border: 2px solid var(--azul-oscuro);
-  border-radius: 0.3rem;
-  color: white;
+  background-color: transparent;
+  border-width: 0 0 2px 0;
+  border-style: solid;
+  border-color: var(--azul);
+  color: var(--blanco);
   font-size: 1rem;
   outline: none;
   transition: border 300ms ease;

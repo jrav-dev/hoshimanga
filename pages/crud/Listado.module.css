@@ -7,6 +7,7 @@
 
 .listado__table thead tr {
   background-color: var(--azul);
+  color: white;
 }
 
 .listado__table__row:nth-child(even) {

@@ -16,8 +16,7 @@ function Login() {
     email: "",
     password: "",
   });
-  const { validarRegistro, errors, setErrors, emailExists } =
-    useValidationLoginRegister(params);
+  const { validarUsuario, errors, emailExists } = useValidationLoginRegister(params);
 
   const leerDato = (e) => {
     const { name, value } = e.target;
@@ -27,7 +26,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let validacionOK = validarRegistro();
+    let validacionOK = validarUsuario();
 
     if (validacionOK) {
       const emailIfExists = await emailExists(params.email);

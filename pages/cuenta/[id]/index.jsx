@@ -25,7 +25,7 @@ const Cuenta = ({ data }) => {
 
     setPaginas(pages);
     setLoading(false);
-    setDataPaginated(pedidos.pedidos);
+    setDataPaginated([]);
   };
 
   useEffect(async () => {
@@ -73,10 +73,11 @@ const Cuenta = ({ data }) => {
 
       <div className={style.app__cuenta__grid}>
         <div className={`contenedor ${style.app__cuenta__user}`}>
-          <p className={`flexible ${style.app__cuenta__user__avatar}`}>
-            {data.nombre.charAt(0).toUpperCase()}
-            {data.apellidos.charAt(0).toUpperCase()}
-          </p>
+          {data.nombre
+            && <p className={`flexible ${style.app__cuenta__user__avatar}`}>
+              {data.nombre.charAt(0).toUpperCase()}
+              {data.apellidos.charAt(0).toUpperCase()}
+            </p>}
 
           <h3 className={style.app__cuenta__user__name}>
             <span>{data.nombre}</span>
@@ -109,7 +110,7 @@ const Cuenta = ({ data }) => {
             <Loading />
           ) : (
             <>
-              <h2 className="borde__gris">Historial de Pedidos</h2>
+              <h2 className="borde__contenedor">Historial de Pedidos</h2>
 
               {dataPaginated.length > 0 ? <>
                 <div
@@ -167,7 +168,7 @@ Cuenta.getInitialProps = async ({ query }) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/usuarios/${id}`);
   const data = await response.json();
 
-  return { data };
+  return { data: [] };
 };
 
 export default Cuenta;

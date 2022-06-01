@@ -1,69 +1,49 @@
-.producto > article {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.producto {
+  margin: 2rem 0;
+  display: grid;
+  gap: 1rem;
 }
 
-.producto > article > * {
-    margin: 1rem 0;
+.producto > div:first-child {
+  width: 300px;
+  margin: 0 auto;
+  position: relative;
 }
 
-/* IMAGEN */
-
-.producto__imagen > * {
-  height: 400px;
+.producto > div > img {
+  width: 100%;
+  border-radius: 0.5rem;
 }
 
-/* TITULO PRODUCTO */
-
-.producto > article h2 {
-  font-size: 2rem;
-  letter-spacing: 2px;
-}
-
-/* INFO */
-
-.producto > article:last-child b {
-  font-size: 1rem;
-}
-
-.producto > article:last-child p > a {
-  margin-left: 0.5rem;
-  font-size: 1.3rem;
-  color: var(--azul-claro);
-}
-
-.producto > article:last-child p > a:hover {
-  color: var(--gris-claro);
-}
-
-/* DISPONIBILIDAD */
-
-.en_stock,
-.agotado {
-  margin-left: 0.5rem;
-  font-size: 1.4rem;
+.disponibilidad {
+  padding: 0.1rem 0.8rem;
+  border-radius: 0.5rem 0 0.5rem;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .en_stock {
-  color: var(--verde);
+  background-color: var(--verde);
 }
 
 .agotado {
-  color: var(--rojo);
+  background-color: var(--rojo);
 }
 
-/* PRECIO */
+/* --- */
 
-.precio > del {
-  font-size: 1.2rem;
-  color: var(--gris-claro);
+.producto > div:nth-child(2) h2 {
+  text-align: center;
 }
 
-.precio > span {
-  margin-left: 0.8rem;
-  font-size: 2rem;
-  color: var(--azul-claro);
+.producto > div:nth-child(2) a {
+  color: var(--azul);
+}
+
+.producto > div:nth-child(2) > * {
+  margin: 1rem 0;
 }
 
 .producto button {
@@ -74,20 +54,12 @@
 /* DESCRIPCIÓN */
 
 .descripcion {
-  padding-top: 1rem;
   text-align: justify;
 }
 
 /* INFO */
 
-.caracteristicas {
-  margin: 2rem 0;
-  display: grid;
-  grid-template-columns: auto;
-  gap: 4rem;
-}
-
-.caracteristicas > article:last-child > div {
+.caracteristicas > div {
   padding: 1rem 0;
 
   border-width: 0 0 1px 0;
@@ -98,50 +70,40 @@
   align-items: center;
 }
 
-.caracteristicas > article:last-child > div > span {
+.caracteristicas > div > span {
   margin-left: 0.5rem;
 }
 
 @media screen and (min-width: 700px) {
   .producto {
-    width: 100%;
-    margin: 0 auto;
-    margin-top: 2rem;
-    margin-bottom: 3rem;
-    display: grid;
-    grid-template-columns: 350px auto;
-    grid-template-rows: 500px;
-  }
-
-  .producto > article {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
+    grid-template-columns: 1fr 1fr;
   }
 
   .caracteristicas {
-    grid-template-columns: 300px auto;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  .producto {
-    width: 80%;
-    grid-template-columns: 500px auto;
-  }
-
-  .caracteristicas {
-    grid-template-columns: 400px auto;
+    grid-column: 1 / 3;
   }
 }
 
 @media screen and (min-width: 1200px) {
   .producto {
-    width: 70%;
+    display: flex;
   }
 
-  .caracteristicas {
-    grid-template-columns: 700px auto;
+  /* --- */
+
+  .producto > div:nth-child(2) {
+    width: calc(100% - 650px);
+    padding: 0 1rem;
+  }
+
+  .producto > div:nth-child(2) h2 {
+    margin-top: 0;
+    text-align: left;
+  }
+
+  /* --- */
+
+  .producto > div:last-child {
+    width: 350px;
   }
 }

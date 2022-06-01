@@ -38,25 +38,43 @@ export default function Manga({ manga }) {
 
       <Ruta items={items} />
 
-      <section className={style.producto}>
-        <div className={`flexible ${style.producto__imagen}`}>
-          <img src={`/img/${manga.imagen}`} alt={manga.nombre} />
+      <div className={style.producto}>
+        <div>
+          <img
+            className={style.producto__imagen}
+            src={`/img/${manga.imagen}`}
+            alt={manga.nombre}
+          />
+          <span className={`${style.disponibilidad} ${disponibilidad.ok
+            ? style.en_stock
+            : style.agotado}`}>
+            {disponibilidad.estado}
+          </span>
         </div>
 
-        <article>
+        <div>
           <h2>{nombre} - {manga.tomo < 10 ? '0' + manga.tomo : manga.tomo}</h2>
+
+          <div className={style.descripcion}>
+            {descripcion.map((item, i) => (
+              item === "" ? <br /> : <p key={i}>{item}</p>
+            ))}
+          </div>
 
           <div>
             <p>
               <b>Editorial: </b>
-              <Link href={`/editorial/${manga.editorial.replace(/ /g, "_")}`}>{manga.editorial}</Link>
+              <Link href={`/editorial/${manga.editorial.replace(/ /g, "_")}`}>
+                {manga.editorial}
+              </Link>
             </p>
 
             <p>
               <b>Autores: </b>
               {autores.map((item, i) => (
-                <><Link href={`/autor/${item.trim().replace(/ /g, "_")}`} key={i}>{item.trim()}</Link>
-                  {i + 1 < autores.length ? ', ' : null}</>
+                <Link key={i} href={`/autor/${item.trim().replace(/ /g, "_")}`}>
+                  <a><span>{item.trim()}</span></a>
+                </Link>
               ))}
             </p>
 
@@ -66,27 +84,12 @@ export default function Manga({ manga }) {
             </p>
           </div>
 
-          <p>
-            <b>Disponibilidad: </b>
-            <span className={disponibilidad.ok ? style.en_stock : style.agotado}>
-              {disponibilidad.estado}
-            </span>
-          </p>
-
           <Precio precio={manga.precio} precioDescuento={precio} />
 
           {manga.stock > 0 && <Boton texto='Añadir a la cesta' icono='bi bi-cart2' click={() => addToCart(manga)} />}
-        </article>
-      </section>
-
-      <section className={style.caracteristicas}>
-        <div className={style.descripcion}>
-          {descripcion.map((item, i) => (
-            item === "" ? <br /> : <p key={i}>{item}</p>
-          ))}
         </div>
 
-        <article>
+        <div className={style.caracteristicas}>
           <div>
             <b>ISBN: </b>
             <span>{manga.isbn}</span>
@@ -111,8 +114,8 @@ export default function Manga({ manga }) {
             <b>Tamaño: </b>
             <span>{manga.tamaño}</span>
           </div>
-        </article>
-      </section>
+        </div>
+      </div>
     </>
   )
 }

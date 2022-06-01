@@ -7,10 +7,14 @@ export default async function handler(req, res) {
   const params = req.body;
 
   try {
-    const newParams = new Carrito(params);
-    newParams.save();
+    const carrito = await Carrito.findByIdAndUpdate({
+      _id: params._id,
+    }, {
+      productos: params.productos,
+      importe: params.importe,
+    })
 
-    res.status(201).json(newParams);
+    res.status(201).json(carrito);
   } catch (error) {
     console.log("Error: " + error);
   }

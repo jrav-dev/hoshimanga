@@ -1,17 +1,11 @@
-import mongoose from 'mongoose'
+import { Schema, model, models } from 'mongoose'
 
-const EditorialSchema = new mongoose.Schema({
-  nombre: {
-    type: String,
-    required: true,
-  },
-  imagen: {
-    type: String,
-    required: false,
-  }
+const EditorialSchema = new Schema({
+  nombre: String,
+  imagen: String
 }, {
   timestamps: true,
   versionKey: false
 })
 
-export default mongoose.models.Editorial || mongoose.model("Editorial", EditorialSchema)
+export default models.Editorial || model("Editorial", EditorialSchema)

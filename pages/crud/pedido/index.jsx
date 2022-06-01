@@ -11,105 +11,9 @@ import style from "../Listado.module.css";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading";
 
-const CrudPedidosListado = ({ data }) => {
-  const { isOpen, openModal, closeModal } = useModal();
-  const [pedido, setPedido] = useState({});
-  const [isLoading, setLoading] = useState(false);
-  const [dataPaginated, setDataPaginated] = useState(data.pedidos);
-  const [pagina, setPagina] = useState(1)
-  const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(20);
-  const [filtros, setFiltros] = useState({
-    id: "",
-    num_pedido: "",
-  });
-
-  const pages = Math.ceil(data.total / limit);
+const CrudPedidosListado = () => {
 
   const items = [{ href: "/crud", text: "Crud" }, { text: "Pedidos" }];
-
-  const fetchData = async () => {
-    setLoading(true)
-    const response = await fetch(
-      `/api/pedidos?limit=${limit}&skip=${skip}&id=${filtros.id}` +
-      `&num_pedido=${filtros.num_pedido}`
-    );
-    const data = await response.json();
-
-    setLoading(false)
-    setDataPaginated(data.pedidos);
-  };
-
-  const borrarPedidos = async () => {
-    window.location.href = window.location.pathname;
-    closeModal();
-    toast.success("Pedido borrado correctamente");
-
-    await fetch(`/api/pedidos/${pedido._id}/borrar`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-  };
-
-  // Se ejecuta cuando cambia el skip
-
-  useEffect(async () => {
-    await fetchData();
-  }, [skip]);
-
-  // Se ejecuta cuando cambia el limite
-
-  useEffect(async () => {
-    await fetchData();
-  }, [limit]);
-
-  // METODOS PAGINACION
-
-  const prevPage = () => {
-    if (skip > 0) {
-      setSkip(skip - limit);
-      setPagina(parseInt(pagina) - 1)
-    }
-  };
-
-  const nextPage = () => {
-    if (dataPaginated.length === limit) {
-      setSkip(skip + limit);
-      setPagina(parseInt(pagina) + 1)
-    }
-  };
-
-  // FILTROS
-
-  const leerDato = (e) => {
-    const { name, value } = e.target;
-    setFiltros({ ...filtros, [name]: value });
-  };
-
-  const handleClickFilter = async () => {
-    await fetchData();
-    setPagina(1)
-    setSkip(0)
-  };
-
-  // VACIAR FILTROS
-
-  const handleClickClearFilter = async () => {
-    setFiltros({
-      id: "",
-      num_pedido: "",
-    });
-
-    await fetchData();
-  };
-
-  const formatDate = (date) => {
-    let fecha = new Date(date);
-    return `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
-  };
 
   return (
     <>
@@ -123,7 +27,7 @@ const CrudPedidosListado = ({ data }) => {
         <h2>Listado de Pedidos</h2>
       </div>
 
-      <div className="app__listado__filtros contenedor">
+      {/* <div className="app__listado__filtros contenedor">
         <div className="app__listado__filtros__grid">
           <FieldsetInput
             tipo="text"
@@ -157,9 +61,9 @@ const CrudPedidosListado = ({ data }) => {
             clase="rojo"
           />
         </div>
-      </div>
+      </div> */}
 
-      {isLoading ? <Loading />
+      {/* {isLoading ? <Loading />
         : <>
           <Paginacion
             limit={limit}
@@ -230,27 +134,27 @@ const CrudPedidosListado = ({ data }) => {
             dataPaginated={dataPaginated}
             total={dataPaginated.length}
           />
-        </>}
+        </>} */}
 
 
-      {isOpen && (
+      {/* {isOpen && (
         <ModalConfirmacion
           closeModal={closeModal}
           onClick={borrarPedidos}
           text={`¿Estás seguro de que quieres borrar el pedido '${pedido.num_pedido}'?`}
         />
-      )}
+      )} */}
     </>
   );
 };
 
-CrudPedidosListado.getInitialProps = async () => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/pedidos?limit=20&skip=0`
-  );
-  const data = await response.json();
+// CrudPedidosListado.getInitialProps = async () => {
+//   const response = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_URL}/pedidos?limit=20&skip=0`
+//   );
+//   const data = await response.json();
 
-  return { data };
-};
+//   return { data };
+// };
 
 export default CrudPedidosListado;

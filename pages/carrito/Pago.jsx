@@ -6,34 +6,26 @@ import Head from "next/head";
 import style from "../../styles/Cart.module.css";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Confirmacion from "./confirmacion";
+import { fetchPost } from "../../services/funciones";
 
-const Pago = ({ total, productos, user }) => {
+const Pago = ({ total, carrito, user }) => {
   const [pedido, setPedido] = useState(null);
 
-  const addPayCart = () => {
-    fetch(`/api/carrito/insertar`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        params: {
-          usuario: user._id,
-          productos: productos.map((item) => {
-            return { _id: item._id, cantidad: item.cantidad };
-          }),
-          precio: total.toFixed(2),
-        },
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        window.localStorage.removeItem("cart");
-        setPedido({
-          num_pedido: data.num_pedido,
-          id: data._id,
-        });
-      });
+  const addPayCart = async () => {
+    const num_pedido = Math.floor(Math.random() * 9000000) + 1000000;
+
+    const newPedido = {
+      num_pedido,
+      importe: carrito.importe,
+      usuario: carrito.usuario,
+      productos: carrito.productos,
+    }
+
+    await fetchPost('/api/carrito/borrar', { _id: carrito._id })
+    await fetchPost('/api/pedido/nuevo', newPedido)
+
+    console.log(newPedido)
+    setPedido(newPedido)
   };
 
   return (
@@ -43,7 +35,7 @@ const Pago = ({ total, productos, user }) => {
           src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}`}
         ></Script> */}
 
-        <h2 className="borde__gris">Métodos de Pago</h2>
+        <h2 className="borde__contenedor">Métodos de Pago</h2>
 
         <div className={`${style.app__cart__methods__pay} contenedor`}>
           <PayPalScriptProvider>
@@ -70,7 +62,7 @@ const Pago = ({ total, productos, user }) => {
         </div>
       </div>
 
-      {pedido && <Confirmacion num_pedido={pedido.num_pedido} id={pedido.id} />}
+      {pedido && <Confirmacion num_pedido={pedido.num_pedido} id={pedido.usuario} />}
     </>
   );
 };

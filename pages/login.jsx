@@ -1,14 +1,9 @@
 import Head from "next/head";
-import Link from "next/link";
-import Router from "next/router";
 import React, { useState } from "react";
 import Boton from "../components/Boton";
 import BotonLink from "../components/BotonLink";
-import Modal from "../components/Modal";
-import useModal from "../hooks/useModal";
 import useValidationLoginRegister from "../hooks/useValidationLoginRegister";
 import { toast } from "react-toastify";
-
 import style from "../styles/Login-Register.module.css";
 import { FieldsetInput } from "../components/Fieldset";
 
@@ -17,14 +12,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [newPassword, setNewPassword] = useState("");
-  const { validarLogin, errors, setErrors } =
-    useValidationLoginRegister(params);
-  const { isOpen, openModal, closeModal } = useModal();
-
-  const handleClickResetPassword = () => {
-    openModal();
-  };
+  const { validarUsuario, errors } = useValidationLoginRegister(params);
 
   const leerDato = (e) => {
     const { name, value } = e.target;
@@ -34,7 +22,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let validacionOK = validarLogin();
+    let validacionOK = validarUsuario();
 
     if (validacionOK) {
       const response = await fetch(`/api/login`, {
@@ -44,7 +32,6 @@ const Login = () => {
         },
         body: JSON.stringify(params),
       });
-
       const data = await response.json();
 
       if (data.ok) {
@@ -58,6 +45,7 @@ const Login = () => {
             is_admin: data.usuario.is_admin,
           })
         );
+        
         window.location.href = "/";
       } else {
         toast.error("El correo electrónico introducido no existe");
@@ -70,6 +58,7 @@ const Login = () => {
       <Head>
         <title>Inicio de Sesión | Hoshi Manga</title>
       </Head>
+      
       <div className={`contenedor ${style.form_container}`}>
         <h2>Inicio de Sesión</h2>
 
@@ -92,47 +81,14 @@ const Login = () => {
               onChange={leerDato}
               error={errors && errors.password}
             />
-
-            <span onClick={handleClickResetPassword}>
-              <i className="bi bi-chat-dots"></i> Olvidaste la contraseña?
-            </span>
           </div>
 
-          <div>
+          <div className={style.botones}>
             <Boton texto="Acceder" />
             <BotonLink texto="Crear Cuenta" url="/registro" />
           </div>
         </form>
       </div>
-
-      {isOpen && (
-        <Modal closeModal={closeModal}>
-          <h2>Recuperar Contraseña</h2>
-
-          <div className={style.form_container}>
-            <FieldsetInput
-              tipo="text"
-              text="Correo Electrónico"
-              name="email"
-              value={params.email}
-              onChange={leerDato}
-              error={errors && errors.email}
-            />
-
-            <FieldsetInput
-              tipo="text"
-              text="Contraseña Nueva"
-              name="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </div>
-
-          <div className={style.botones}>
-            <Boton texto="Cambiar" />
-          </div>
-        </Modal>
-      )}
     </>
   );
 };

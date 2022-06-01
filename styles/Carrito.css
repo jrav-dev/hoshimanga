@@ -1,0 +1,39 @@
+.app__carrito__producto {
+  margin: 1rem 0;
+  display: flex;
+}
+
+.app__carrito__producto img {
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.app__carrito__info {
+  margin-left: 0.8rem;
+}
+
+.app__carrito__info > p {
+  font-size: 1.2rem;
+}
+
+.app__carrito__cantidad {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.app__carrito__cantidad > i {
+  padding: 0.3rem;
+  border: 1px solid var(--gris-claro);
+  font-size: 1.3rem;
+}
+
+.app__carrito__cantidad > i:hover {
+  background-color: var(--gris-claro);
+}
+
+.app__carrito__cantidad > span {
+  padding: 0.3rem 0.8rem;
+  font-size: 1.2rem;
+}

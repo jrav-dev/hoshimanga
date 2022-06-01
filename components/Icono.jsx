@@ -1,7 +1,7 @@
 import React from "react";
 
-const Icono = ({ icono }) => {
-  return <i className={`${icono} flexible`}></i>;
+const Icono = ({ icono, click }) => {
+  return <i onClick={click} className={`${icono} flexible`}></i>;
 };
 
 export default Icono;

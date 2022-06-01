@@ -1,13 +1,19 @@
 import dbConnect from '../../../../config/db'
 import Manga from '../../../../models/Manga'
+import Editorial from '../../../../models/Editorial'
+
 dbConnect()
 
 export default async function handler(req, res) {
   const { skip, limit } = req.query
 
-  const mangas = await Manga.find({ editorial: req.query.editorial }).lean().skip(skip).limit(limit)
+  const nombre = req.query.nombre
 
-  const total = await Manga.find({ editorial: req.query.editorial }).lean().count()
+  const editorial = await Editorial.findOne({ nombre: nombre }).lean()
+
+  const mangas = await Manga.find({ editorial: editorial._id }).lean().skip(skip).limit(limit)
+  
+  const total = await Manga.find({ editorial: editorial._id }).lean().count()
 
   if (mangas.length === 0) {
     res.status(200).json({ msg: "No hay contenido de esta editorial" })

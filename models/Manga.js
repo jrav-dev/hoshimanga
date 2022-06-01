@@ -1,61 +1,25 @@
-import mongoose from 'mongoose'
+import { Schema, model, models } from 'mongoose'
 
-const MangaSchema = new mongoose.Schema({
-  nombre: {
-    type: String,
-    required: true,
+const MangaSchema = new Schema({
+  nombre: String,
+  descripcion: String,
+  editorial: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Editorial'
   },
-  descripcion: {
-    type: String,
-    required: false,
-  },
-  editorial: {
-    type: String,
-    required: true,
-  },
-  autor: {
-    type: String,
-    required: true,
-  },
-  tomo: {
-    type: Number,
-    required: true,
-  },
-  precio: {
-    type: String,
-    required: false,
-  },
-  imagen: {
-    type: String,
-    required: false,
-  },
-  fecha_publicacion: {
-    type: String,
-    required: false,
-  },
-  stock: {
-    type: Number,
-    required: false,
-  },
-  isbn: {
-    type: String,
-    required: false,
-  },
-  num_paginas: {
-    type: Number,
-    required: false,
-  },
-  formato: {
-    type: String,
-    required: false,
-  },
-  tamaño: {
-    type: String,
-    required: false,
-  }
+  autor: String,
+  tomo: Number,
+  precio: Number,
+  imagen: String,
+  fecha_publicacion: String,
+  stock: Number,
+  isbn: String,
+  num_paginas: Number,
+  formato: String,
+  tamaño: String
 }, {
   timestamps: true,
   versionKey: false
 })
 
-export default mongoose.models.Manga || mongoose.model("Manga", MangaSchema)
+export default models.Manga || model("Manga", MangaSchema)

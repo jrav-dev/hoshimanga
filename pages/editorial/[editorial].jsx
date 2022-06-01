@@ -9,6 +9,11 @@ export default function Editorial({ data, editorial }) {
     { text: editorial }
   ]
 
+  const style = {
+    color: 'white',
+    fontSize: 200
+  };
+
   return (
     <>
       <Head>
@@ -17,16 +22,15 @@ export default function Editorial({ data, editorial }) {
 
       <Ruta items={items} />
 
-      <h2 className='borde__gris'>{editorial}</h2>
+      <h2>{editorial}</h2>
 
-      {data && <div className='flexible'><h2>{data.msg}</h2></div> }
-
-
-      <ListPaginated
-        data={data.mangas}
-        total={data.total}
-        url={`/api/mangas/editorial/${editorial}`}
-      />
+      {data.msg
+        ? <div className='flexible'><h2>{data.msg}</h2></div>
+        : <ListPaginated
+          data={data.mangas}
+          total={data.total}
+          url={`/api/mangas/editorial/${editorial}`}
+        />}
     </>
   )
 }

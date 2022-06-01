@@ -1,9 +1,7 @@
 .ruta {
   margin: 0.5rem 0;
   padding: 0.5rem 1rem;
-  background-color: rgba(0, 51, 80, 0.7);
   border-radius: 0.3rem;
-
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -11,14 +9,10 @@
 }
 
 .ruta li:not(.ruta li:last-child)::after {
-  content: "/\00a0";
+  content: ">";
   margin: 0 1rem;
 }
 
 .ruta a {
   color: var(--azul-claro);
-}
-
-.ruta a:hover {
-  color: white;
 }

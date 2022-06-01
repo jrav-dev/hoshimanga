@@ -1,6 +1,7 @@
+import { aplicarDescuento } from "../services/funciones"
 
 export default function useProducto(producto) {
-  const precio = producto.precio - (Math.floor((producto.precio * 5)) / 100)
+  const precio = aplicarDescuento(producto.precio)
   const autores = producto.autor.split(',')
   const descripcion = producto.descripcion.split('\n')
   const disponibilidad = { estado: '', ok: false }

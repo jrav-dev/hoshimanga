@@ -65,7 +65,7 @@ const CrudEditorialListado = ({ data }) => {
                 <td>
                   {item.imagen ? (
                     <Image
-                      src={`/img/editoriales/${item.imagen}`}
+                      src={`/img/${item.imagen}`}
                       alt={item.nombre}
                       width={130}
                       height={80}

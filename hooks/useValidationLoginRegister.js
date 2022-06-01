@@ -1,44 +1,10 @@
 import { useState } from "react";
+import { validarEmail, validarPassword, validarString } from "../services/UtilesValidacion";
 
 export default function useValidationLoginRegister(params) {
   const [errors, setErrors] = useState(null);
 
-  let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-  let regexPassword = /[a-zA-Z0-9]{6,}$/;
-  let regexString = /^[a-zA-Z\u00C0-\u017F\s]+$/;
-
-  let msgErrors = {
-    string: "Debe tener entre 3 y 40 carácteres.",
-    password: "Debe tener más de 6 carácteres.",
-    email: "El correo electrónico no es válido.",
-  };
-
-  const validarLogin = () => {
-    let error = {};
-
-    for (const key in params) {
-      let name =
-        key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
-
-      if (params[key] === "") {
-        error[key] = `El campo '${name}' está vacio.`;
-      } else {
-        if (regexEmail.test(params.email) === false) error.email = msgErrors.email;
-
-        if (regexPassword.test(params.password) === false) error.password = msgErrors.password;
-      }
-    }
-
-    if (regexEmail.test(params.email) && regexPassword.test(params.password)) {
-      setErrors(null);
-      return true;
-    } else {
-      setErrors(error);
-      return false;
-    }
-  };
-
-  const validarRegistro = () => {
+  const validarUsuario = () => {
     setErrors(null);
     let error = {};
 
@@ -49,18 +15,18 @@ export default function useValidationLoginRegister(params) {
       if (params[key] === "") {
         error[key] = `El campo '${name}' está vacio.`;
       } else {
-        if (regexString.test(params.nombre) === false) error.nombre = msgErrors.string;
-        if (regexString.test(params.apellidos) === false) error.apellidos = msgErrors.string;
-        if (regexEmail.test(params.email) === false) error.email = msgErrors.email;
-        if (regexPassword.test(params.password) === false) error.password = msgErrors.password;
+        error.nombre = validarString(params.nombre);
+        error.apellidos = validarString(params.apellidos);
+        error.email = validarEmail(params.email);
+        error.password = validarPassword(params.password);
       }
     }
 
     if (
-      regexString.test(params.nombre) &&
-      regexString.test(params.apellidos) &&
-      regexEmail.test(params.email) &&
-      regexPassword.test(params.password)
+      validarEmail(params.email) === true &&
+      validarPassword(params.password) === true &&
+      validarString(params.nombre) === true &&
+      validarString(params.apellidos) === true
     ) {
       setErrors(null);
       return true;
@@ -76,5 +42,5 @@ export default function useValidationLoginRegister(params) {
     return data ? true : false;
   };
 
-  return { errors, setErrors, validarLogin, validarRegistro, emailExists };
+  return { errors, setErrors, validarUsuario, emailExists };
 }

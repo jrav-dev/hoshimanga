@@ -13,6 +13,8 @@ const Footer = () => {
           <Link href='https://twitter.com/'><a><Icono icono="bi bi-instagram" /></a></Link>
           <Link href='https://www.instagram.com/'><a><Icono icono="bi bi-twitter" /></a></Link>
         </div>
+
+        <p>© Hoshi Manga 2022</p>
       </div>
     </footer>
   );

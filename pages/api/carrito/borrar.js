@@ -6,12 +6,7 @@ dbConnect();
 export default async function handler(req, res) {
   const params = req.body;
 
-  try {
-    const newParams = new Carrito(params);
-    newParams.save();
+  await Carrito.findByIdAndRemove({ _id: params._id })
 
-    res.status(201).json(newParams);
-  } catch (error) {
-    console.log("Error: " + error);
-  }
+  res.status(201).json({ ok: true });
 }

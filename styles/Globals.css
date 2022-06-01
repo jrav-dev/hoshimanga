@@ -28,15 +28,19 @@
   --fuente-general: 'Baloo 2';
   --fuente-titulos: 'Sansita';
 
+  --blanco: black;
+
   --azul-claro: rgb(0, 166, 251);
   --azul: rgb(0, 100, 148);
-  --azul-oscuro-claro: rgb(0, 53, 84);
-  --azul-oscuro: rgb(6, 33, 46);
+  --azul-oscuro-claro: rgb(222, 228, 233);
+  --azul-oscuro: white;
 
   --gris-claro: rgb(211, 211, 211);
   --rojo: rgb(225, 67, 52);
   --verde: rgb(26, 168, 22);
   --amarillo: rgb(198, 164, 26);
+
+  --sombra: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 ::-webkit-scrollbar {
@@ -44,7 +48,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--azul-oscuro-claro);
+  background: var(--gris-claro);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -55,10 +59,14 @@ body {
   background-color: var(--azul-oscuro);
 }
 
+img {
+  object-fit: cover;
+}
+
 .app {
   font-size: 16px;
   font-family: var(--fuente-general), sans-serif;
-  color: white;
+  color: var(--blanco);
 }
 
 .app__main,
@@ -69,14 +77,14 @@ body {
 }
 
 .app__main {
-  min-height: 800px;
+  min-height: 900px;
   padding-top: 130px;
   padding-bottom: 2rem;
 }
 
 a {
   text-decoration: none;
-  color: white;
+  color: var(--blanco);
 }
 
 h1,
@@ -102,12 +110,19 @@ h2 {
   align-items: center;
 }
 
-.borde__gris {
+.puntos__suspensivos {
+  width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.borde__contenedor {
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
-  border-width: 0 0 1px 0;
+  border-width: 0 0 2px 0;
   border-style: solid;
-  border-color: rgb(125, 125, 125);
+  border-color: var(--azul-oscuro-claro);
 }
 
 .tag__color {
@@ -160,6 +175,22 @@ h2 {
   margin: 0 0.5rem;
 }
 
+.checkbox {
+  margin-right: 0.8rem;
+
+  background-color: white;
+  border-radius: 0.3rem;
+
+  font-size: 1.3rem;
+  color: var(--azul-claro);
+
+  cursor: pointer;
+}
+
+.checkbox__active {
+  background-color: var(--azul-claro);
+  color: white;
+}
 
 /* Filtros Listado */
 
@@ -211,18 +242,6 @@ h2 {
 }
 
 /* MEDIA QUERY */
-
-/* @media screen and (min-width: 1000px) {
-  .app__main,
-  .app__header > div > div,
-  .app__footer > div {
-    width: 1400px;
-  }
-
-  .app__main {
-    padding-top: 130px;
-  }
-} */
 
 @media screen and (min-width: 1400px) {
   .app__main,

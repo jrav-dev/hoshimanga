@@ -245,7 +245,7 @@ const CrudMangaListado = ({ data }) => {
                     ) : null}
                   </td>
 
-                  <td>{item.editorial}</td>
+                  <td>{item.editorial.nombre}</td>
 
                   <td>{parseFloat(item.precio).toFixed(2)} €</td>
 

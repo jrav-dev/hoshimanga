@@ -13,6 +13,8 @@ import '../styles/Footer.css'
 import '../styles/Formulario.css'
 import '../styles/Paginacion.css'
 import '../styles/Boton.css'
+import '../styles/Carrito.css'
+import '../styles/DarkMode.css'
 
 function MyApp({ Component, pageProps }) {
   return (

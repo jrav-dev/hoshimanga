@@ -1,50 +1,18 @@
-import mongoose from 'mongoose'
+import { Schema, model, models } from 'mongoose'
 
-const UsuarioSchema = new mongoose.Schema({
-  nombre: {
-    type: String,
-    required: true,
-  },
-  apellidos: {
-    type: String,
-    required: false,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  direccion: {
-    type: String,
-    required: false,
-  },
-  poblacion: {
-    type: String,
-    required: false,
-  },
-  pais: {
-    type: String,
-    required: false,
-  },
-  codigo_postal: {
-    type: Number,
-    required: false,
-  },
-  telefono: {
-    type: String,
-    required: false,
-  },
-  dni: {
-    type: String,
-    required: false,
-  },
+const UsuarioSchema = new Schema({
+  nombre: String,
+  apellidos: String,
+  email: String,
+  password: String,
+  direccion: String,
+  poblacion: String,
+  pais: String,
+  codigo_postal: Number,
+  telefono: Number,
+  dni: String,
   is_admin: {
     type: Boolean,
-    required: false,
     default: false
   }
 }, {
@@ -52,4 +20,4 @@ const UsuarioSchema = new mongoose.Schema({
   versionKey: false
 })
 
-export default mongoose.models.Usuario || mongoose.model("Usuario", UsuarioSchema)
+export default models.Usuario || model("Usuario", UsuarioSchema)

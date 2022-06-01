@@ -2,34 +2,31 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import Router from 'next/router'
 import Ruta from "../../components/Ruta";
-import Loading from '../../components/Loading'
 import style from "./Mangas.module.css";
-import ListOfCards from "../../components/ListOfCards";
 import ListOfFilters from "../../components/ListOfFilters";
-import Paginacion from "../../components/Paginacion";
 import Icono from "../../components/Icono";
 import Boton from "../../components/Boton";
 import ListPaginated from "../../components/ListPaginated";
+import Paginacion from "../../components/Paginacion";
+import ListOfCards from "../../components/ListOfCards";
+import Loading from "../../components/Loading";
 
 export default function Mangas({ data, keyword }) {
   const [showFiltros, setShowFiltros] = useState(false);
   const [filtrosMenu, setFiltrosMenu] = useState(data.filtrosMenu);
-  const [dataPaginated, setDataPaginated] = useState(data.mangas);
-  const [isLoading, setLoading] = useState(false);
-  const [pagina, setPagina] = useState(1)
-  const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(20);
   const [filtros, setFiltros] = useState({
     nombre: "",
     editorial: "",
     disponibilidad: "",
   });
+  const [dataPaginated, setDataPaginated] = useState(data);
+  const [isLoading, setLoading] = useState(false);
+  const [pagina, setPagina] = useState(1)
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(20);
 
   const pages = Math.ceil(data.total / limit);
-
-  const items = [{ text: "Mangas" }];
 
   const fetchData = async (filtros) => {
     setLoading(true)
@@ -71,7 +68,7 @@ export default function Mangas({ data, keyword }) {
     }
   };
 
-  // FILTROS
+  const items = [{ text: "Mangas" }];
 
   const handleClickFilter = async (index, i) => {
     let copy = [];
@@ -123,8 +120,6 @@ export default function Mangas({ data, keyword }) {
     setFiltrosMenu(copy);
   };
 
-  // VACIAR FILTROS
-
   const handleClickRemoveFilter = async (filtro) => {
     if (filtro === "keyword") {
       window.location.href = "/mangas";
@@ -148,7 +143,9 @@ export default function Mangas({ data, keyword }) {
       </div>
 
       <div className={style.app__mangas__grid}>
-        <div className={`${style.app__mangas__filtros} ${showFiltros ? style.app__mangas__filtros__show : style.app__mangas__filtros__hide}`}>
+        <div className={`${style.app__mangas__filtros} ${showFiltros
+          ? style.app__mangas__filtros__show
+          : style.app__mangas__filtros__hide}`}>
           <div>
             {keyword && <>
               <h4>Búsqueda</h4>
@@ -175,12 +172,46 @@ export default function Mangas({ data, keyword }) {
         </div>
 
         <div>
-          <ListPaginated
-            data={data.mangas}
-            total={data.total}
-            clase={style.app__products}
-            url='/api/mangas'
-          />
+          {isLoading
+            ? <Loading />
+            : <>
+              {dataPaginated.length > 0
+                ? <>
+                  <Paginacion
+                    limit={limit}
+                    skip={skip}
+                    pages={pages}
+                    page={pagina}
+                    nextPage={nextPage}
+                    prevPage={prevPage}
+                    setLimit={setLimit}
+                    setSkip={setSkip}
+                    setPagina={setPagina}
+                    dataPaginated={dataPaginated}
+                    total={dataPaginated.length}
+                  />
+
+                  <div className={style.app__products}>
+                    <ListOfCards array={dataPaginated} />
+                  </div>
+
+                  <Paginacion
+                    limit={limit}
+                    skip={skip}
+                    pages={pages}
+                    page={pagina}
+                    nextPage={nextPage}
+                    prevPage={prevPage}
+                    setLimit={setLimit}
+                    setSkip={setSkip}
+                    setPagina={setPagina}
+                    dataPaginated={dataPaginated}
+                    total={dataPaginated.length}
+                  />
+                </>
+                : <h2 className="flexible">No hay productos con los filtros seleccionados</h2>
+              }
+            </>}
         </div>
       </div>
     </>

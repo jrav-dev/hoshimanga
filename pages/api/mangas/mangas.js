@@ -1,7 +1,5 @@
-import dbConnect from "../../../config/db";
 import Manga from "../../../models/Manga";
-
-dbConnect();
+import Editorial from "../../../models/Editorial";
 
 export default async function handler(req, res) {
   const params = req.query;
@@ -28,6 +26,9 @@ export default async function handler(req, res) {
         } else {
           filtrosKeys[key] = 0;
         }
+      } else if (key === "editorial") {
+        let editorial = await Editorial.findOne({ nombre: filtros[key] }).lean();
+        filtrosKeys[key] = editorial._id;
       } else if (key === "nombre") {
         filtrosKeys[key] = new RegExp(filtros[key], "i");
       } else {
@@ -38,7 +39,7 @@ export default async function handler(req, res) {
 
   const total = await Manga.find().lean().count();
 
-  let mangas = await Manga.find(filtrosKeys).lean()
+  let mangas = await Manga.find(filtrosKeys).populate('editorial').lean()
 
   if (mangas.length > limit) {
     mangas = mangas.slice(parseInt(skip), parseInt(skip) + parseInt(limit));

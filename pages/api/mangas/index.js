@@ -1,6 +1,7 @@
 import dbConnect from "../../../config/db";
 import Manga from "../../../models/Manga";
 import Editorial from "../../../models/Editorial";
+import { convertirFecha } from "../../../services/funciones";
 
 dbConnect();
 
@@ -26,6 +27,9 @@ export default async function handler(req, res) {
         } else {
           filtrosKeys[key] = 0;
         }
+      } else if (key === "editorial") {
+        let editorial = await Editorial.findOne({ nombre: filtros[key] }).lean();
+        filtrosKeys[key] = editorial._id;
       } else {
         filtrosKeys[key] = filtros[key];
       }
@@ -63,6 +67,8 @@ export default async function handler(req, res) {
     { titulo: "Colecciones", array: series },
     { titulo: "Disponibilidad", array: disponibilidad },
   ];
+
+  mangas.sort((a, b) => convertirFecha(b.fecha_publicacion) - convertirFecha(a.fecha_publicacion))
 
   if (mangas.length > limit) {
     mangas = mangas.slice(skip, skip + limit);
