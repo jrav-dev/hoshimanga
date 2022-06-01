@@ -1,6 +1,8 @@
 import Manga from "../../../models/Manga";
 import Editorial from "../../../models/Editorial";
 
+dbConnect();
+
 export default async function handler(req, res) {
   const params = req.query;
   const limit = parseInt(params.limit)

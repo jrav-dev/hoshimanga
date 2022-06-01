@@ -1,5 +1,8 @@
+import dbConnect from '../../../config/db'
 import Manga from '../../../models/Manga'
 import { convertirFecha } from '../../../services/funciones.js'
+
+dbConnect()
 
 export default async function handler(req, res) {
   let mangas = await Manga.find().lean();

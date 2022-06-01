@@ -1,16 +1,12 @@
-import mongoose from 'mongoose';
+import { connect, connection } from 'mongoose';
 
-const conn = {
-  isConnected: false
+export default async function connectDB() {
+  await connect(process.env.NEXT_PUBLIC_MongoDB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 }
 
-export default async function dbConnect() {
-  if (conn.isConnected) return
-
-  const db = await mongoose.connect(process.env.NEXT_PUBLIC_MongoDB_URL)
-  conn.isConnected = db.connections[0].readyState
-}
-
-mongoose.connection.on("connected", () => {
+connection.once("open", () => {
+  console.log('=======================')
   console.log('Base de Datos Conectada')
+  console.log('=======================')
 })
+
