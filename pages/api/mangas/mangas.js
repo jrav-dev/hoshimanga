@@ -1,3 +1,4 @@
+import dbConnect from "../../../config/db";
 import Manga from "../../../models/Manga";
 import Editorial from "../../../models/Editorial";
 

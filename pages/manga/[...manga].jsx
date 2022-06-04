@@ -86,7 +86,12 @@ export default function Manga({ manga }) {
 
           <Precio precio={manga.precio} precioDescuento={precio} />
 
-          {manga.stock > 0 && <Boton texto='Añadir a la cesta' icono='bi bi-cart2' click={() => addToCart(manga)} />}
+          {manga.stock > 0
+            && <Boton
+              texto='Añadir a la cesta'
+              icono='bi bi-cart2'
+              click={() => addToCart(manga)}
+            />}
         </div>
 
         <div className={style.caracteristicas}>
