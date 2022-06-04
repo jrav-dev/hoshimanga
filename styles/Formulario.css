@@ -26,7 +26,7 @@
   height: 50px;
   padding: 0.8rem 1rem;
 
-  background-color: transparent;
+  background-color: var(--azul-oscuro-claro);
   border-width: 0 0 2px 0;
   border-style: solid;
   border-color: var(--azul);
