@@ -43,15 +43,15 @@
   --sombra: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-::-webkit-scrollbar {
+.app *::-webkit-scrollbar {
   width: 8px;
 }
 
-::-webkit-scrollbar-track {
+.app *::-webkit-scrollbar-track {
   background: var(--gris-claro);
 }
 
-::-webkit-scrollbar-thumb {
+.app *::-webkit-scrollbar-thumb {
   background-color: var(--azul);
 }
 

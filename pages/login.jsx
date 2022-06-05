@@ -6,6 +6,7 @@ import useValidationLoginRegister from "../hooks/useValidationLoginRegister";
 import { toast } from "react-toastify";
 import style from "../styles/Login-Register.module.css";
 import { FieldsetInput } from "../components/Fieldset";
+import { fetchPost } from "../services/funciones";
 
 const Login = () => {
   const [params, setParams] = useState({
@@ -25,27 +26,20 @@ const Login = () => {
     let validacionOK = validarUsuario();
 
     if (validacionOK) {
-      const response = await fetch(`/api/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(params),
-      });
-      const data = await response.json();
+      const response = await fetchPost(`/api/login`, { params });
 
-      if (data.ok) {
+      if (response.ok) {
         window.localStorage.setItem(
           "user",
           JSON.stringify({
-            _id: data.usuario._id,
-            nombre: data.usuario.nombre,
-            apellidos: data.usuario.apellidos,
-            email: data.usuario.email,
-            is_admin: data.usuario.is_admin,
+            _id: response.usuario._id,
+            nombre: response.usuario.nombre,
+            apellidos: response.usuario.apellidos,
+            email: response.usuario.email,
+            is_admin: response.usuario.is_admin,
           })
         );
-        
+
         window.location.href = "/";
       } else {
         toast.error("El correo electrónico introducido no existe");
@@ -58,7 +52,7 @@ const Login = () => {
       <Head>
         <title>Inicio de Sesión | Hoshi Manga</title>
       </Head>
-      
+
       <div className={`contenedor ${style.form_container}`}>
         <h2>Inicio de Sesión</h2>
 

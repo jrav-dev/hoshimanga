@@ -22,7 +22,7 @@ const Pago = ({ total, carrito, user }) => {
     }
 
     await fetchPost('/api/carrito/borrar', { _id: carrito._id })
-    await fetchPost('/api/pedido/nuevo', newPedido)
+    await fetchPost('/api/pedidos/nuevo', newPedido)
 
     console.log(newPedido)
     setPedido(newPedido)

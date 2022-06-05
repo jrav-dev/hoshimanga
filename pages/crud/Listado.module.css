@@ -22,6 +22,8 @@
 /* IMAGENES */
 
 .listado__table__row img {
+  width: 130px;
+  height: 80px;
   object-fit: contain;
 }
 

@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React from "react";
 import Head from "next/head";
-
 import style from "../../Insercion-Modificacion.module.css";
 import Ruta from "../../../../components/Ruta";
 import useForm from "../../../../hooks/useForm";
@@ -12,22 +11,19 @@ import {
 } from "../../../../components/Fieldset";
 import useFetch from "../../../../hooks/useFetch";
 import Boton from "../../../../components/Boton";
-import Icono from "../../../../components/Icono";
 
 const CrudMangaEditar = ({ data }) => {
+  console.log(data)
   const {
     params,
     errors,
-    hiddenFileInput,
-    createObjectURL,
     readParam,
     handleSubmit,
-    handleClickImagen,
   } = useForm(
     {
       nombre: data.nombre,
       descripcion: data.descripcion,
-      editorial: data.editorial,
+      editorial: data.editorial?.nombre || "",
       autor: data.autor,
       tomo: data.tomo,
       precio: data.precio,
@@ -40,8 +36,7 @@ const CrudMangaEditar = ({ data }) => {
       tamaño: data.tamaño,
     },
     `/api/mangas/${data._id}/editar`,
-    "/crud/manga",
-    "mangas"
+    "/crud/manga"
   );
 
   const items = [
@@ -137,42 +132,20 @@ const CrudMangaEditar = ({ data }) => {
             onChange={readParam}
             error={errors && errors.descripcion}
           />
-        </div>
 
-        <div className="contenedor">
-          <div className="formulario__fieldset">
-            <input
-              ref={hiddenFileInput}
-              onChange={readParam}
-              accept="image/*"
-              type="file"
-              name="imagen"
-            />
-            <div className={style.container_image}>
-              <div
-                className={`${style.btn_image} flexible`}
-                onClick={handleClickImagen}
-              >
-                <Icono icono="bi bi-cloud-upload" />
-                <p>Portada del Manga</p>
+          <FieldsetInput
+            tipo="text"
+            name="imagen"
+            text="URL Imagen *"
+            value={params.imagen}
+            onChange={readParam}
+            error={errors && errors.imagen}
+          />
 
-                <span className="boton flexible">
-                  <Icono icono="bi bi-upload" />
-                  Subir Imagen
-                </span>
-              </div>
-
-              {params.imagen !== data.imagen ? (
-                <div className={style.imagen}>
-                  <img src={createObjectURL} alt="Imagen" />
-                </div>
-              ) : (
-                <div className={style.imagen}>
-                  <img src={`/img/${params.imagen}`} alt="Imagen" />
-                </div>
-              )}
-            </div>
-            <p>{errors && errors.imagen}</p>
+          <div className={style.imagen}>
+            {params.imagen.includes('mangas/')
+              ? <img src={`/img/${params.imagen}`} alt="" />
+              : <img src={params.imagen} alt="" />}
           </div>
         </div>
 

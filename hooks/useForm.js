@@ -1,57 +1,32 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
+import { fetchPost } from "../services/funciones";
+import { toast } from 'react-toastify'
 
-export default function useForm(initialValue, url, url2, carpeta) {
+export default function useForm(initialValue, url, url2) {
   const [params, setParams] = useState(initialValue);
   const [errors, setErrors] = useState(null);
-  const [createObjectURL, setCreateObjectURL] = useState(null);
-  const hiddenFileInput = useRef(null);
-
-  let regexText = /[a-zA-Z]{3,255}$/;
 
   const validateParams = () => {
     let errors = {};
 
     for (const key in params) {
-      let name =
-        key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
+      let name = key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
 
-      if (key !== "imagen") {
-        if (params[key] === "" && key !== "imagen") {
-          errors[key] = `El campo '${name}' está vacio.`;
-        } else {
-          if (parseInt(params[key]) === "NaN" && !regexText.test(params[key])) {
-            errors[
-              key
-            ] = `El campo '${name}' no es válido. Debe tener entre 3 y 255 carácteres.`;
-          }
-          if (key === "isbn" && parseInt(params[key].length) < 13) {
-            errors[key] = `El campo '${name}' debe tener 13 carácteres.`;
-          }
-        }
+      if (params[key] === "") {
+        errors[key] = `El campo '${name}' está vacio.`;
       } else {
-        if (key === "imagen" && params[name] === "") {
-          errors[key] = `No hay una imagen seleccionada.`;
+        if (key === "isbn" && parseInt(params[key].length) < 13) {
+          errors[key] = `El campo '${name}' debe tener 13 carácteres.`;
         }
       }
     }
-    
+
     return errors;
   };
 
   const readParam = (e) => {
-    const { name, value, files } = e.target;
-
-    if (files && files[0]) {
-      const i = files[0];
-      setCreateObjectURL(URL.createObjectURL(i));
-      setParams({ ...params, [name]: i });
-    } else {
-      setParams({ ...params, [name]: value });
-    }
-  };
-
-  const handleClickImagen = (e) => {
-    hiddenFileInput.current.click();
+    const { name, value } = e.target;
+    setParams({ ...params, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -61,55 +36,19 @@ export default function useForm(initialValue, url, url2, carpeta) {
     let errors = validateParams();
     if (Object.keys(errors).length) return setErrors(errors);
 
-    if (params.imagen && typeof params.imagen !== "string")
-      await uploadToServer();
-
-    await createData();
-  };
-
-  const createData = async () => {
-    try {
-      await fetch(url, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          params,
-          imagen: params.imagen
-            ? typeof params.imagen === "string"
-              ? params.imagen
-              : `${carpeta}/${params.imagen.name}`
-            : "",
-        }),
-      })
-        .then((res) => res.json())
-        .then((results) => {
-          if (results.ok) return (window.location.href = url2);
-        });
-    } catch (error) {
-      console.log(error);
+    const response = await fetchPost(url, params);
+    if (response.ok) {
+      window.location.href = url2
+    } else {
+      toast.error(response.msg)
     }
-  };
-
-  const uploadToServer = async () => {
-    const formData = new FormData();
-    formData.append("file", params.imagen);
-    await fetch(`/api/file/${carpeta}`, {
-      method: "POST",
-      body: formData,
-    });
   };
 
   return {
     params,
     errors,
     setParams,
-    hiddenFileInput,
-    createObjectURL,
     readParam,
     handleSubmit,
-    handleClickImagen,
   };
 }

@@ -1,16 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Head from "next/head";
-import { useLocalStorage } from "../../../../hooks/useLocalStorage";
+import useLocalStorage from "../../../../hooks/useLocalStorage";
 import Ruta from "../../../../components/Ruta";
 import useForm from "../../../../hooks/useForm";
 import { FieldsetInput } from "../../../../components/Fieldset";
 import Boton from "../../../../components/Boton";
 import Icono from "../../../../components/Icono";
+import { toast } from 'react-toastify'
+import { validarCodigoPostal, validarDNI, validarEmail, validarString, validarTelefono } from "../../../../services/UtilesValidacion";
+import { fetchPost } from "../../../../services/funciones";
 
 const CrudUsuarioEditar = ({ data }) => {
   const [user, setValue] = useLocalStorage("user");
-  const { params, setParams, errors, readParam, handleSubmit } = useForm(
+  const [errors, setErrors] = useState(null);
+  const { params, setParams, readParam, handleSubmit } = useForm(
     {
       _id: data._id,
       nombre: data.nombre,
@@ -25,8 +29,6 @@ const CrudUsuarioEditar = ({ data }) => {
       dni: data.dni,
       is_admin: data.is_admin,
     },
-    "/api/usuarios/editar",
-    "/crud/usuario"
   );
 
   const items = [
@@ -35,20 +37,80 @@ const CrudUsuarioEditar = ({ data }) => {
     { text: `Editar Usuario - ${data.nombre}` },
   ];
 
-  const handleSubmitUsuario = (e) => {
+  const handleSubmitUsuario = async (e) => {
     e.preventDefault();
 
-    if (user.nombre === params.nombre) {
-      setValue({
-        _id: user._id,
-        nombre: params.nombre,
-        apellidos: params.apellidos,
-        email: params.email,
-        is_admin: params.is_admin,
-      });
-    }
+    const validateParams = () => {
+      let errors = {};
 
-    handleSubmit(e)
+      for (const key in params) {
+        let name =
+          key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
+
+        if (params[key] === "" || params[key] === undefined) {
+          errors[key] = `El campo '${name}' está vacio.`;
+        } else {
+          switch (key) {
+            case "email":
+              errors['email'] = validarEmail(params['email']);
+              break;
+            case "telefono":
+              errors['telefono'] = validarTelefono(params['telefono']);
+              break;
+            case "dni":
+              errors['dni'] = validarDNI(params['dni']);
+              break;
+            case "codigo_postal":
+              errors['codigo_postal'] = validarCodigoPostal(params['codigo_postal']);
+              break;
+            case "direccion":
+              break;
+
+            default:
+              errors[key] = validarString(params[key]);
+              break;
+          }
+        }
+      }
+      return errors;
+    };
+
+    let errors = validateParams();
+
+    if (
+      errors.nombre === true &&
+      errors.apellidos === true &&
+      errors.email === true &&
+      errors.codigo_postal === true &&
+      errors.dni === true &&
+      errors.pais === true &&
+      errors.poblacion === true &&
+      errors.telefono === true
+    ) {
+      const response = await fetchPost('/api/usuarios/editar', {
+        _id: user._id,
+        params
+      })
+      setErrors(null);
+
+      if (response.ok) {
+        if (user.nombre === params.nombre) {
+          setValue({
+            _id: response.usuario._id,
+            nombre: response.usuario.nombre,
+            apellidos: response.usuario.apellidos,
+            email: response.usuario.email,
+            is_admin: response.usuario.is_admin,
+          })
+        }
+
+        window.location.href = "/crud/usuario";
+      } else {
+        toast.error(response.msg)
+      }
+    } else {
+      setErrors(errors);
+    }
   };
 
   return (
@@ -69,101 +131,80 @@ const CrudUsuarioEditar = ({ data }) => {
 
         <div className="formulario__grid contenedor">
           <FieldsetInput
-            className="formulario__fieldset"
-            tipo="text"
-            name="nombre"
-            text="Nombre"
+            tipo="text" name='nombre' text='Nombre'
             value={params.nombre}
             onChange={readParam}
+            error={errors && errors.nombre}
           />
 
           <FieldsetInput
-            className="formulario__fieldset"
-            tipo="text"
-            name="apellidos"
-            text="Apellidos"
+            tipo="text" name='apellidos' text='Apellidos'
             value={params.apellidos}
             onChange={readParam}
+            error={errors && errors.apellidos}
           />
 
           <FieldsetInput
-            className="formulario__fieldset"
-            tipo="email"
-            name="email"
-            text="Correo Electrónico"
+            tipo="email" name='email' text='Correo Electrónico'
             value={params.email}
             onChange={readParam}
+            error={errors && errors.email}
           />
 
           <FieldsetInput
-            className="formulario__fieldset"
-            tipo="password"
-            name="password"
-            text="Contraseña"
+            tipo="password" name="password" text="Contraseña"
             value={params.password}
             onChange={readParam}
+            error={errors && errors.password}
           />
         </div>
 
         <div className="formulario__grid contenedor">
           <FieldsetInput
-            className="formulario__fieldset"
-            tipo="text"
-            name="direccion"
-            text="Dirección"
-            value={params.direccion}
-            onChange={readParam}
-          />
-
-          <FieldsetInput
-            className="formulario__fieldset"
-            tipo="text"
-            name="poblacion"
-            text="Población"
-            value={params.poblacion}
-            onChange={readParam}
-          />
-
-          <FieldsetInput
-            className="formulario__fieldset"
-            tipo="text"
-            name="pais"
-            text="Pais"
-            value={params.pais}
-            onChange={readParam}
-          />
-
-          <FieldsetInput
-            className="formulario__fieldset"
-            tipo="number"
-            name="codigo_postal"
-            text="Código Postal"
-            value={params.codigo_postal}
-            onChange={readParam}
-          />
-
-          <FieldsetInput
-            className="formulario__fieldset"
-            tipo="text"
-            name="telefono"
-            text="Teléfono"
+            tipo="text" name='telefono' text='Teléfono'
             value={params.telefono}
             onChange={readParam}
+            error={errors && errors.telefono}
           />
 
           <FieldsetInput
-            className="formulario__fieldset"
-            tipo="text"
-            name="dni"
-            text="DNI"
+            tipo="text" name='dni' text='DNI'
             value={params.dni}
             onChange={readParam}
+            error={errors && errors.dni}
+          />
+
+          <FieldsetInput
+            tipo="text" name='direccion' text='Dirección'
+            value={params.direccion}
+            onChange={readParam}
+            error={errors && errors.direccion}
+          />
+
+          <FieldsetInput
+            tipo="text" name='poblacion' text='Población'
+            value={params.poblacion}
+            onChange={readParam}
+            error={errors && errors.poblacion}
+          />
+
+          <FieldsetInput
+            tipo="text" name='pais' text='Pais'
+            value={params.pais}
+            onChange={readParam}
+            error={errors && errors.pais}
+          />
+
+          <FieldsetInput
+            tipo="text" name='codigo_postal' text='Código Postal'
+            value={params.codigo_postal}
+            onChange={readParam}
+            error={errors && errors.codigo_postal}
           />
 
           <div
-            className={`formulario__checkbox ${
-              params.is_admin ? "formulario__checkbox__active" : ""
-            }`}
+            className={`formulario__checkbox ${params.is_admin ? "formulario__checkbox__active" : ""
+              }`}
           >
             <label htmlFor="is_admin">Administrador</label>
             <span

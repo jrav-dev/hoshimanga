@@ -12,7 +12,7 @@ export function FieldsetInput({
   max,
 }) {
   return (
-    <div className={`formulario__fieldset formulario__fieldset`}>
+    <div className={`formulario__fieldset`}>
       <label htmlFor={name}>{text}</label>
       <input
         type={tipo}

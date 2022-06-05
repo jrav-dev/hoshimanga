@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React from "react";
 import Head from "next/head";
 import style from "../Insercion-Modificacion.module.css";
 import Ruta from "../../../components/Ruta";
@@ -11,17 +11,13 @@ import {
 } from "../../../components/Fieldset";
 import useFetch from "../../../hooks/useFetch";
 import Boton from "../../../components/Boton";
-import Icono from "../../../components/Icono";
 
 const CrudMangaInsertar = () => {
   const {
     params,
     errors,
-    hiddenFileInput,
-    createObjectURL,
     readParam,
     handleSubmit,
-    handleClickImagen,
   } = useForm(
     {
       nombre: "",
@@ -39,8 +35,7 @@ const CrudMangaInsertar = () => {
       tamaño: "",
     },
     "/api/mangas/insertar",
-    "/crud/manga",
-    "mangas"
+    "/crud/manga"
   );
 
   const items = [
@@ -134,38 +129,20 @@ const CrudMangaInsertar = () => {
             onChange={readParam}
             error={errors && errors.descripcion}
           />
-        </div>
 
-        <div className="contenedor">
-          <div className="formulario__fieldset">
-            <input
-              ref={hiddenFileInput}
-              onChange={readParam}
-              accept="image/*"
-              type="file"
-              name="imagen"
-            />
-            <div className={style.container_image}>
-              <div
-                className={`${style.btn_image} flexible`}
-                onClick={handleClickImagen}
-              >
-                <Icono icono="bi bi-cloud-upload" />
-                <p>Portada del Manga</p>
+          <FieldsetInput
+            tipo="text"
+            name="imagen"
+            text="URL Imagen *"
+            value={params.imagen}
+            onChange={readParam}
+            error={errors && errors.imagen}
+          />
 
-                <span className="boton flexible">
-                  <Icono icono="bi bi-upload" />
-                  Subir Imagen
-                </span>
-              </div>
-              {params.imagen && (
-                <div className={style.imagen}>
-                  <img src={createObjectURL} alt="" />
-                </div>
-              )}
-            </div>
-            <p>{errors && errors.imagen}</p>
-          </div>
+          {params.imagen !== ""
+            && <div className={style.imagen}>
+              <img src={params.imagen} alt="" />
+            </div>}
         </div>
 
         <div className="contenedor formulario__grid">

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
@@ -77,16 +78,16 @@ const CrudMangaListado = ({ data }) => {
   useEffect(async () => {
     await fetchData();
   }, [limit]);
-  
+
   // METODOS PAGINACION
-  
+
   const prevPage = () => {
     if (skip > 0) {
       setSkip(skip - limit);
       setPagina(parseInt(pagina) - 1)
     }
   };
-  
+
   const nextPage = () => {
     if (dataPaginated.length === limit) {
       setSkip(skip + limit);
@@ -235,14 +236,17 @@ const CrudMangaListado = ({ data }) => {
                   </td>
 
                   <td>
-                    {item.imagen ? (
+                    {item.imagen.includes('mangas/') ?
                       <Image
                         src={`/img/${item.imagen}`}
                         alt={item.nombre}
-                        width={60}
+                        width={130}
                         height={80}
                       />
-                    ) : null}
+                      : <img
+                        src={item.imagen}
+                        alt={item.nombre}
+                      />}
                   </td>
 
                   <td>{item.editorial.nombre}</td>

@@ -18,5 +18,5 @@ export default function useLocalStorage(initialValue) {
     }
   }
 
-  return [storedValue, removeItem, setValue]
+  return [storedValue, setValue, removeItem]
 }

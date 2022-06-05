@@ -5,20 +5,21 @@ import Editorial from '../../../models/Editorial'
 dbConnect()
 
 export default async function handler(req, res) {
-  const { params, imagen } = req.body
-
-  params.imagen = imagen
+  const params = req.body
 
   try {
-    const editorial = await Editorial.findOne({ nombre: params.editorial }).lean()
+    if (params.editorial !== "") {
+      let editorial = await Editorial.findOne({ nombre: params.editorial }).lean()
 
-    if (!editorial) params.editorial = editorial._id
+      params.editorial = editorial._id
+    }
 
     const newParams = new Manga(params)
     newParams.save()
 
-    res.status(201).json({ status: 201, ok: true, message: "success" })
+    res.status(201).json({ ok: true })
   } catch (error) {
     console.log("Error: " + error)
+    res.status(201).json({ ok: false, msg: "Ha ocurrido un error." })
   }
 }

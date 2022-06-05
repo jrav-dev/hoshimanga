@@ -1,10 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
 import ModalConfirmacion from "../../../components/Modal/ModalConfirmacion";
 import Ruta from "../../../components/Ruta";
-import useFetch from "../../../hooks/useFetch";
 import useModal from "../../../hooks/useModal";
 import { toast } from "react-toastify";
 import style from "../Listado.module.css";
@@ -63,14 +62,17 @@ const CrudEditorialListado = ({ data }) => {
                 <td>{item.nombre}</td>
 
                 <td>
-                  {item.imagen ? (
+                  {item.imagen.includes('editoriales/') ?
                     <Image
                       src={`/img/${item.imagen}`}
                       alt={item.nombre}
                       width={130}
                       height={80}
                     />
-                  ) : null}
+                    : <img
+                      src={item.imagen}
+                      alt={item.nombre}
+                    />}
                 </td>
 
                 <td className={style.listado__table__row__actions}>

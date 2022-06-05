@@ -10,15 +10,108 @@ import useModal from "../../../hooks/useModal";
 import style from "../Listado.module.css";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading";
+import { formatDate } from "../../../services/funciones";
 
-const CrudPedidosListado = () => {
+const CrudPedidosListado = ({ data }) => {
+  const { isOpen, openModal, closeModal } = useModal();
+  const [pedido, setPedidos] = useState({});
+  const [isLoading, setLoading] = useState(false);
+  const [dataPaginated, setDataPaginated] = useState(data.pedidos);
+  const [pagina, setPagina] = useState(1)
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [filtros, setFiltros] = useState({
+    num_pedido: "",
+    usuario: "",
+  });
+
+  const pages = Math.ceil(data.total / limit);
 
   const items = [{ href: "/crud", text: "Crud" }, { text: "Pedidos" }];
+
+  const fetchData = async (filters = filtros) => {
+    setLoading(true)
+    const response = await fetch(
+      `/api/pedidos?limit=${limit}&skip=${skip}&id=${filters.id}` +
+      `&num_pedido=${filters.num_pedido}&usuario=${filters.usuario}`
+    );
+    const data = await response.json();
+    setLoading(false)
+    setDataPaginated(data.pedidos);
+  };
+
+  // const borrarPedidos = async () => {
+  //   window.location.href = window.location.pathname;
+  //   closeModal();
+  //   toast.success("Pedido borrado correctamente");
+
+  //   await fetch(`/api/mangas/${manga._id}/borrar`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //     },
+  //   });
+  // };
+
+  // Se ejecuta cuando cambia el skip
+
+  useEffect(async () => {
+    await fetchData();
+  }, [skip]);
+
+  // Se ejecuta cuando cambia el limite
+
+  useEffect(async () => {
+    await fetchData();
+  }, [limit]);
+
+  // METODOS PAGINACION
+
+  const prevPage = () => {
+    if (skip > 0) {
+      setSkip(skip - limit);
+      setPagina(parseInt(pagina) - 1)
+    }
+  };
+
+  const nextPage = () => {
+    if (dataPaginated.length === limit) {
+      setSkip(skip + limit);
+      setPagina(parseInt(pagina) + 1)
+    }
+  };
+
+  // FILTROS
+
+  const leerDato = (e) => {
+    const { name, value } = e.target;
+    setFiltros({ ...filtros, [name]: value });
+  };
+
+  const handleClickFilter = async () => {
+    await fetchData();
+    setPagina(1)
+    setSkip(0)
+  };
+
+  // VACIAR FILTROS
+
+  const handleClickClearFilter = async () => {
+    setFiltros({
+      num_pedido: "",
+      usuario: "",
+    });
+    await fetchData({
+      num_pedido: "",
+      usuario: "",
+    });
+  };
 
   return (
     <>
       <Head>
-        <title>Listado Pedidos | CRUD | Hoshi Manga</title>
+        <title>Listado Pedidos | CRUD | Hoshi Pedido</title>
       </Head>
 
       <Ruta items={items} />
@@ -27,12 +120,11 @@ const CrudPedidosListado = () => {
         <h2>Listado de Pedidos</h2>
       </div>
 
-      {/* <div className="app__listado__filtros contenedor">
+      <div className="app__listado__filtros contenedor">
         <div className="app__listado__filtros__grid">
           <FieldsetInput
             tipo="text"
             text="Nª Pedido"
-            className="formulario__fieldset"
             name="num_pedido"
             value={filtros.num_pedido}
             onChange={leerDato}
@@ -40,10 +132,9 @@ const CrudPedidosListado = () => {
 
           <FieldsetInput
             tipo="text"
-            text="ID"
-            className="formulario__fieldset"
-            name="id"
-            value={filtros.id}
+            text="Usuario"
+            name="usuario"
+            value={filtros.usuario}
             onChange={leerDato}
           />
         </div>
@@ -61,9 +152,9 @@ const CrudPedidosListado = () => {
             clase="rojo"
           />
         </div>
-      </div> */}
+      </div>
 
-      {/* {isLoading ? <Loading />
+      {isLoading ? <Loading />
         : <>
           <Paginacion
             limit={limit}
@@ -82,40 +173,25 @@ const CrudPedidosListado = () => {
           <table className={style.listado__table}>
             <thead>
               <tr className={style.listado__table__row}>
-                <th>ID</th>
-                <th>Usuario</th>
                 <th>Nº Pedido</th>
+                <th>Usuario</th>
+                <th>Total Productos</th>
                 <th>Creado</th>
                 <th>Total</th>
-                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {dataPaginated.map((item, i) => (
                 <tr key={i} className={style.listado__table__row}>
-                  <td>{item._id}</td>
-
-                  <td>{item.usuario}</td>
-
                   <td># {item.num_pedido}</td>
+
+                  <td>{item.usuario.nombre} {item.usuario.apellidos}</td>
+
+                  <td>{item.productos.length} producto/s</td>
 
                   <td>{formatDate(item.createdAt)}</td>
 
-                  <td>{parseFloat(item.precio).toFixed(2)} €</td>
-
-                  <td>
-                    <Boton
-                      icono="bi bi-trash"
-                      clase="rojo"
-                      click={() => {
-                        openModal();
-                        setPedido({
-                          _id: item._id,
-                          num_pedido: item.num_pedido,
-                        });
-                      }}
-                    />
-                  </td>
+                  <td>{item.importe.toFixed(2)} €</td>
                 </tr>
               ))}
             </tbody>
@@ -134,7 +210,7 @@ const CrudPedidosListado = () => {
             dataPaginated={dataPaginated}
             total={dataPaginated.length}
           />
-        </>} */}
+        </>}
 
 
       {/* {isOpen && (
@@ -148,13 +224,13 @@ const CrudPedidosListado = () => {
   );
 };
 
-// CrudPedidosListado.getInitialProps = async () => {
-//   const response = await fetch(
-//     `${process.env.NEXT_PUBLIC_API_URL}/pedidos?limit=20&skip=0`
-//   );
-//   const data = await response.json();
+CrudPedidosListado.getInitialProps = async () => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/pedidos?limit=20&skip=0`
+  );
+  const data = await response.json();
 
-//   return { data };
-// };
+  return { data };
+};
 
 export default CrudPedidosListado;

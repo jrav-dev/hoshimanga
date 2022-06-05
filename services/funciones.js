@@ -1,4 +1,9 @@
 
+export const formatDate = (fechaString) => {
+  let fecha = new Date(fechaString)
+  return `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`
+}
+
 export const convertirFecha = (fechaString) => {
   var fechaSp = fechaString.split("-");
   var anio = new Date().getFullYear();
