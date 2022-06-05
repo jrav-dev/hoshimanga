@@ -26,7 +26,7 @@ const Login = () => {
     let validacionOK = validarUsuario();
 
     if (validacionOK) {
-      const response = await fetchPost(`/api/login`, { params });
+      const response = await fetchPost(`/api/login`, params);
 
       if (response.ok) {
         window.localStorage.setItem(
@@ -42,7 +42,7 @@ const Login = () => {
 
         window.location.href = "/";
       } else {
-        toast.error("El correo electrónico introducido no existe");
+        toast.error(response.msg);
       }
     }
   };

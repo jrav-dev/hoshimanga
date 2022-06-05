@@ -5,14 +5,20 @@ import bcryptjs from 'bcryptjs'
 connectDB();
 
 export default async function handler(req, res) {
+  const { email, password } = req.body;
 
-  const usuario = await Usuario.findOne({ email: req.body.email }).lean();
+  const usuario = await Usuario.findOne({ email }).lean();
 
   if (usuario) {
-    var password = await bcryptjs.compare(req.body.password, usuario.password)
-    res.status(200).json({ ok: true, usuario });
+    let passwordCompare = await bcryptjs.compare(password, usuario.password)
+
+    if (passwordCompare) {
+      res.status(200).json({ ok: true, usuario });
+    } else {
+      res.status(401).json({ ok: false, msg: 'La contraseña no coincide' });
+    }
   } else {
-    res.status(200).json({ ok: false });
+    res.status(200).json({ ok: false, msg: '"El correo electrónico introducido no existe"' });
   }
 
 }
