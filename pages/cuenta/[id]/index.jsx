@@ -2,10 +2,13 @@
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import style from "./Cuenta.module.css";
+import Listado from "../../crud/Listado.module.css";
 import Link from "next/link";
 import BotonLink from "../../../components/BotonLink";
 import Loading from "../../../components/Loading";
 import Paginacion from "../../../components/Paginacion";
+import { formatDate } from "../../../services/funciones";
+import Icono from "../../../components/Icono";
 
 const Cuenta = ({ data }) => {
   const [dataPaginated, setDataPaginated] = useState([]);
@@ -18,14 +21,13 @@ const Cuenta = ({ data }) => {
   const fetchData = async () => {
     setLoading(true);
     const response = await fetch(
-      `/api/usuarios/${data._id}/pedidos?limit=${limit}&skip=${skip}`
+      `/api/pedidos?limit=${limit}&skip=${skip}`
     );
     const pedidos = await response.json();
     const pages = Math.ceil(pedidos.total / limit);
-
     setPaginas(pages);
     setLoading(false);
-    setDataPaginated([]);
+    setDataPaginated(pedidos.pedidos);
   };
 
   useEffect(async () => {
@@ -59,11 +61,6 @@ const Cuenta = ({ data }) => {
       setPagina(parseInt(pagina) + 1)
     }
   };
-
-  const formatDate = (date) => {
-    let fecha = new Date(date);
-    return `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
-  }
 
   return (
     <>
@@ -113,31 +110,41 @@ const Cuenta = ({ data }) => {
               <h2 className="borde__contenedor">Historial de Pedidos</h2>
 
               {dataPaginated.length > 0 ? <>
-                <div
-                  className={`${style.app__cart__product} app__table__product app__table__header`}
-                >
-                  <b>Nº Pedido</b>
-                  <b>Fecha</b>
-                  <b>Total</b>
-                  <b></b>
-                </div>
+                <table className={Listado.listado__table}>
+                  <thead>
+                    <tr className={Listado.listado__table__row}>
+                      <th>Nº Pedido</th>
+                      <th>Usuario</th>
+                      <th>Total Productos</th>
+                      <th>Creado</th>
+                      <th>Total</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dataPaginated?.map((item, i) => (
+                      <tr key={i} className={Listado.listado__table__row}>
+                        <td># {item.num_pedido}</td>
 
-                {dataPaginated?.map((item, i) => (
-                  <div
-                    key={i}
-                    className={`${style.app__cart__product} app__table__product`}
-                  >
-                    <p># {item.num_pedido}</p>
+                        <td>{item.usuario.nombre} {item.usuario.apellidos}</td>
 
-                    <p>{formatDate(item.createdAt)}</p>
+                        <td>{item.productos.length} producto/s</td>
 
-                    <p>{parseFloat(item.precio).toFixed(2)} €</p>
+                        <td>{formatDate(item.createdAt)}</td>
 
-                    <div>
-                      <BotonLink url={`/pedido/${item._id}`} texto="Ver Pedido" />
-                    </div>
-                  </div>
-                ))}
+                        <td>{item.importe.toFixed(2)} €</td>
+
+                        <td>
+                          <Link href={`/pedido?num_pedido=${item.num_pedido}`}>
+                            <a className={`${Listado.listado__table__btn__icono} flexible`}>
+                              <Icono icono='bi bi-eye' />
+                            </a>
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
 
                 <Paginacion
                   limit={limit}
@@ -168,7 +175,7 @@ Cuenta.getInitialProps = async ({ query }) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/usuarios/${id}`);
   const data = await response.json();
 
-  return { data: [] };
+  return { data };
 };
 
 export default Cuenta;

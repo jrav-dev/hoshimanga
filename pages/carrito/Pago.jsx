@@ -24,7 +24,6 @@ const Pago = ({ total, carrito, user }) => {
     await fetchPost('/api/carrito/borrar', { _id: carrito._id })
     await fetchPost('/api/pedidos/nuevo', newPedido)
 
-    console.log(newPedido)
     setPedido(newPedido)
   };
 
@@ -62,7 +61,7 @@ const Pago = ({ total, carrito, user }) => {
         </div>
       </div>
 
-      {pedido && <Confirmacion num_pedido={pedido.num_pedido} id={pedido.usuario} />}
+      {pedido && <Confirmacion num_pedido={pedido.num_pedido} />}
     </>
   );
 };

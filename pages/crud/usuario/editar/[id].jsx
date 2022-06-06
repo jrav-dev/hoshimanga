@@ -14,7 +14,7 @@ import { fetchPost } from "../../../../services/funciones";
 const CrudUsuarioEditar = ({ data }) => {
   const [user, setValue] = useLocalStorage("user");
   const [errors, setErrors] = useState(null);
-  const { params, setParams, readParam, handleSubmit } = useForm(
+  const { params, setParams, readParam } = useForm(
     {
       _id: data._id,
       nombre: data.nombre,

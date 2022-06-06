@@ -3,7 +3,7 @@ import BotonLink from "../../components/BotonLink";
 import Icono from "../../components/Icono";
 import Modal from '../../components/Modal'
 
-const Confirmacion = ({ num_pedido, id }) => {
+const Confirmacion = ({ num_pedido }) => {
   return (
     <Modal >
       <div className="flexible app__confirmacion">
@@ -17,7 +17,7 @@ const Confirmacion = ({ num_pedido, id }) => {
 
         <div className="flexible">
           <BotonLink
-            url={`/pedido/${id}`}
+            url={`/pedido?num_pedido=${num_pedido}`}
             texto="Ver Pedido"
             icono="bi bi-box-arrow-up-right"
           />

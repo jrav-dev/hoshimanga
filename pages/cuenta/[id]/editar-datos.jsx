@@ -1,15 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Head from "next/head";
-import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 import Ruta from "../../../components/Ruta";
 import useForm from "../../../hooks/useForm";
 import { FieldsetInput } from "../../../components/Fieldset";
 import Boton from "../../../components/Boton";
+import { toast } from 'react-toastify'
+import { validarCodigoPostal, validarDNI, validarEmail, validarString, validarTelefono, validarPassword } from "../../../services/UtilesValidacion";
+import { fetchPost } from "../../../services/funciones";
 
 const CrudUsuarioEditar = ({ data }) => {
   const [user, setValue] = useLocalStorage("user");
-  const { params, errors, readParam, handleSubmit } = useForm(
+  const [errors, setErrors] = useState(null)
+  const { params, readParam, handleSubmit } = useForm(
     {
       _id: data._id,
       nombre: data.nombre,
@@ -23,9 +27,7 @@ const CrudUsuarioEditar = ({ data }) => {
       telefono: data.telefono,
       dni: data.dni,
       is_admin: data.is_admin,
-    },
-    "/api/usuarios/editar",
-    `/cuenta/${data._id}`
+    }
   );
 
   const items = [
@@ -33,20 +35,83 @@ const CrudUsuarioEditar = ({ data }) => {
     { text: `Editar Datos - ${data.nombre}` },
   ];
 
-  const handleSubmitUsuario = (e) => {
+  const handleSubmitUsuario = async (e) => {
     e.preventDefault();
 
-    if (user.nombre === params.nombre) {
-      setValue({
-        _id: user._id,
-        nombre: params.nombre,
-        apellidos: params.apellidos,
-        email: params.email,
-        is_admin: user.is_admin,
-      });
-    }
+    const validateParams = () => {
+      let errors = {};
 
-    handleSubmit(e)
+      for (const key in params) {
+        let name =
+          key.charAt(0).toUpperCase() + key.slice(1).split("_").join(" ");
+
+        if (params[key] === "" || params[key] === undefined) {
+          errors[key] = `El campo '${name}' está vacio.`;
+        } else {
+          switch (key) {
+            case "password":
+              errors['password'] = validarPassword(params['password']);
+              break;
+            case "email":
+              errors['email'] = validarEmail(params['email']);
+              break;
+            case "telefono":
+              errors['telefono'] = validarTelefono(params['telefono']);
+              break;
+            case "dni":
+              errors['dni'] = validarDNI(params['dni']);
+              break;
+            case "codigo_postal":
+              errors['codigo_postal'] = validarCodigoPostal(params['codigo_postal']);
+              break;
+            case "direccion":
+              break;
+
+            default:
+              errors[key] = validarString(params[key]);
+              break;
+          }
+        }
+      }
+      return errors;
+    };
+
+    let errors = validateParams();
+
+    if (
+      errors.nombre === true &&
+      errors.apellidos === true &&
+      errors.email === true &&
+      errors.codigo_postal === true &&
+      errors.dni === true &&
+      errors.pais === true &&
+      errors.poblacion === true &&
+      errors.telefono === true
+    ) {
+      const response = await fetchPost('/api/usuarios/editar', {
+        _id: user._id,
+        params
+      })
+      setErrors(null);
+
+      if (response.ok) {
+        if (user.nombre === params.nombre) {
+          setValue({
+            _id: response.usuario._id,
+            nombre: response.usuario.nombre,
+            apellidos: response.usuario.apellidos,
+            email: response.usuario.email,
+            is_admin: response.usuario.is_admin,
+          })
+        }
+
+        window.location.href = `/cuenta/${data._id}`;
+      } else {
+        toast.error(response.msg)
+      }
+    } else {
+      setErrors(errors);
+    }
   };
 
   return (

@@ -1,0 +1,16 @@
+
+.pedido_container {
+  width: 500px;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: var(--sombra);
+}
+
+.pedido_container h2 {
+  text-align: center;
+}
+
+.pedido_container__info {
+  margin: 1rem 0;
+}

@@ -58,3 +58,11 @@
   font-weight: bold;
   color: var(--azul-oscuro);
 }
+
+.listado__table__btn__icono i {
+  padding: 0.3rem;
+  background-color: var(--verde);
+  border-radius: 0.3rem;
+  color: white;
+  font-size: 1.3rem;
+}

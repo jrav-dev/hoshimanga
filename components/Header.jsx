@@ -29,7 +29,7 @@ const Header = () => {
   const handleClickDarkModeIcon = () => {
     if (darkModeIcon) {
       setDarkModeIcon(false)
-      removeDarkMode("dark-mode")
+      removeDarkMode("dark")
       document.getElementsByTagName("body")[0].removeAttribute("class", darkMode);
     } else {
       setDarkModeIcon(true)

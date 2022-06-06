@@ -150,29 +150,6 @@ const Cart = ({ productos, usuario }) => {
       </Head>
 
       {productos && <>
-        {/* <div className={style.app__cart__steps}>
-        <div className={`flexible ${style.app__cart__steps__step} ${step === 1
-          ? style.app__cart__steps__step__active : ""
-          }`}>
-          <p onClick={() => cart && setStep(1)} className="flexible">1</p>
-          <p>Productos</p>
-        </div>
-
-        <div className={`flexible ${style.app__cart__steps__step} ${step === 2
-          ? style.app__cart__steps__step__active : ""
-          }`}>
-          <p onClick={() => cart && setStep(2)} className="flexible">2</p>
-          <p>Datos</p>
-        </div>
-
-        <div className={`flexible ${style.app__cart__steps__step} ${step === 3
-          ? style.app__cart__steps__step__active : ""
-          }`}>
-          <p className="flexible">3</p>
-          <p>Pago</p>
-        </div>
-      </div> */}
-
         <div className={style.app__cart__grid}>
           {step === 1 && (
             <div className='formulario__container'>
